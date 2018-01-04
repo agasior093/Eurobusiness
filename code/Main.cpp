@@ -1,8 +1,11 @@
-/*  Eurobusiness game
+/*  
+Eurobusiness game
 by Aleksander Gasior
 */
+#include <iostream>
 
 
 int main() {
-	return 0;
+	
+	std::cin.get();
 }

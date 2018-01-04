@@ -11,7 +11,7 @@ namespace logic {
 		
 		float m_cash = 3500;
 		float m_currentPayment = 0;
-		std::unique_ptr<Player> m_loanHolder = nullptr;
+		Player* m_loanHolder = nullptr;
 
 		int m_position = 0;
 		int m_targetPosition = 0;
@@ -30,6 +30,9 @@ namespace logic {
 		void addCash(float);
 		bool substractCash(float);
 
+		void createPayment(float, Player*);
+		bool pay();
+
 		void incrementPosition(int);
 		void setPosition(int);
 		void setTargetPosition(int);
@@ -46,6 +49,7 @@ namespace logic {
 		
 		float getCash();
 		float getCurrentPayment();		
+		Player* getLoanHolder();
 
 		int getPosition();
 		int getTargetPosition();

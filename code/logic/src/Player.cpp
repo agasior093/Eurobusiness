@@ -14,6 +14,25 @@ bool logic::Player::substractCash(float amount) {
 	}
 }
 
+void logic::Player::createPayment(float amount, Player* player) {
+	m_currentPayment = amount;
+	m_loanHolder = player;
+}
+
+//maybe better to leave just setters and getters here and 
+bool logic::Player::pay() {
+	if (m_cash >= m_currentPayment) {
+		m_cash -= m_currentPayment;
+		m_loanHolder->addCash(m_currentPayment);
+		m_currentPayment = 0;
+		m_loanHolder = nullptr;
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
 void logic::Player::incrementPosition(int number) {
 	m_position += number;
 	if (m_position > 39) m_position -= 40;
@@ -62,6 +81,10 @@ float logic::Player::getCash() {
 
 float logic::Player::getCurrentPayment() {
 	return m_currentPayment;
+}
+
+logic::Player* logic::Player::getLoanHolder() {
+	return m_loanHolder;
 }
 
 int logic::Player::getPosition() {

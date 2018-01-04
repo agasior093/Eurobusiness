@@ -8,6 +8,9 @@
 namespace logic {
 	class Player {
 		std::string m_name;
+
+		bool m_canRollTheDice = true;
+		bool m_canMove = true;
 		
 		float m_cash = 3500;
 		float m_currentPayment = 0;
@@ -15,7 +18,7 @@ namespace logic {
 
 		int m_position = 0;
 		int m_targetPosition = 0;
-		bool m_isMoving = false;
+		bool m_isMoving = false;		
 
 		int m_turnsLeftInJail = 0;
 		int m_outOfJailCards = 0;
@@ -27,6 +30,9 @@ namespace logic {
 		{ }
 		~Player() = default;
 
+		void allowRollTheDice(bool);
+		void allowMove(bool);
+
 		void addCash(float);
 		bool substractCash(float);
 
@@ -35,8 +41,9 @@ namespace logic {
 
 		void incrementPosition(int);
 		void setPosition(int);
-		void setTargetPosition(int);
-		void setInMotion(bool);
+		void setTargetPosition(int);		
+		void startMoving();
+		void stopMoving();
 
 		void lockInJail();
 		void decrementTurnsInJail();
@@ -45,17 +52,20 @@ namespace logic {
 		void useOutOfJailCard();
 
 		//getters
-		std::string getName();
+		std::string getName() const;
 		
-		float getCash();
-		float getCurrentPayment();		
-		Player* getLoanHolder();
+		bool canRollTheDice() const;
+		bool canMove() const;
+		
+		float getCash() const;
+		float getCurrentPayment() const;
+		Player* getLoanHolder() const;
 
-		int getPosition();
-		int getTargetPosition();
-		bool isMoving();
+		int getPosition() const;
+		int getTargetPosition() const;
+		bool isMoving() const;
 
-		int getTurnsLeftInJail();
-		int getOutOfJailCards();		
+		int getTurnsLeftInJail() const;
+		int getOutOfJailCards() const;
 	};
 }

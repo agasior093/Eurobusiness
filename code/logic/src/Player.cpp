@@ -1,5 +1,14 @@
 #include "../include/Player.h"
 
+
+void logic::Player::allowRollTheDice(bool argument) {
+	m_canRollTheDice = argument;
+}
+
+void logic::Player::allowMove(bool argument) {
+	m_canMove = argument;
+}
+
 void logic::Player::addCash(float amount) {
 	m_cash += amount;
 }
@@ -19,7 +28,6 @@ void logic::Player::createPayment(float amount, Player* player) {
 	m_loanHolder = player;
 }
 
-//maybe better to leave just setters and getters here and 
 bool logic::Player::pay() {
 	if (m_cash >= m_currentPayment) {
 		m_cash -= m_currentPayment;
@@ -42,12 +50,16 @@ void logic::Player::setPosition(int newPosition) {
 	m_position = newPosition;
 }
 
-void logic::Player::setTargetPosition(int newPosition) {
-	m_targetPosition = newPosition;
+void logic::Player::startMoving() {
+	m_isMoving = true;
 }
 
-void logic::Player::setInMotion(bool argument) {
-	m_isMoving = argument;
+void logic::Player::stopMoving() {
+	m_isMoving = false;
+}
+
+void logic::Player::setTargetPosition(int newPosition) {
+	m_targetPosition = newPosition;
 }
 
 void logic::Player::lockInJail() {
@@ -71,38 +83,46 @@ void logic::Player::useOutOfJailCard() {
 }
 
 //getters
-std::string logic::Player::getName() {
+std::string logic::Player::getName() const {
 	return m_name;
 }
 
-float logic::Player::getCash() {
+bool logic::Player::canRollTheDice() const {
+	return m_canRollTheDice;
+}
+
+bool logic::Player::canMove() const {
+	return m_canMove;
+}
+
+float logic::Player::getCash() const {
 	return m_cash;
 }
 
-float logic::Player::getCurrentPayment() {
+float logic::Player::getCurrentPayment() const {
 	return m_currentPayment;
 }
 
-logic::Player* logic::Player::getLoanHolder() {
+logic::Player* logic::Player::getLoanHolder() const {
 	return m_loanHolder;
 }
 
-int logic::Player::getPosition() {
+int logic::Player::getPosition() const {
 	return m_position;
 }
 
-int logic::Player::getTargetPosition() {
+int logic::Player::getTargetPosition() const {
 	return m_targetPosition;
 }
 
-bool logic::Player::isMoving() {
+bool logic::Player::isMoving() const {
 	return m_isMoving;
 }
 
-int logic::Player::getTurnsLeftInJail() {
+int logic::Player::getTurnsLeftInJail() const {
 	return m_turnsLeftInJail;
 }
 
-int logic::Player::getOutOfJailCards() {
+int logic::Player::getOutOfJailCards() const {
 	return m_outOfJailCards;
 }

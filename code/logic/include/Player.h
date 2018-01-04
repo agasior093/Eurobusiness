@@ -1,4 +1,7 @@
 #pragma once
+
+#include "DEFINITIONS.h"
+
 #include <string>
 #include <memory>
 
@@ -24,6 +27,20 @@ namespace logic {
 		{ }
 		~Player() = default;
 
+		void addCash(float);
+		bool substractCash(float);
+
+		void incrementPosition(int);
+		void setPosition(int);
+		void setTargetPosition(int);
+		void setInMotion(bool);
+
+		void lockInJail();
+		void decrementTurnsInJail();
+
+		void addOutOfJailCard();
+		void useOutOfJailCard();
+
 		//getters
 		std::string getName();
 		
@@ -35,6 +52,6 @@ namespace logic {
 		bool isMoving();
 
 		int getTurnsLeftInJail();
-		int getOutOfJailCards();
+		int getOutOfJailCards();		
 	};
 }

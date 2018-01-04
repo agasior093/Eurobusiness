@@ -17,9 +17,9 @@ public:
 };
 
 TEST_F(DiceTestSuite, shouldGenerateValueFromOneToSix) {
-	auto dice = m_sut.get();
+	auto dice = m_sut.get();	
 	int randomNumber = dice.roll();
 	ASSERT_LE(randomNumber, 6);
-	ASSERT_GE(randomNumber, 1);
+	ASSERT_GE(randomNumber, 1);	
 }
 

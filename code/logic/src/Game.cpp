@@ -12,8 +12,6 @@ logic::Player& logic::Game::getActivePlayer() {
 }
 
 void logic::Game::reset() {
-	m_activePlayer = 0;
-	m_passedStart = false;
 	m_throwsInCurrentTurn = 0;
 	m_doublesInCurrentTurn = 0;
 	m_totalRollResult = 0;
@@ -35,8 +33,8 @@ void logic::Game::startTurn() {
 
 void logic::Game::rollTheDice() {
 	m_throwsInCurrentTurn++;
-	int firstThrow = m_dice.roll();
-	int secondThrow = m_dice.roll();
+	int firstThrow = m_firstDice.roll();
+	int secondThrow = m_secondDice.roll();
 	m_totalRollResult += firstThrow + secondThrow;
 	if (firstThrow == secondThrow) m_doublesInCurrentTurn++;
 }
@@ -73,7 +71,48 @@ void logic::Game::setInMotion(unsigned number) {
 	m_players[m_activePlayer].incrementPosition(number);
 }
 
+bool logic::Game::canEndTurn() {
+	//player need to roll the dice first or be in prison (cant roll then)
+	//cant currently be in move
+	//cant have any unregulated payments
+	if ((!getActivePlayer().canRollTheDice() || getActivePlayer().getTurnsLeftInJail() > 0)
+		&& !getActivePlayer().isMoving()
+		&& getActivePlayer().getCurrentPayment() == 0) {
+		return true;
+	}
+	else {
+		return false;
+	}	
+}
 
+bool logic::Game::endTurn() {
+	//std::string message;
+
+	if(canEndTurn()) {
+		//switch to next player
+		m_activePlayer++;
+		if (m_activePlayer > m_numberOfPlayers - 1) {
+			m_activePlayer = 0;
+		}
+
+		//reset game data
+		reset();
+					
+		//if is in jail, decrement turns left in jail
+		if (getActivePlayer().getTurnsLeftInJail() > 0) {
+			getActivePlayer().decrementTurnsInJail();
+		}
+
+		//set new message about active player
+		//message = getActivePlayer().getPlayerInfo();
+		//move that to View	
+		return true;
+	}
+	else {
+		return false;
+	}
+	
+}
 
 //inline getters
 unsigned logic::Game::getThrowsInCurrentTurn() const {

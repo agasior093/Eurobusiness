@@ -7,7 +7,7 @@
 namespace logic {
 	class Game {
 		//game objects
-		Dice m_dice;
+		Dice m_firstDice, m_secondDice;
 
 		//players
 		std::vector<Player> m_players;
@@ -15,6 +15,8 @@ namespace logic {
 		unsigned m_activePlayer = 0;
 
 		//current turn data
+		bool m_canThrow = true;
+		bool m_canMove = false;
 		bool m_passedStart = false;
 		unsigned m_throwsInCurrentTurn = 0;
 		unsigned m_doublesInCurrentTurn = 0;		
@@ -26,11 +28,15 @@ namespace logic {
 
 		logic::Player& getActivePlayer();
 
-		void reset();
+		void reset(); 
+
 		void startTurn();
 		void rollTheDice();
 		std::string checkForDoubles();
 		void setInMotion(unsigned);
+		bool canEndTurn();
+		bool endTurn();
+		
 
 		//getters
 		unsigned getThrowsInCurrentTurn() const;

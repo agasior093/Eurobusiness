@@ -47,7 +47,7 @@ TEST_F(GameTestSuite, shouldFinishAfterFirstRollAndMove) {
 		game.rollTheDice();
 		game.checkForDoubles();		
 		game.setInMotion(game.getTotalRollResult());
-	} while (game.getThrowsInCurrentTurn() != 1 && game.getDoublesInCurrentTurn() != 0  );
+	} while (game.getDoublesInCurrentTurn() != 0);
 
 	ASSERT_EQ(game.getActivePlayer().canRollTheDice(), false);
 	ASSERT_EQ(game.getActivePlayer().canMove(), true);		
@@ -92,32 +92,94 @@ TEST_F(GameTestSuite, shouldFinishAfterSecondThrowAndLockPlayerInJail) {
 	ASSERT_EQ(game.getActivePlayer().getTurnsLeftInJail(), JAIL_TIME);
 }
 
-TEST_F(GameTestSuite, shouldIncrementNumberOfThrowsAndCheckForDoubles) {
+TEST_F(GameTestSuite, shouldEndTurnIfPossible) {
 	auto game = m_sut.get();
+	
+	ASSERT_EQ(game.endTurn(), false);
 
-	game.rollTheDice();
-	game.checkForDoubles();
-	ASSERT_EQ(game.getThrowsInCurrentTurn(), 1);
-	if (game.getDoublesInCurrentTurn() == 0) {
-		ASSERT_EQ(game.getActivePlayer().canRollTheDice(), false);
-		ASSERT_EQ(game.getActivePlayer().canMove(), true);
-	}
+	//did roll the dice but has unregulated payment
+	game.getActivePlayer().allowRollTheDice(false);
+	game.getActivePlayer().createPayment(100, &game.getActivePlayer());
+	auto previousPlayer = &game.getActivePlayer();
+	ASSERT_EQ(game.endTurn(), false);
+	auto currentPlayer = &game.getActivePlayer();
+	ASSERT_EQ(previousPlayer, currentPlayer);
 
-	if (game.getDoublesInCurrentTurn() == 1) {
-		ASSERT_EQ(game.getActivePlayer().canRollTheDice(), true);
-		ASSERT_EQ(game.getActivePlayer().canMove(), false);
-	}
+	//regulated his payment
+	game.getActivePlayer().allowRollTheDice(false);
+	game.getActivePlayer().pay();
+	previousPlayer = &game.getActivePlayer();
+	ASSERT_EQ(game.endTurn(), true);
+	currentPlayer = &game.getActivePlayer();
+	ASSERT_NE(previousPlayer, currentPlayer);
 
-	game.rollTheDice();
-	game.checkForDoubles();
-	ASSERT_EQ(game.getThrowsInCurrentTurn(), 2);
-	if (game.getDoublesInCurrentTurn() == 1) {
-		ASSERT_EQ(game.getActivePlayer().canRollTheDice(), false);
-		ASSERT_EQ(game.getActivePlayer().canMove(), true);
-	}
-
-	if (game.getDoublesInCurrentTurn() == 2) {
-		ASSERT_EQ(game.getActivePlayer().canRollTheDice(), false);
-		ASSERT_EQ(game.getActivePlayer().canMove(), false);
-	}
+	//didnt roll the dice but is in prison
+	game.getActivePlayer().allowRollTheDice(true);
+	game.getActivePlayer().lockInJail();
+	previousPlayer = &game.getActivePlayer();
+	ASSERT_EQ(game.endTurn(), true);
+	currentPlayer = &game.getActivePlayer();
+	ASSERT_NE(previousPlayer, currentPlayer);
 }
+
+TEST_F(GameTestSuite, shouldDecreasePlayerTurnsInJail) {
+	auto game = m_sut.get();
+	auto playerInJail = &game.getActivePlayer();
+	playerInJail->lockInJail();
+
+	//player just got locked in jail, he can just end turn now,
+	//but it will not decrase his turns in jail yet
+	ASSERT_EQ(&game.getActivePlayer(), playerInJail);
+	ASSERT_EQ(playerInJail->getTurnsLeftInJail(), 3);
+	ASSERT_EQ(playerInJail->getPosition(), JAIL_POSITION);
+	ASSERT_EQ(game.endTurn(), true);	
+	ASSERT_EQ(playerInJail->getTurnsLeftInJail(), 3);
+	auto otherPlayer = &game.getActivePlayer();
+
+	//second player is ending his round
+	ASSERT_EQ(&game.getActivePlayer(), otherPlayer);
+	game.getActivePlayer().allowRollTheDice(false);
+	ASSERT_EQ(game.endTurn(), true);
+	ASSERT_EQ(playerInJail->getTurnsLeftInJail(), 2);	
+}
+
+/*
+//player in jail ends trun, gets turns in jail decreased
+ASSERT_EQ(&game.getActivePlayer(), playerInJail);
+ASSERT_EQ(game.endTurn(), true);
+ASSERT_EQ(playerInJail->getTurnsLeftInJail(), 2);
+
+//second player is ending his round
+ASSERT_EQ(&game.getActivePlayer(), otherPlayer);
+
+do {
+game.reset();
+game.rollTheDice();
+game.checkForDoubles();
+} while (game.getDoublesInCurrentTurn() != 0);
+
+ASSERT_EQ(game.endTurn(), true);
+ASSERT_EQ(playerInJail->getTurnsLeftInJail(), 1);
+
+//player in jail ends trun, gets turns in jail decreased
+ASSERT_EQ(&game.getActivePlayer(), playerInJail);
+ASSERT_EQ(game.endTurn(), true);
+ASSERT_EQ(playerInJail->getTurnsLeftInJail(), 1);
+
+//second player is ending his round
+ASSERT_EQ(&game.getActivePlayer(), otherPlayer);
+
+do {
+game.reset();
+game.rollTheDice();
+game.checkForDoubles();
+} while (game.getDoublesInCurrentTurn() != 0);
+
+ASSERT_EQ(game.endTurn(), true);
+ASSERT_EQ(playerInJail->getTurnsLeftInJail(), 0);
+
+ASSERT_EQ(&game.getActivePlayer(), playerInJail);
+game.rollTheDice();
+game.setInMotion(game.getTotalRollResult());
+ASSERT_EQ(playerInJail->getPosition(), game.getTotalRollResult());
+*/

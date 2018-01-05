@@ -1,5 +1,19 @@
 #include "../include/Player.h"
 
+template <typename T>
+std::string toStringWithPrecision(const T a_value, const int n = 1) {
+	std::stringstream stream;
+	stream << std::fixed << std::setprecision(n) << a_value;
+	std::string s = stream.str();
+	return s;
+}
+
+std::string logic::Player::getPlayerInfo() {
+	std::string info =
+		"     " + m_name + "\n" +
+		"Cash: " + toStringWithPrecision(m_cash) + "$\n";
+	return info;
+}
 
 void logic::Player::allowRollTheDice(bool argument) {
 	m_canRollTheDice = argument;
@@ -127,3 +141,4 @@ int logic::Player::getTurnsLeftInJail() const {
 int logic::Player::getOutOfJailCards() const {
 	return m_outOfJailCards;
 }
+

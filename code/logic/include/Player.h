@@ -2,6 +2,8 @@
 
 #include "DEFINITIONS.h"
 
+#include <sstream>
+#include <iomanip>
 #include <string>
 #include <memory>
 
@@ -29,6 +31,8 @@ namespace logic {
 			: m_name(name)
 		{ }
 		~Player() = default;
+
+		std::string getPlayerInfo();
 
 		void allowRollTheDice(bool);
 		void allowMove(bool);

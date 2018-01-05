@@ -16,19 +16,25 @@ namespace logic {
 
 		//current turn data
 		bool m_passedStart = false;
-		unsigned m_doublesInCurrentTurn = 0;
 		unsigned m_throwsInCurrentTurn = 0;
+		unsigned m_doublesInCurrentTurn = 0;		
 		unsigned m_totalRollResult = 0;
 				
-	public:
+	public:		
 		Game(unsigned, std::vector<std::string>&);
 		~Game() = default;	
 
 		logic::Player& getActivePlayer();
 
+		void reset();
 		void startTurn();
-		unsigned rollTheDice();
+		void rollTheDice();
 		std::string checkForDoubles();
 		void setInMotion(unsigned);
+
+		//getters
+		unsigned getThrowsInCurrentTurn() const;
+		unsigned getDoublesInCurrentTurn() const;
+		unsigned getTotalRollResult() const;
 	};
 }

@@ -1,6 +1,8 @@
 #pragma once
 
-#define TEST_PLAYER_INITIAL_NAME "Test Player"
+#define NUMBER_OF_TEST_PLAYERS 2
+#define TEST_PLAYER_INITIAL_NAME "Test Player One"
+#define TEST_PLAYER_TWO_INITIAL_NAME "Test Player Two"
 #define TEST_PLAYER_INITIAL_CAN_ROLL_THE_DICE true
 #define TEST_PLAYER_INITIAL_CAN_MOVE true
 #define TEST_PLAYER_INITIAL_CASH 3500

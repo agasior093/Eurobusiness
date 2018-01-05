@@ -1,14 +1,22 @@
 #include "../include/Game.h"
 
-logic::Game::Game(size_t numberOfPlayers, std::vector<std::string>& playerNames)
+logic::Game::Game(unsigned numberOfPlayers, std::vector<std::string>& playerNames)
 	: m_numberOfPlayers(numberOfPlayers) {
-	for (size_t i = 0; i < numberOfPlayers; ++i) {
+	for (unsigned i = 0; i < numberOfPlayers; ++i) {
 		m_players.emplace_back(Player(playerNames[i]));
 	}
 }
 
 logic::Player& logic::Game::getActivePlayer() {
 	return m_players[m_activePlayer];
+}
+
+void logic::Game::reset() {
+	m_activePlayer = 0;
+	m_passedStart = false;
+	m_throwsInCurrentTurn = 0;
+	m_doublesInCurrentTurn = 0;
+	m_totalRollResult = 0;
 }
 
 void logic::Game::startTurn() {
@@ -25,7 +33,7 @@ void logic::Game::startTurn() {
 	}
 }
 
-unsigned logic::Game::rollTheDice() {
+void logic::Game::rollTheDice() {
 	m_throwsInCurrentTurn++;
 	int firstThrow = m_dice.roll();
 	int secondThrow = m_dice.roll();
@@ -37,7 +45,7 @@ std::string logic::Game::checkForDoubles() {
 	std::string message;
 		if (m_doublesInCurrentTurn == 0 && m_throwsInCurrentTurn == 1) {
 			getActivePlayer().allowRollTheDice(false);
-			getActivePlayer().allowMove(false);
+			getActivePlayer().allowMove(true);
 		}
 
 		if (m_doublesInCurrentTurn == 1 && m_throwsInCurrentTurn == 1) {
@@ -63,4 +71,17 @@ std::string logic::Game::checkForDoubles() {
 void logic::Game::setInMotion(unsigned number) {
 	m_players[m_activePlayer].startMoving();
 	m_players[m_activePlayer].incrementPosition(number);
+}
+
+
+
+//inline getters
+unsigned logic::Game::getThrowsInCurrentTurn() const {
+	return m_throwsInCurrentTurn;
+}
+unsigned logic::Game::getDoublesInCurrentTurn() const{
+	return m_doublesInCurrentTurn;
+}
+unsigned logic::Game::getTotalRollResult() const{
+	return m_totalRollResult;
 }

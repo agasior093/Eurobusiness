@@ -22,8 +22,8 @@ void logic::Game::startTurn() {
 
 	rollTheDice();
 	checkForDoubles();
-	if (getActivePlayer().canMove() == true) setInMotion(m_totalRollResult);
-	getActivePlayer().allowMove(false);
+	if (m_canMove == true) setInMotion(m_totalRollResult);
+	m_canMove = false;
 
 	unsigned newPosition = getActivePlayer().getPosition();
 	if (newPosition < oldPosition && getActivePlayer().getTurnsLeftInJail() == 0) {
@@ -32,7 +32,7 @@ void logic::Game::startTurn() {
 }
 
 void logic::Game::rollTheDice() {
-	m_throwsInCurrentTurn++;
+	m_throwsInCurrentTurn++; 
 	int firstThrow = m_firstDice.roll();
 	int secondThrow = m_secondDice.roll();
 	m_totalRollResult += firstThrow + secondThrow;
@@ -42,25 +42,25 @@ void logic::Game::rollTheDice() {
 std::string logic::Game::checkForDoubles() {
 	std::string message;
 		if (m_doublesInCurrentTurn == 0 && m_throwsInCurrentTurn == 1) {
-			getActivePlayer().allowRollTheDice(false);
-			getActivePlayer().allowMove(true);
+			m_canThrow = false;
+			m_canMove = true;			
 		}
 
 		if (m_doublesInCurrentTurn == 1 && m_throwsInCurrentTurn == 1) {
-			message = "Doubles! Roll again.";
-			getActivePlayer().allowRollTheDice(true);
-			getActivePlayer().allowMove(false);
+			message = "Doubles! Roll again.";			
+			m_canThrow = true;
+			m_canMove = false;
 		}
 
-		if (m_doublesInCurrentTurn == 1 && m_throwsInCurrentTurn == 2) {
-			getActivePlayer().allowRollTheDice(false);
-			getActivePlayer().allowMove(true);
+		if (m_doublesInCurrentTurn == 1 && m_throwsInCurrentTurn == 2) {			
+			m_canThrow = false;
+			m_canMove = true;
 		}
 
 		if (m_doublesInCurrentTurn == 2 && m_throwsInCurrentTurn == 2) {
 			message = "Doubles again! You are going to jail.";
-			getActivePlayer().allowRollTheDice(false);
-			getActivePlayer().allowMove(false);
+			m_canThrow = false;
+			m_canMove = false;
 			getActivePlayer().lockInJail();
 		}
 		return message;
@@ -75,7 +75,7 @@ bool logic::Game::canEndTurn() {
 	//player need to roll the dice first or be in prison (cant roll then)
 	//cant currently be in move
 	//cant have any unregulated payments
-	if ((!getActivePlayer().canRollTheDice() || getActivePlayer().getTurnsLeftInJail() > 0)
+	if ((!m_canThrow || getActivePlayer().getTurnsLeftInJail() > 0)
 		&& !getActivePlayer().isMoving()
 		&& getActivePlayer().getCurrentPayment() == 0) {
 		return true;
@@ -114,7 +114,17 @@ bool logic::Game::endTurn() {
 	
 }
 
+void logic::Game::permissionToThrow(bool argument) {
+	m_canThrow = argument;
+}
+
 //inline getters
+bool logic::Game::canThrow() const {
+	return m_canThrow;
+}
+bool logic::Game::canMove() const { 
+	return m_canMove; 
+}
 unsigned logic::Game::getThrowsInCurrentTurn() const {
 	return m_throwsInCurrentTurn;
 }

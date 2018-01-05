@@ -9,10 +9,7 @@
 
 namespace logic {
 	class Player {
-		std::string m_name;
-
-		bool m_canRollTheDice = true;
-		bool m_canMove = true;
+		std::string m_name;		
 		
 		float m_cash = 3500;
 		float m_currentPayment = 0;
@@ -32,10 +29,7 @@ namespace logic {
 		{ }
 		~Player() = default;
 
-		std::string getPlayerInfo();
-
-		void allowRollTheDice(bool);
-		void allowMove(bool);
+		std::string getPlayerInfo();		
 
 		void addCash(float);
 		bool substractCash(float);
@@ -56,10 +50,7 @@ namespace logic {
 		void useOutOfJailCard();
 
 		//getters
-		std::string getName() const;
-		
-		bool canRollTheDice() const;
-		bool canMove() const;
+		std::string getName() const;		
 		
 		float getCash() const;
 		float getCurrentPayment() const;

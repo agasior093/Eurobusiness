@@ -29,6 +29,7 @@ namespace logic {
 		logic::Player& getActivePlayer();
 
 		void reset(); 
+		void permissionToThrow(bool);
 
 		void startTurn();
 		void rollTheDice();
@@ -39,6 +40,8 @@ namespace logic {
 		
 
 		//getters
+		bool canThrow() const;
+		bool canMove() const;
 		unsigned getThrowsInCurrentTurn() const;
 		unsigned getDoublesInCurrentTurn() const;
 		unsigned getTotalRollResult() const;

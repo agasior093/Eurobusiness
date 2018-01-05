@@ -33,9 +33,7 @@ public:
 TEST_F(PlayerTestSuite, playerMembersShouldBeInitialisedWithInitialValues) {	
 	auto player = m_sut.get();
 
-	ASSERT_EQ(player->getName(), TEST_PLAYER_INITIAL_NAME);
-	ASSERT_EQ(player->canRollTheDice(), TEST_PLAYER_INITIAL_CAN_ROLL_THE_DICE);
-	ASSERT_EQ(player->canMove(), TEST_PLAYER_INITIAL_CAN_MOVE);
+	ASSERT_EQ(player->getName(), TEST_PLAYER_INITIAL_NAME);	
 	ASSERT_EQ(player->getCash(), TEST_PLAYER_INITIAL_CASH);
 	ASSERT_EQ(player->getCurrentPayment(), TEST_PLAYER_INITIAL_CURRENT_PAYMENT);
 	ASSERT_EQ(player->getLoanHolder(), nullptr);
@@ -68,21 +66,6 @@ TEST_F(PlayerTestSuite, shouldDecrementPlayerCashIfPossible) {
 	ASSERT_EQ(player->getCash(), TEST_PLAYER_INITIAL_CASH - amount*2);
 }
 
-TEST_F(PlayerTestSuite, shouldHandleRollAndMovePermission) {
-	auto player = m_sut.get();
-
-	player->allowRollTheDice(false);
-	ASSERT_EQ(player->canRollTheDice(), false);
-
-	player->allowMove(false);
-	ASSERT_EQ(player->canMove(), false);
-
-	player->allowRollTheDice(true);
-	ASSERT_EQ(player->canRollTheDice(), true);
-
-	player->allowMove(true);
-	ASSERT_EQ(player->canMove(), true);
-}
 
 TEST_F(PlayerTestSuite, shouldIncrementPlayerPositionAndResetAfterReachesEndOfBoard) {
 	auto player = m_sut.get();

@@ -15,14 +15,6 @@ std::string logic::Player::getPlayerInfo() {
 	return info;
 }
 
-void logic::Player::allowRollTheDice(bool argument) {
-	m_canRollTheDice = argument;
-}
-
-void logic::Player::allowMove(bool argument) {
-	m_canMove = argument;
-}
-
 void logic::Player::addCash(float amount) {
 	m_cash += amount;
 }
@@ -100,14 +92,6 @@ void logic::Player::useOutOfJailCard() {
 //getters
 std::string logic::Player::getName() const {
 	return m_name;
-}
-
-bool logic::Player::canRollTheDice() const {
-	return m_canRollTheDice;
-}
-
-bool logic::Player::canMove() const {
-	return m_canMove;
 }
 
 float logic::Player::getCash() const {

@@ -8,9 +8,11 @@
 	return m_enabled;
 }
 
-void view::Button::setTextures(std::string enabledFilePath, std::string disabledFilePath) {
-	m_enabledTexture.loadFromFile(enabledFilePath);
-	m_disabledTexture.loadFromFile(disabledFilePath);
+void view::Button::setTextures(sf::Texture enabledTexture, sf::Texture disabledTexture) {
+	//m_enabledTexture.loadFromFile(enabledFilePath);
+	//m_disabledTexture.loadFromFile(disabledFilePath);
+	m_enabledTexture = enabledTexture;
+	m_disabledTexture = disabledTexture;
 }
 
 void view::Button::enable() {

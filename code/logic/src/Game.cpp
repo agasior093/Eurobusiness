@@ -33,10 +33,10 @@ void logic::Game::startTurn() {
 
 void logic::Game::rollTheDice() {
 	m_throwsInCurrentTurn++; 
-	int firstThrow = m_firstDice.roll();
-	int secondThrow = m_secondDice.roll();
-	m_totalRollResult += firstThrow + secondThrow;
-	if (firstThrow == secondThrow) m_doublesInCurrentTurn++;
+	m_firstRollResult = m_firstDice.roll();
+	m_secondRollResult = m_secondDice.roll();
+	m_totalRollResult += m_firstRollResult + m_secondRollResult;
+	if (m_firstRollResult == m_secondRollResult) m_doublesInCurrentTurn++;
 }
 
 std::string logic::Game::checkForDoubles() {
@@ -130,6 +130,12 @@ unsigned logic::Game::getThrowsInCurrentTurn() const {
 }
 unsigned logic::Game::getDoublesInCurrentTurn() const{
 	return m_doublesInCurrentTurn;
+}
+unsigned logic::Game::getFirstRollResult() const {
+	return m_firstRollResult;
+}
+unsigned logic::Game::getSecondRollResult() const {
+	return m_secondRollResult;
 }
 unsigned logic::Game::getTotalRollResult() const{
 	return m_totalRollResult;

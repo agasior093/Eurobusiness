@@ -20,8 +20,10 @@ namespace logic {
 		bool m_passedStart = false;
 		unsigned m_throwsInCurrentTurn = 0;
 		unsigned m_doublesInCurrentTurn = 0;		
+		unsigned m_firstRollResult = 0;
+		unsigned m_secondRollResult = 0;
 		unsigned m_totalRollResult = 0;
-				
+						
 	public:		
 		Game(unsigned, std::vector<std::string>&);
 		~Game() = default;	
@@ -44,6 +46,8 @@ namespace logic {
 		bool canMove() const;
 		unsigned getThrowsInCurrentTurn() const;
 		unsigned getDoublesInCurrentTurn() const;
+		unsigned getFirstRollResult() const;
+		unsigned getSecondRollResult() const;
 		unsigned getTotalRollResult() const;
 	};
 }

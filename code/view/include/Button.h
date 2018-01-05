@@ -16,7 +16,7 @@ namespace view {
 
 		sf::Sprite& getSprite();
 		bool isEnabled() const;
-		void setTextures(std::string, std::string);	//can change to sf::Texture	
+		void setTextures(sf::Texture, sf::Texture);		
 		void enable();
 		void disable();
 	};

@@ -16,7 +16,7 @@ namespace view {
 		bool isMoving() const;
 
 		void create();
-		void setInMotion(int);
+		void setNewPosition(int);
 		void setPosition(int);
 		void move();
 

@@ -49,23 +49,12 @@ bool logic::Player::pay() {
 
 void logic::Player::incrementPosition(int number) {
 	m_position += number;
-	if (m_position > 39) m_position -= 40;
+	if ((m_position += .001f) > 40)
+		m_position -= 40;
 }
 
 void logic::Player::setPosition(int newPosition) {
 	m_position = newPosition;
-}
-
-void logic::Player::startMoving() {
-	m_isMoving = true;
-}
-
-void logic::Player::stopMoving() {
-	m_isMoving = false;
-}
-
-void logic::Player::setTargetPosition(int newPosition) {
-	m_targetPosition = newPosition;
 }
 
 void logic::Player::lockInJail() {
@@ -108,14 +97,6 @@ logic::Player* logic::Player::getLoanHolder() const {
 
 int logic::Player::getPosition() const {
 	return m_position;
-}
-
-int logic::Player::getTargetPosition() const {
-	return m_targetPosition;
-}
-
-bool logic::Player::isMoving() const {
-	return m_isMoving;
 }
 
 int logic::Player::getTurnsLeftInJail() const {

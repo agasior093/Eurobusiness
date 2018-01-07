@@ -7,9 +7,7 @@
 namespace logic {
 	class Game {		
 		logic::Dice m_diceOne, m_diceTwo;
-
-
-
+		
 		//players
 		std::vector<Player> m_players;
 		unsigned m_numberOfPlayers;
@@ -37,16 +35,13 @@ namespace logic {
 		std::string checkForDoubles();
 		void setInMotion(unsigned);
 		bool canEndTurn();
-		bool endTurn();
-		
+		bool endTurn();		
 
 		//getters
 		bool canThrow() const;
 		bool canMove() const;
 		int getThrowsInCurrentTurn() const;
-		int getDoublesInCurrentTurn() const;
-		//unsigned getFirstRollResult() const;
-		//unsigned getSecondRollResult() const;
+		int getDoublesInCurrentTurn() const;		
 		int getTotalRollResult() const;
 
 		logic::Dice& getDiceOne();

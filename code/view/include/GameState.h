@@ -54,13 +54,17 @@ namespace view {
 		void update(sf::Time) override;
 		void draw() override;
 
+		//on init
 		void loadResources();
 		void createBackground();
 		void createButtons();
 		void createDice();
 
-		void rollTheDice();
-
+		//update
 		void calculateTokenPosition();
+		void updateButtons();
+		
+		//on action 
+		void rollTheDice();
 	};
 }

@@ -22,7 +22,7 @@ view::GameBoard::GameBoard() {
 	m_board[18] = { 30, 150 };
 	m_board[19] = { 30, 90 };
 	m_board[20] = { 30, 30 };
-	m_board[21] = { 60 , 30  };
+	m_board[21] = { 90 , 30  };
 	m_board[22] = { 150 , 30 };
 	m_board[23] = { 210 , 30 };
 	m_board[24] = { 270 , 30 };
@@ -32,7 +32,7 @@ view::GameBoard::GameBoard() {
 	m_board[28] = { 510 , 30 };
 	m_board[29] = { 570 , 30 };
 	m_board[30] = { 630 , 30 };
-	m_board[31] = { 630 , 60 };
+	m_board[31] = { 630 , 90 };
 	m_board[32] = { 630 , 150 };
 	m_board[33] = { 630 , 210 };
 	m_board[34] = { 630 , 270 };

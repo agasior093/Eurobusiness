@@ -39,9 +39,9 @@ namespace logic {
 
 		void incrementPosition(int);
 		void setPosition(int);
-		void setTargetPosition(int);		
-		void startMoving();
-		void stopMoving();
+		//void setTargetPosition(int);		
+		//void startMoving();
+		//void stopMoving();
 
 		void lockInJail();
 		void decrementTurnsInJail();
@@ -57,8 +57,8 @@ namespace logic {
 		Player* getLoanHolder() const;
 
 		int getPosition() const;
-		int getTargetPosition() const;
-		bool isMoving() const;
+		//int getTargetPosition() const;
+		//bool isMoving() const;
 
 		int getTurnsLeftInJail() const;
 		int getOutOfJailCards() const;

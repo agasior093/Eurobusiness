@@ -20,12 +20,22 @@ void view::GameState::handleUserInput() {
 		}
 
 		if (this->m_data->inputManager.isSpriteClicked(this->m_rollButton, evnt, this->m_data->window)) {
-			rollTheDice();			
+			rollTheDice();
+		}
+
+		if (evnt.type == sf::Event::KeyPressed && evnt.key.code == sf::Keyboard::R) {
+			m_game.reset();
+		}
+
+		if (evnt.type == sf::Event::KeyPressed && evnt.key.code == sf::Keyboard::T) {
+			std::cout << "Player position: " << m_game.getActivePlayer().getPosition() << "\n";
+			std::cout << "Token position: " << m_playerOneToken.getPosition() << "\n";
 		}
 	}
 }
 
 void view::GameState::update(sf::Time dt) {	
+	updateButtons();
 	calculateTokenPosition();
 	if (m_playerOneToken.isMoving() == true) {
 		m_playerOneToken.move();
@@ -105,18 +115,29 @@ void view::GameState::createDice() {
 	m_diceTwo.get().setPosition(SECOND_DICE_POSITION_X, SECOND_DICE_POSITION_Y);
 }
 
-void view::GameState::rollTheDice() {
-	m_game.rollTheDice();
-	m_diceOne.playSound();
-	m_diceOne.changeTexture(m_game.getDiceOne().getCurrentNumber());
-	m_diceTwo.changeTexture(m_game.getDiceTwo().getCurrentNumber());
-	m_playerOneToken.setInMotion(m_game.getTotalRollResult());
-}
-
 void view::GameState::calculateTokenPosition() {
 	m_tokenPreviousPosition = m_board.get()[static_cast<std::size_t>(m_playerOneToken.getPosition())];
 	m_tokenNextPosition = m_board.get()[static_cast<std::size_t>(m_playerOneToken.getPosition() + 1) % 40];
 	m_playerOneToken.get().setPosition(m_tokenPreviousPosition 
 	+ (m_tokenNextPosition - m_tokenPreviousPosition) 
 	* m_playerOneToken.getStep() + m_playerOneToken.getJumpOffSet());
+}
+
+void view::GameState::rollTheDice() {
+	m_game.startTurn();
+	m_diceOne.playSound();
+	m_diceOne.changeTexture(m_game.getDiceOne().getCurrentNumber());
+	m_diceTwo.changeTexture(m_game.getDiceTwo().getCurrentNumber());
+	if (m_game.canMove()) {
+		m_playerOneToken.setNewPosition(m_game.getTotalRollResult());
+	}
+}
+
+void view::GameState::updateButtons() {
+	if (m_game.canThrow()) {
+		m_rollButton.enable();
+	}
+	else {
+		m_rollButton.disable();
+	}
 }

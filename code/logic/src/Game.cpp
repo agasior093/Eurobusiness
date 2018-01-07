@@ -1,4 +1,5 @@
 #include "../include/Game.h"
+#include <iostream>
 
 logic::Game::Game(unsigned numberOfPlayers, std::vector<std::string>& playerNames)
 	: m_numberOfPlayers(numberOfPlayers) {
@@ -15,6 +16,7 @@ void logic::Game::reset() {
 	m_throwsInCurrentTurn = 0;
 	m_doublesInCurrentTurn = 0;
 	m_totalRollResult = 0;
+	m_canMove = false;
 }
 
 void logic::Game::startTurn() {
@@ -22,13 +24,14 @@ void logic::Game::startTurn() {
 
 	rollTheDice();
 	checkForDoubles();
-	if (m_canMove == true) m_players[m_activePlayer].incrementPosition(m_totalRollResult);
-	m_canMove = false;
+	if (m_canMove == true) {		
+		getActivePlayer().incrementPosition(m_totalRollResult);
+	}	
 
 	unsigned newPosition = getActivePlayer().getPosition();
 	if (newPosition < oldPosition && getActivePlayer().getTurnsLeftInJail() == 0) {
 		m_passedStart = true;
-	}
+	}	
 }
 
 void logic::Game::rollTheDice() {
@@ -76,8 +79,9 @@ bool logic::Game::canEndTurn() {
 	//player need to roll the dice first or be in prison (cant roll then)
 	//cant currently be in move
 	//cant have any unregulated payments
+
 	if ((!m_canThrow || getActivePlayer().getTurnsLeftInJail() > 0)
-		&& !getActivePlayer().isMoving()
+		//&& !getActivePlayer().isMoving() move that to presentation part
 		&& getActivePlayer().getCurrentPayment() == 0) {
 		return true;
 	}
@@ -132,20 +136,12 @@ int logic::Game::getThrowsInCurrentTurn() const {
 int logic::Game::getDoublesInCurrentTurn() const{
 	return m_doublesInCurrentTurn;
 }
-/*unsigned logic::Game::getFirstRollResult() const {
-	return m_firstRollResult;
-}
-unsigned logic::Game::getSecondRollResult() const {
-	return m_secondRollResult;
-}*/
 int logic::Game::getTotalRollResult() const{
 	return m_totalRollResult;
 }
-
 logic::Dice& logic::Game::getDiceOne()  {
 	return m_diceOne;
 }
-
-logic::Dice & logic::Game::getDiceTwo() {
+logic::Dice& logic::Game::getDiceTwo() {
 	return m_diceTwo;
 }

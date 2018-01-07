@@ -6,6 +6,8 @@
 #include "Application.h"
 #include "../include/DiceView.h"
 #include "../code/logic/include/Game.h"
+#include "../include/PlayerView.h"
+#include "../include/GameBoardView.h"
 
 namespace view {
 	struct ApplicationData;
@@ -25,15 +27,20 @@ namespace view {
 
 	class GameState : public State {
 		std::shared_ptr<ApplicationData> m_data;
+		sf::Clock m_clock;
 
 		PlayerNames m_playerNames;
 		logic::Game m_game;
 
-		sf::Clock m_clock;
-		sf::Sprite m_background;
+		view::GameBoard m_board;
+		view::Dice m_diceOne, m_diceTwo;		
+		
+		Player m_playerOneToken;
+		sf::Vector2f m_tokenPreviousPosition;
+		sf::Vector2f m_tokenNextPosition;
 
-		view::Dice m_firstDice;
-		view::Dice m_secondDice;
+		sf::Sprite m_background;
+		sf::Sprite m_currentField;
 
 		Button m_rollButton;
 		Button m_payButton;
@@ -53,5 +60,7 @@ namespace view {
 		void createDice();
 
 		void rollTheDice();
+
+		void calculateTokenPosition();
 	};
 }

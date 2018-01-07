@@ -5,9 +5,10 @@
 #include "../include/Player.h"
 
 namespace logic {
-	class Game {
-		//game objects
-		Dice m_firstDice, m_secondDice;
+	class Game {		
+		logic::Dice m_diceOne, m_diceTwo;
+
+
 
 		//players
 		std::vector<Player> m_players;
@@ -18,11 +19,9 @@ namespace logic {
 		bool m_canThrow = true;
 		bool m_canMove = false;
 		bool m_passedStart = false;
-		unsigned m_throwsInCurrentTurn = 0;
-		unsigned m_doublesInCurrentTurn = 0;		
-		unsigned m_firstRollResult = 0;
-		unsigned m_secondRollResult = 0;
-		unsigned m_totalRollResult = 0;
+		int m_throwsInCurrentTurn = 0;
+		int m_doublesInCurrentTurn = 0;		
+		int m_totalRollResult = 0;
 						
 	public:		
 		Game(unsigned, std::vector<std::string>&);
@@ -44,10 +43,14 @@ namespace logic {
 		//getters
 		bool canThrow() const;
 		bool canMove() const;
-		unsigned getThrowsInCurrentTurn() const;
-		unsigned getDoublesInCurrentTurn() const;
-		unsigned getFirstRollResult() const;
-		unsigned getSecondRollResult() const;
-		unsigned getTotalRollResult() const;
+		int getThrowsInCurrentTurn() const;
+		int getDoublesInCurrentTurn() const;
+		//unsigned getFirstRollResult() const;
+		//unsigned getSecondRollResult() const;
+		int getTotalRollResult() const;
+
+		logic::Dice& getDiceOne();
+		logic::Dice& getDiceTwo();
 	};
 }
+

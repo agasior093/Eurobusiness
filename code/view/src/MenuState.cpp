@@ -44,5 +44,5 @@ void view::MenuState::createButtons() {
 	this->m_newGameButton.setTextures(this->m_data->resourceManager.getTexture("New Game Button"),
 		this->m_data->resourceManager.getTexture("New Game Button"));
 	this->m_newGameButton.enable();
-	this->m_newGameButton.getSprite().setPosition(40, 20);
+	this->m_newGameButton.getSprite().setPosition(300, 300);
 }

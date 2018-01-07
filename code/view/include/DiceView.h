@@ -1,24 +1,21 @@
 #pragma once
 
-#include <memory>
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include "DEFINITIONS.h"
+#include <iostream>
 
 namespace view {
-	struct ApplicationData;
-
 	class Dice {
 		sf::Texture m_texture;
-		sf::RectangleShape m_dice;
+		sf::RectangleShape m_shape;
 		sf::SoundBuffer m_buffer;
 		sf::Sound m_sound;
 	public:
 		Dice();
 		~Dice() = default;
-		sf::RectangleShape& get();
-		void setTexture(std::string);
-		void changeTexture(unsigned);
+		sf::RectangleShape& get();		
+		void changeTexture(int);
 		void playSound();
 	};
 }

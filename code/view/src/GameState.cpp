@@ -1,14 +1,15 @@
 #include "../include/GameState.h"
 
 view::GameState::GameState(std::shared_ptr<ApplicationData> data)
-	: m_data(data), m_game(2, m_playerNames.getNames())
-{ }
+	: m_data(data), m_game(2, m_playerNames.getNames()) { }
 
 void view::GameState::initialise() {
 	loadResources();
 	createBackground();
-	createButtons();
-	createDice();
+	createButtons();	
+
+	m_playerOneToken.create();
+	
 }
 
 void view::GameState::handleUserInput() {
@@ -19,13 +20,16 @@ void view::GameState::handleUserInput() {
 		}
 
 		if (this->m_data->inputManager.isSpriteClicked(this->m_rollButton, evnt, this->m_data->window)) {
-			rollTheDice();
+			rollTheDice();			
 		}
 	}
 }
 
-void view::GameState::update(sf::Time dt) {
-
+void view::GameState::update(sf::Time dt) {	
+	calculateTokenPosition();
+	if (m_playerOneToken.isMoving() == true) {
+		m_playerOneToken.move();
+	}
 }
 
 void view::GameState::draw() {
@@ -34,9 +38,15 @@ void view::GameState::draw() {
 	//drawing background
 	this->m_data->window.draw(m_background);
 
+	//drawing player token
+	this->m_data->window.draw(m_playerOneToken.get());
+
+	//drawing current field
+	this->m_data->window.draw(m_currentField);
+
 	//drawing dice
-	this->m_data->window.draw(m_firstDice.get());
-	this->m_data->window.draw(m_secondDice.get());
+	this->m_data->window.draw(m_diceOne.get());
+	this->m_data->window.draw(m_diceTwo.get());
 
 	//drawing buttons
 	this->m_data->window.draw(m_endTurnButton.getSprite());	
@@ -45,7 +55,7 @@ void view::GameState::draw() {
 	this->m_data->window.draw(m_payButton.getSprite());
 
 	//displaying window
-	this->m_data->window.display();
+	this->m_data->window.display();	
 }
 
 void view::GameState::loadResources() {
@@ -56,10 +66,18 @@ void view::GameState::loadResources() {
 	this->m_data->resourceManager.loadTexture("Disabled end turn", DISABLED_END_TURN_BUTTON_FILE);
 	this->m_data->resourceManager.loadTexture("Pay button", PAY_BUTTON_FILE);
 	this->m_data->resourceManager.loadTexture("Disabled pay button", DISABLED_PAY_BUTTON_FILE);
+
+	//current field background
+	this->m_data->resourceManager.loadTexture("Default field", DEFAULT_FIELD_BACKGROUND);
 }
 
 void view::GameState::createBackground() {
 	this->m_background.setTexture(this->m_data->resourceManager.getTexture("Background"));
+
+	this->m_currentField.setTexture(this->m_data->resourceManager.getTexture("Default field"));
+	m_currentField.setPosition(230, 180);
+
+	createDice();
 }
 
 void view::GameState::createButtons() {
@@ -67,30 +85,38 @@ void view::GameState::createButtons() {
 	this->m_rollButton.setTextures(this->m_data->resourceManager.getTexture("Roll the dice"),
 		this->m_data->resourceManager.getTexture("Disabled roll the dice"));
 	this->m_rollButton.enable();
-	m_rollButton.getSprite().setPosition(40, 270);
+	m_rollButton.getSprite().setPosition(85, 100);
 
 	//end turn button
 	this->m_endTurnButton.setTextures(this->m_data->resourceManager.getTexture("End turn"),
 		this->m_data->resourceManager.getTexture("Disabled end turn"));
 	this->m_endTurnButton.enable();
-	m_endTurnButton.getSprite().setPosition(40, 390);
+	m_endTurnButton.getSprite().setPosition(300, 390);
 
 	//pay button
 	this->m_payButton.setTextures(this->m_data->resourceManager.getTexture("Pay button"),
 		this->m_data->resourceManager.getTexture("Disabled pay button"));
 	this->m_payButton.enable();
-	m_payButton.getSprite().setPosition(880, 320);
+	m_payButton.getSprite().setPosition(300, 320);
 }
 
 void view::GameState::createDice() {
-	m_firstDice.get().setPosition(FIRST_DICE_POSITION_X, FIRST_DICE_POSITION_Y);
-	m_secondDice.get().setPosition(SECOND_DICE_POSITION_X, SECOND_DICE_POSITION_Y);
+	m_diceOne.get().setPosition(FIRST_DICE_POSITION_X, FIRST_DICE_POSITION_Y);
+	m_diceTwo.get().setPosition(SECOND_DICE_POSITION_X, SECOND_DICE_POSITION_Y);
 }
 
 void view::GameState::rollTheDice() {
 	m_game.rollTheDice();
-	m_firstDice.playSound();
-	m_firstDice.changeTexture(m_game.getFirstRollResult());
-	m_secondDice.changeTexture(m_game.getSecondRollResult());
+	m_diceOne.playSound();
+	m_diceOne.changeTexture(m_game.getDiceOne().getCurrentNumber());
+	m_diceTwo.changeTexture(m_game.getDiceTwo().getCurrentNumber());
+	m_playerOneToken.setInMotion(m_game.getTotalRollResult());
 }
 
+void view::GameState::calculateTokenPosition() {
+	m_tokenPreviousPosition = m_board.get()[static_cast<std::size_t>(m_playerOneToken.getPosition())];
+	m_tokenNextPosition = m_board.get()[static_cast<std::size_t>(m_playerOneToken.getPosition() + 1) % 40];
+	m_playerOneToken.get().setPosition(m_tokenPreviousPosition 
+	+ (m_tokenNextPosition - m_tokenPreviousPosition) 
+	* m_playerOneToken.getStep() + m_playerOneToken.getJumpOffSet());
+}

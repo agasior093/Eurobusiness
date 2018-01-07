@@ -1,6 +1,10 @@
 #include "../include/Dice.h"
 
-int logic::Dice::roll() {
+void logic::Dice::rollNewNumber() {
 	std::uniform_int_distribution<int> dist(1, 6);	 
-	return dist(rng);
+	m_currentNumber = dist(rng);	
+}
+
+int logic::Dice::getCurrentNumber() const {
+	return m_currentNumber;
 }

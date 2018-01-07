@@ -22,7 +22,7 @@ void logic::Game::startTurn() {
 
 	rollTheDice();
 	checkForDoubles();
-	if (m_canMove == true) setInMotion(m_totalRollResult);
+	if (m_canMove == true) m_players[m_activePlayer].incrementPosition(m_totalRollResult);
 	m_canMove = false;
 
 	unsigned newPosition = getActivePlayer().getPosition();
@@ -33,10 +33,12 @@ void logic::Game::startTurn() {
 
 void logic::Game::rollTheDice() {
 	m_throwsInCurrentTurn++; 
-	m_firstRollResult = m_firstDice.roll();
-	m_secondRollResult = m_secondDice.roll();
-	m_totalRollResult += m_firstRollResult + m_secondRollResult;
-	if (m_firstRollResult == m_secondRollResult) m_doublesInCurrentTurn++;
+	m_diceOne.rollNewNumber();
+	m_diceTwo.rollNewNumber();
+	int diceOneResult = m_diceOne.getCurrentNumber();
+	int diceTwoResult = m_diceTwo.getCurrentNumber();
+	m_totalRollResult += diceOneResult + diceTwoResult;
+	if (diceOneResult == diceTwoResult) m_doublesInCurrentTurn++;
 }
 
 std::string logic::Game::checkForDoubles() {
@@ -66,8 +68,7 @@ std::string logic::Game::checkForDoubles() {
 		return message;
 	}
 	
-void logic::Game::setInMotion(unsigned number) {
-	m_players[m_activePlayer].startMoving();
+void logic::Game::setInMotion(unsigned number) {	
 	m_players[m_activePlayer].incrementPosition(number);
 }
 
@@ -125,18 +126,26 @@ bool logic::Game::canThrow() const {
 bool logic::Game::canMove() const { 
 	return m_canMove; 
 }
-unsigned logic::Game::getThrowsInCurrentTurn() const {
+int logic::Game::getThrowsInCurrentTurn() const {
 	return m_throwsInCurrentTurn;
 }
-unsigned logic::Game::getDoublesInCurrentTurn() const{
+int logic::Game::getDoublesInCurrentTurn() const{
 	return m_doublesInCurrentTurn;
 }
-unsigned logic::Game::getFirstRollResult() const {
+/*unsigned logic::Game::getFirstRollResult() const {
 	return m_firstRollResult;
 }
 unsigned logic::Game::getSecondRollResult() const {
 	return m_secondRollResult;
-}
-unsigned logic::Game::getTotalRollResult() const{
+}*/
+int logic::Game::getTotalRollResult() const{
 	return m_totalRollResult;
+}
+
+logic::Dice& logic::Game::getDiceOne()  {
+	return m_diceOne;
+}
+
+logic::Dice & logic::Game::getDiceTwo() {
+	return m_diceTwo;
 }

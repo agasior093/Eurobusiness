@@ -2,29 +2,31 @@
 
 #define JAIL_TIME 3
 #define JAIL_POSITION 10
+#define BOARD_SIZE 40
 
-#define APPLICATION_SCREEN_WIDTH 1040
-#define APPLICATION_SCREEN_HEIGHT 640
+#define APPLICATION_SCREEN_WIDTH 660
+#define APPLICATION_SCREEN_HEIGHT 660
 #define APPLICATION_TITLE "Eurobusiness"
 
-#define MENU_STATE_BACKGROUND_FILE "resources//game_background.png"
+#define MENU_STATE_BACKGROUND_FILE "resources//plain_board.png"
 
 //dice
-#define FIRST_DICE_POSITION_X 470
-#define FIRST_DICE_POSITION_Y 290
-#define SECOND_DICE_POSITION_X 530
-#define SECOND_DICE_POSITION_Y 310
+#define FIRST_DICE_POSITION_X 270
+#define FIRST_DICE_POSITION_Y 100
+#define SECOND_DICE_POSITION_X 330
+#define SECOND_DICE_POSITION_Y 85
 
 #define DICE_WIDTH 55
 #define DICE_HEIGHT 55
 #define DICE_SOUND "resources//diceSound.wav"
-#define DICE_ONE_TEXTURE "resources//dice1.png"
-#define DICE_TWO_TEXTURE "resources//dice2.png"
-#define DICE_THREE_TEXTURE "resources//dice3.png"
-#define DICE_FOUR_TEXTURE "resources//dice4.png"
-#define DICE_FIVE_TEXTURE "resources//dice5.png"
-#define DICE_SIX_TEXTURE "resources//dice6.png"
+#define DICE_TEXTURE "resources//dice.png"
 
+//current field background
+#define DEFAULT_FIELD_BACKGROUND "resources//default_field.png"
+
+//active/not active player
+#define ACTIVE_PLAYER "resources//active_player.png"
+#define NOT_ACTIVE_PLAYER "resources//not_active_player.png"
 
 //buttons
 #define NEW_GAME_BUTTON_FILE "resources//buttons//play_button.png"

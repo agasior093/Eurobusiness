@@ -1,6 +1,10 @@
 #include "../include/PlayerView.h"
+#include <iostream>
 
-void view::Player::create() {
+void view::Player::create(logic::Player& player) {
+	m_player = std::make_shared<logic::Player>(player);
+	
+
 	m_token.setRadius(10);
 	m_token.setPosition(630, 630);
 	m_token.setFillColor(sf::Color::Red);
@@ -10,7 +14,11 @@ void view::Player::create() {
 }
 
 void view::Player::setNewPosition(int rollresult) {
-	m_targetPosition += rollresult;
+	//m_targetPosition += rollresult;
+	std::cout << "From playerView: " << m_player.get()->getPosition() << "\n";
+	std::cout << "From playerView: " << m_player.get()->getName() << "\n";
+	std::cout << "From playerView: " << m_player.get() << "\n";
+	m_targetPosition = m_player.get()->getPosition();
 	m_isMoving = true;
 }
 

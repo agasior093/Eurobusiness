@@ -26,6 +26,9 @@ void logic::Game::startTurn() {
 	checkForDoubles();
 	if (m_canMove == true) {		
 		getActivePlayer().incrementPosition(m_totalRollResult);
+		std::cout << "From game: " << getActivePlayer().getPosition() << "\n";
+		std::cout << "From game: " << getActivePlayer().getName() << "\n";
+		std::cout << "From game: " << &getActivePlayer() << "\n";
 	}	
 
 	unsigned newPosition = getActivePlayer().getPosition();

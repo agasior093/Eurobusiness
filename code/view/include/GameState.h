@@ -1,8 +1,9 @@
 #pragma once
+#include <memory>
+#include <vector>
 
 #include "State.h"
 #include "DEFINITIONS.h"
-#include <memory>
 #include "Application.h"
 #include "../include/DiceView.h"
 #include "../code/logic/include/Game.h"
@@ -35,6 +36,8 @@ namespace view {
 		view::GameBoard m_board;
 		view::Dice m_diceOne, m_diceTwo;		
 		
+		std::vector<view::Player> m_players;		
+
 		Player m_playerOneToken;
 		sf::Vector2f m_tokenPreviousPosition;
 		sf::Vector2f m_tokenNextPosition;
@@ -66,5 +69,8 @@ namespace view {
 		
 		//on action 
 		void rollTheDice();
+
+		//
+		void createPlayers();
 	};
 }

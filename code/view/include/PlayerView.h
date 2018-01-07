@@ -1,10 +1,13 @@
 #pragma once
 
 #include <SFML\Graphics.hpp>
+#include "../code/logic/include/Player.h"
+#include <memory>
 
 namespace view {
 	class Player {
-		int m_playerID;
+		std::shared_ptr<logic::Player> m_player;
+		//logic::Player* m_player;
 		sf::CircleShape m_token;
 		float m_position = 0.f;
 		float m_targetPosition = 0.f;
@@ -15,7 +18,7 @@ namespace view {
 
 		bool isMoving() const;
 
-		void create();
+		void create(logic::Player&);
 		void setNewPosition(int);
 		void setPosition(int);
 		void move();

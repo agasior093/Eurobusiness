@@ -8,8 +8,7 @@ void view::GameState::initialise() {
 	createBackground();
 	createButtons();	
 
-	m_playerOneToken.create();
-	
+	m_playerOneToken.create(m_game.getActivePlayer());	
 }
 
 void view::GameState::handleUserInput() {
@@ -25,12 +24,7 @@ void view::GameState::handleUserInput() {
 
 		if (evnt.type == sf::Event::KeyPressed && evnt.key.code == sf::Keyboard::R) {
 			m_game.reset();
-		}
-
-		if (evnt.type == sf::Event::KeyPressed && evnt.key.code == sf::Keyboard::T) {
-			std::cout << "Player position: " << m_game.getActivePlayer().getPosition() << "\n";
-			std::cout << "Token position: " << m_playerOneToken.getPosition() << "\n";
-		}
+		}		
 	}
 }
 
@@ -129,8 +123,12 @@ void view::GameState::rollTheDice() {
 	m_diceOne.changeTexture(m_game.getDiceOne().getCurrentNumber());
 	m_diceTwo.changeTexture(m_game.getDiceTwo().getCurrentNumber());
 	if (m_game.canMove()) {
+		std::cout << "From gameState: " << m_game.getActivePlayer().getPosition() << "\n";
+		std::cout << "From gameState: " << m_game.getActivePlayer().getName() << "\n";
+		std::cout << "From gameState: " << &m_game.getActivePlayer() << "\n";
 		m_playerOneToken.setNewPosition(m_game.getTotalRollResult());
 	}
+	
 }
 
 void view::GameState::updateButtons() {
@@ -140,4 +138,8 @@ void view::GameState::updateButtons() {
 	else {
 		m_rollButton.disable();
 	}
+}
+
+void view::GameState::createPlayers() {
+
 }

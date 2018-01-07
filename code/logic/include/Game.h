@@ -9,7 +9,7 @@ namespace logic {
 		logic::Dice m_diceOne, m_diceTwo;
 		
 		//players
-		std::vector<Player> m_players;
+		std::vector<logic::Player> m_players;
 		unsigned m_numberOfPlayers;
 		unsigned m_activePlayer = 0;
 

@@ -11,7 +11,7 @@ view::Player::Player(logic::Player& player) {
 
 void view::Player::create(sf::Color color, 
 	int labelPositionX, int labelPositionY) {
-
+	
 	m_token.setFillColor(color);
 	m_token.setRadius(10);
 	m_token.setPosition(STARTING_POSITION_X, STARTING_POSITION_Y);
@@ -23,6 +23,7 @@ void view::Player::create(sf::Color color,
 	m_label.setTexture(&m_texture);
 	m_label.setPosition(labelPositionX, labelPositionY);
 	m_label.setTextureRect(sf::IntRect(0, 0, 140, 70));
+	
 }
 
 void view::Player::setTargetPosition() {

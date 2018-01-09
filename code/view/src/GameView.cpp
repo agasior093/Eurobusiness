@@ -5,6 +5,7 @@
 view::GameView::GameView(std::vector<std::string>& playerNames)
 	: m_game(playerNames), m_numberOfPlayers(playerNames.size())
 {
+	m_players.reserve(4); // probably need to refactor later into std::array or change way of initialisation
 	m_data = std::make_unique<Data>();
 	m_data->window.create(sf::VideoMode(APPLICATION_SCREEN_WIDTH, APPLICATION_SCREEN_HEIGHT), APPLICATION_TITLE, sf::Style::Close | sf::Style::Titlebar);
 	gameLoop();
@@ -169,6 +170,7 @@ void view::GameView::createPlayers() {
 			color = sf::Color::Yellow;			
 			labelPositionY = PLAYER_FOUR_LABEL_POSITION_Y;
 		}
+		
 		m_players.push_back(view::Player(m_game.getPlayer(i)));
 		m_players[i].create(color, labelPositionX, labelPositionY);			
 	}	

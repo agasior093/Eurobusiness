@@ -6,6 +6,7 @@ logic::Game::Game(std::vector<std::string>& playerNames)
 	for (size_t i = 0; i < playerNames.size(); ++i) {
 		m_players.emplace_back(Player(playerNames[i]));
 	}
+	m_players[0].setAsActive(true);
 }
 
 void logic::Game::reset() {
@@ -17,6 +18,7 @@ void logic::Game::reset() {
 }
 
 void logic::Game::startTurn() {
+	
 	unsigned oldPosition = getActivePlayer().getPosition();
 
 	rollTheDice();
@@ -92,10 +94,12 @@ bool logic::Game::endTurn() {
 
 	if(canEndTurn()) {
 		//switch to next player
+		m_players[m_activePlayer].setAsActive(false);
 		m_activePlayer++;
 		if (m_activePlayer > m_numberOfPlayers - 1) {
 			m_activePlayer = 0;
 		}
+		m_players[m_activePlayer].setAsActive(true);
 
 		//reset game data
 		reset();

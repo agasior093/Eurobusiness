@@ -1,22 +1,7 @@
 #include "../include/Player.h"
 
-template <typename T>
-std::string toStringWithPrecision(const T a_value, const int n = 1) {
-	std::stringstream stream;
-	stream << std::fixed << std::setprecision(n) << a_value;
-	std::string s = stream.str();
-	return s;
-}
-
 void logic::Player::setAsActive(bool argument) {
 	m_isActive = argument;
-}
-
-std::string logic::Player::getPlayerInfo() {
-	std::string info =
-		m_name + "\n" +
-		"Cash: " + toStringWithPrecision(m_cash) + "$\n";
-	return info;
 }
 
 void logic::Player::addCash(float amount) {

@@ -11,6 +11,7 @@
 #define APPLICATION_TITLE "Eurobusiness"
 
 #define MENU_STATE_BACKGROUND_FILE "resources//board.png"
+#define CANDARA_FONT_FILE "resources//Candara.ttf"
 
 //dice
 #define FIRST_DICE_POSITION_X 300

@@ -22,7 +22,7 @@ void view::Player::create(sf::Color color,
 	m_label.setSize(sf::Vector2f(PLAYER_LABEL_WIDTH, PLAYER_LABEL_HEIGHT));
 	m_label.setTexture(&m_texture);
 	m_label.setPosition(labelPositionX, labelPositionY);
-	m_label.setTextureRect(sf::IntRect(0, 0, 140, 70));
+	//m_label.setTextureRect(sf::IntRect(0, 0, 140, 70));
 	
 }
 
@@ -49,10 +49,27 @@ void view::Player::move() {
 	}
 }
 
-
+void view::Player::updateLabel() {
+	if (m_player->isActive()) {
+		m_label.setTextureRect(sf::IntRect(0, 0, 140, 70));
+	}
+	else {
+		m_label.setTextureRect(sf::IntRect(0, 70, 140, 70));
+	}
+}
 
 //getters
+std::string view::Player::getPlayerInfo() {	
+	std::string info =
+		"         " + m_player->getName() + "\n" +
+		"Cash: " + toStringWithPrecision(m_player->getCash()) + "$\n" +
+		"Payment: " + toStringWithPrecision(m_player->getCurrentPayment()) + "$\n";
+	return info;	
+}
 sf::CircleShape& view::Player::getToken() {
+	return m_token;
+}
+sf::CircleShape view::Player::getTokenCopy() {
 	return m_token;
 }
 sf::RectangleShape& view::Player::getLabel() {
@@ -71,3 +88,6 @@ float view::Player::getPosition() const {
 bool view::Player::isMoving() const {
 	return m_isMoving;
 }
+
+
+

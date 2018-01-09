@@ -10,6 +10,7 @@
 #include "ResourceManager.h"
 #include "InputManager.h"
 #include "Button.h"
+#include "MessageBox.h"
 #include "../code/logic/include/Game.h"
 #include "../include/DiceView.h"
 #include "../include/PlayerView.h"
@@ -40,6 +41,8 @@ namespace view {
 		
 		std::vector<view::Player> m_players;
 		unsigned m_activePlayer = 0;
+		std::vector<view::MessageBox> m_playerLabels;
+		std::vector<sf::CircleShape> m_playerTokenCopies;
 
 		sf::Vector2f m_tokenPreviousPosition;
 		sf::Vector2f m_tokenNextPosition;
@@ -74,10 +77,19 @@ namespace view {
 		//on update
 		void calculateTokenPosition();
 		void updateButtons();
+		void updatePlayerLabels();
 
 		//on event 
 		void rollTheDice();
 		
 		view::Player& activePlayer();
+
+		template <typename T>
+		std::string toStringWithPrecision(const T a_value, const int n = 1) {
+			std::stringstream stream;
+			stream << std::fixed << std::setprecision(n) << a_value;
+			std::string s = stream.str();
+			return s;
+		}
 	};
 }

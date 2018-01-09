@@ -4,8 +4,7 @@
 
 view::GameView::GameView(std::vector<std::string>& playerNames)
 	: m_game(playerNames), m_numberOfPlayers(playerNames.size())
-{
-	m_players.reserve(4); // probably need to refactor later into std::array or change way of initialisation
+{	
 	m_data = std::make_unique<Data>();
 	m_data->window.create(sf::VideoMode(APPLICATION_SCREEN_WIDTH, APPLICATION_SCREEN_HEIGHT), APPLICATION_TITLE, sf::Style::Close | sf::Style::Titlebar);
 	gameLoop();
@@ -46,6 +45,7 @@ void view::GameView::handleInput() {
 
 void view::GameView::update(sf::Time dt) {
 	updateButtons();
+	updatePlayerLabels();
 	calculateTokenPosition();
 	if (activePlayer().isMoving() == true) {
 		activePlayer().move();
@@ -65,6 +65,8 @@ void view::GameView::draw() {
 	for (int i = 0; i < m_numberOfPlayers; ++i) {
 		this->m_data->window.draw(m_players[i].getToken());
 		this->m_data->window.draw(m_players[i].getLabel());
+		this->m_data->window.draw(m_playerLabels[i].get());
+		this->m_data->window.draw(m_playerTokenCopies[i]);
 	}
 	
 	//drawing dice
@@ -150,6 +152,10 @@ void view::GameView::createDice() {
 }
 
 void view::GameView::createPlayers() {
+	m_players.reserve(m_numberOfPlayers); // probably need to refactor later into std::array or change way of initialisation
+	m_playerLabels.reserve(m_numberOfPlayers);
+	m_playerTokenCopies.reserve(m_numberOfPlayers);
+
 	sf::Color color;
 	int labelPositionX = PLAYER_LABEL_POSITION_X;
 	int labelPositionY;
@@ -172,7 +178,13 @@ void view::GameView::createPlayers() {
 		}
 		
 		m_players.push_back(view::Player(m_game.getPlayer(i)));
-		m_players[i].create(color, labelPositionX, labelPositionY);			
+		m_players[i].create(color, labelPositionX, labelPositionY);	
+
+		m_playerLabels.push_back(view::MessageBox());
+		m_playerLabels[i].create(labelPositionX + 5, labelPositionY + 5, 15, sf::Color::Black, m_players[i].getPlayerInfo());
+
+		m_playerTokenCopies.push_back(m_players[i].getTokenCopy());
+		m_playerTokenCopies[i].setPosition(labelPositionX + 25, labelPositionY + 25);
 	}	
 }
 
@@ -213,5 +225,11 @@ void view::GameView::updateButtons() {
 	} 
 	else {
 		m_endTurnButton.disable();
+	}
+}
+
+void view::GameView::updatePlayerLabels() {
+	for (auto i = 0; i < m_players.size(); ++i) {
+		m_players[i].updateLabel();
 	}
 }

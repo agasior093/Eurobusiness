@@ -31,9 +31,7 @@ namespace logic {
 		{ }
 		~Player() = default;
 
-		void setAsActive(bool);
-
-		std::string getPlayerInfo();		
+		void setAsActive(bool);			
 
 		void addCash(float);
 		bool substractCash(float);
@@ -42,10 +40,7 @@ namespace logic {
 		bool pay();
 
 		void incrementPosition(int);
-		void setPosition(int);
-		//void setTargetPosition(int);		
-		//void startMoving();
-		//void stopMoving();
+		void setPosition(int);	
 
 		void lockInJail();
 		void decrementTurnsInJail();

@@ -1,15 +1,11 @@
 #include "../include/Game.h"
 #include <iostream>
 
-logic::Game::Game(unsigned numberOfPlayers, std::vector<std::string>& playerNames)
-	: m_numberOfPlayers(numberOfPlayers) {
-	for (unsigned i = 0; i < numberOfPlayers; ++i) {
+logic::Game::Game(std::vector<std::string>& playerNames)
+	: m_numberOfPlayers(playerNames.size()) {
+	for (size_t i = 0; i < playerNames.size(); ++i) {
 		m_players.emplace_back(Player(playerNames[i]));
 	}
-}
-
-logic::Player& logic::Game::getActivePlayer() {
-	return m_players[m_activePlayer];
 }
 
 void logic::Game::reset() {
@@ -17,6 +13,7 @@ void logic::Game::reset() {
 	m_doublesInCurrentTurn = 0;
 	m_totalRollResult = 0;
 	m_canMove = false;
+	m_canThrow = true;
 }
 
 void logic::Game::startTurn() {
@@ -26,9 +23,6 @@ void logic::Game::startTurn() {
 	checkForDoubles();
 	if (m_canMove == true) {		
 		getActivePlayer().incrementPosition(m_totalRollResult);
-		std::cout << "From game: " << getActivePlayer().getPosition() << "\n";
-		std::cout << "From game: " << getActivePlayer().getName() << "\n";
-		std::cout << "From game: " << &getActivePlayer() << "\n";
 	}	
 
 	unsigned newPosition = getActivePlayer().getPosition();
@@ -127,6 +121,15 @@ void logic::Game::permissionToThrow(bool argument) {
 }
 
 //inline getters
+logic::Player& logic::Game::getActivePlayer() {
+	return m_players[m_activePlayer];
+}
+logic::Player& logic::Game::getPlayer(int index) {
+	return m_players[index];
+}
+unsigned logic::Game::getActivePlayerID() {
+	return m_activePlayer;
+}
 bool logic::Game::canThrow() const {
 	return m_canThrow;
 }

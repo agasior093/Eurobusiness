@@ -1,14 +1,24 @@
 #include "../include/MenuState.h"
 #include "../include/GameState.h"
 
-view::MenuState::MenuState(std::shared_ptr<ApplicationData> data) 
-	: m_data(data) 
-{ }
+view::MenuState::MenuState(std::shared_ptr<ApplicationData> data)
+	: m_data(data)	
+{
+	m_gui.setTarget(this->m_data->window);
+}
 
 void view::MenuState::initialise() {
 	loadTextures();
 	m_background.setTexture(this->m_data->resourceManager.getTexture("Background"));
 	createButtons();
+	
+	auto textBox = tgui::TextBox::create();
+	
+	textBox->setRenderer(theme.getRenderer("Label"));
+	textBox->setSize(100, 100);
+	textBox->setPosition(100, 100);
+	
+	m_gui.add(textBox);
 }
 
 void view::MenuState::handleUserInput() {
@@ -31,6 +41,7 @@ void view::MenuState::draw() {
 	this->m_data->window.clear();
 	this->m_data->window.draw(m_background);
 	this->m_data->window.draw(m_newGameButton.getSprite());
+	m_gui.draw();
 	this->m_data->window.display();
 }
 

@@ -22,10 +22,12 @@ namespace logic {
 		int m_totalRollResult = 0;
 						
 	public:		
-		Game(unsigned, std::vector<std::string>&);
+		Game(std::vector<std::string>&);
 		~Game() = default;	
 
 		logic::Player& getActivePlayer();
+		logic::Player& getPlayer(int);
+		unsigned getActivePlayerID();
 
 		void reset(); 
 		void permissionToThrow(bool);

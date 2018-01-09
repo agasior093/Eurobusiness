@@ -8,7 +8,7 @@ view::Application::Application(int width, int height, std::string title) {
 	this->run();
 }
 
-void view::Application::run() {
+void view::Application::run() {	
 	while (this->m_data->window.isOpen()) {
 		this->m_data->stateManager.processStateChanges();
 		this->m_data->stateManager.getActiveState()->handleUserInput();

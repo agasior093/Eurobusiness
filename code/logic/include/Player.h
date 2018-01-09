@@ -9,6 +9,7 @@
 
 namespace logic {
 	class Player {
+		bool m_isActive = false;
 		std::string m_name;		
 		
 		float m_cash = 3500;
@@ -16,6 +17,7 @@ namespace logic {
 		Player* m_loanHolder = nullptr;
 
 		int m_position = 0;
+		int m_positionDifference = 0; //total result of last dice roll
 		int m_targetPosition = 0;
 		bool m_isMoving = false;		
 
@@ -28,6 +30,8 @@ namespace logic {
 			: m_name(name)
 		{ }
 		~Player() = default;
+
+		void setAsActive(bool);
 
 		std::string getPlayerInfo();		
 
@@ -47,7 +51,7 @@ namespace logic {
 		void decrementTurnsInJail();
 
 		void addOutOfJailCard();
-		void useOutOfJailCard();
+		void useOutOfJailCard();		
 
 		//getters
 		std::string getName() const;		
@@ -57,10 +61,11 @@ namespace logic {
 		Player* getLoanHolder() const;
 
 		int getPosition() const;
-		//int getTargetPosition() const;
-		//bool isMoving() const;
+		int getPositionDifference() const;
 
 		int getTurnsLeftInJail() const;
 		int getOutOfJailCards() const;
+
+		bool isActive() const;
 	};
 }

@@ -3,18 +3,20 @@
 #define JAIL_TIME 3
 #define JAIL_POSITION 10
 #define BOARD_SIZE 40
+#define STARTING_POSITION_X 675
+#define STARTING_POSITION_Y 675
 
-#define APPLICATION_SCREEN_WIDTH 660
-#define APPLICATION_SCREEN_HEIGHT 660
+#define APPLICATION_SCREEN_WIDTH 720
+#define APPLICATION_SCREEN_HEIGHT 720
 #define APPLICATION_TITLE "Eurobusiness"
 
-#define MENU_STATE_BACKGROUND_FILE "resources//plain_board.png"
+#define MENU_STATE_BACKGROUND_FILE "resources//board.png"
 
 //dice
-#define FIRST_DICE_POSITION_X 270
-#define FIRST_DICE_POSITION_Y 100
-#define SECOND_DICE_POSITION_X 330
-#define SECOND_DICE_POSITION_Y 85
+#define FIRST_DICE_POSITION_X 300
+#define FIRST_DICE_POSITION_Y 130
+#define SECOND_DICE_POSITION_X 360
+#define SECOND_DICE_POSITION_Y 105
 
 #define DICE_WIDTH 55
 #define DICE_HEIGHT 55
@@ -25,8 +27,23 @@
 #define DEFAULT_FIELD_BACKGROUND "resources//default_field.png"
 
 //active/not active player
+#define PLAYER_LABEL_WIDTH 140
+#define PLAYER_LABEL_HEIGHT 70
+#define PLAYER_LABEL "resources//player_label.png"
 #define ACTIVE_PLAYER "resources//active_player.png"
 #define NOT_ACTIVE_PLAYER "resources//not_active_player.png"
+
+#define PLAYER_LABEL_POSITION_X 110 
+#define PLAYER_ONE_LABEL_POSITION_Y 215
+#define PLAYER_TWO_LABEL_POSITION_Y 290
+#define PLAYER_THREE_LABEL_POSITION_Y 365
+#define PLAYER_FOUR_LABEL_POSITION_Y 440
+
+#define PLAYER_ONE_LABEL_POSITION_X 50
+#define PLAYER_TWO_LABEL_POSITION_X 50
+#define PLAYER_THREE_LABEL_POSITION_X 50
+#define PLAYER_FOUR_LABEL_POSITION_X 50
+
 
 //buttons
 #define NEW_GAME_BUTTON_FILE "resources//buttons//play_button.png"

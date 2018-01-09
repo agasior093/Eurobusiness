@@ -8,9 +8,13 @@ std::string toStringWithPrecision(const T a_value, const int n = 1) {
 	return s;
 }
 
+void logic::Player::setAsActive(bool argument) {
+	m_isActive = argument;
+}
+
 std::string logic::Player::getPlayerInfo() {
 	std::string info =
-		"     " + m_name + "\n" +
+		m_name + "\n" +
 		"Cash: " + toStringWithPrecision(m_cash) + "$\n";
 	return info;
 }
@@ -48,6 +52,7 @@ bool logic::Player::pay() {
 }
 
 void logic::Player::incrementPosition(int number) {
+	m_positionDifference = number;
 	m_position += number;
 	if ((m_position += .001f) > 40)
 		m_position -= 40;
@@ -79,6 +84,10 @@ void logic::Player::useOutOfJailCard() {
 }
 
 //getters
+bool logic::Player::isActive() const {
+	return m_isActive;
+}
+
 std::string logic::Player::getName() const {
 	return m_name;
 }
@@ -97,6 +106,10 @@ logic::Player* logic::Player::getLoanHolder() const {
 
 int logic::Player::getPosition() const {
 	return m_position;
+}
+
+int logic::Player::getPositionDifference() const {
+	return m_positionDifference;
 }
 
 int logic::Player::getTurnsLeftInJail() const {

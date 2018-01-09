@@ -3,14 +3,16 @@ Eurobusiness game
 by Aleksander Gasior
 */
 #include "DEFINITIONS.h"
-#include "view\include\Application.h"
-
+#include "NewGame.h"
 
 int main() {
-	view::Application application(
+	NewGame newGame;
+	newGame.start();
+	
+	/*view::Application application(
 		APPLICATION_SCREEN_WIDTH,
 		APPLICATION_SCREEN_HEIGHT,
-		APPLICATION_TITLE);
+		APPLICATION_TITLE);*/
 
-	return EXIT_SUCCESS;
+	return 0;
 }

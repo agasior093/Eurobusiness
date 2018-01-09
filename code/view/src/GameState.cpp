@@ -8,7 +8,7 @@ void view::GameState::initialise() {
 	createBackground();
 	createButtons();	
 
-	m_playerOneToken.create(m_game.getActivePlayer());	
+	
 }
 
 void view::GameState::handleUserInput() {
@@ -29,7 +29,7 @@ void view::GameState::handleUserInput() {
 }
 
 void view::GameState::update(sf::Time dt) {	
-	updateButtons();
+	//updateButtons();
 	calculateTokenPosition();
 	if (m_playerOneToken.isMoving() == true) {
 		m_playerOneToken.move();
@@ -42,8 +42,7 @@ void view::GameState::draw() {
 	//drawing background
 	this->m_data->window.draw(m_background);
 
-	//drawing player token
-	this->m_data->window.draw(m_playerOneToken.get());
+	
 
 	//drawing current field
 	this->m_data->window.draw(m_currentField);
@@ -73,6 +72,10 @@ void view::GameState::loadResources() {
 
 	//current field background
 	this->m_data->resourceManager.loadTexture("Default field", DEFAULT_FIELD_BACKGROUND);
+
+	//active player field
+	this->m_data->resourceManager.loadTexture("Active player", ACTIVE_PLAYER);
+	this->m_data->resourceManager.loadTexture("Disactive player", NOT_ACTIVE_PLAYER);
 }
 
 void view::GameState::createBackground() {
@@ -112,9 +115,7 @@ void view::GameState::createDice() {
 void view::GameState::calculateTokenPosition() {
 	m_tokenPreviousPosition = m_board.get()[static_cast<std::size_t>(m_playerOneToken.getPosition())];
 	m_tokenNextPosition = m_board.get()[static_cast<std::size_t>(m_playerOneToken.getPosition() + 1) % 40];
-	m_playerOneToken.get().setPosition(m_tokenPreviousPosition 
-	+ (m_tokenNextPosition - m_tokenPreviousPosition) 
-	* m_playerOneToken.getStep() + m_playerOneToken.getJumpOffSet());
+	
 }
 
 void view::GameState::rollTheDice() {
@@ -122,13 +123,10 @@ void view::GameState::rollTheDice() {
 	m_diceOne.playSound();
 	m_diceOne.changeTexture(m_game.getDiceOne().getCurrentNumber());
 	m_diceTwo.changeTexture(m_game.getDiceTwo().getCurrentNumber());
-	if (m_game.canMove()) {
-		std::cout << "From gameState: " << m_game.getActivePlayer().getPosition() << "\n";
-		std::cout << "From gameState: " << m_game.getActivePlayer().getName() << "\n";
-		std::cout << "From gameState: " << &m_game.getActivePlayer() << "\n";
-		m_playerOneToken.setNewPosition(m_game.getTotalRollResult());
-	}
-	
+
+	if (m_game.canMove()) {	
+		m_playerOneToken.setTargetPosition();
+	}	
 }
 
 void view::GameState::updateButtons() {

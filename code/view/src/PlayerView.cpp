@@ -1,24 +1,32 @@
 #include "../include/PlayerView.h"
 #include <iostream>
 
-void view::Player::create(logic::Player& player) {
-	m_player = std::make_shared<logic::Player>(player);
-	
+view::Player::Player(logic::Player& player) {
+	m_player = &player;
+		
+	if (!m_texture.loadFromFile(PLAYER_LABEL)) {
+		std::cout << "Can't load texture.\n";
+	}	
+}
 
+void view::Player::create(sf::Color color, 
+	int labelPositionX, int labelPositionY) {
+
+	m_token.setFillColor(color);
 	m_token.setRadius(10);
-	m_token.setPosition(630, 630);
-	m_token.setFillColor(sf::Color::Red);
+	m_token.setPosition(STARTING_POSITION_X, STARTING_POSITION_Y);
 	m_token.setOutlineColor(sf::Color::Black);
 	m_token.setOutlineThickness(2);
 	m_token.setOrigin({ 20, 20 });
+
+	m_label.setSize(sf::Vector2f(PLAYER_LABEL_WIDTH, PLAYER_LABEL_HEIGHT));
+	m_label.setTexture(&m_texture);
+	m_label.setPosition(labelPositionX, labelPositionY);
+	m_label.setTextureRect(sf::IntRect(0, 0, 140, 70));
 }
 
-void view::Player::setNewPosition(int rollresult) {
-	//m_targetPosition += rollresult;
-	std::cout << "From playerView: " << m_player.get()->getPosition() << "\n";
-	std::cout << "From playerView: " << m_player.get()->getName() << "\n";
-	std::cout << "From playerView: " << m_player.get() << "\n";
-	m_targetPosition = m_player.get()->getPosition();
+void view::Player::setTargetPosition() {
+	m_targetPosition += m_player->getPositionDifference();
 	m_isMoving = true;
 }
 
@@ -40,9 +48,14 @@ void view::Player::move() {
 	}
 }
 
+
+
 //getters
-sf::CircleShape& view::Player::get() {
+sf::CircleShape& view::Player::getToken() {
 	return m_token;
+}
+sf::RectangleShape& view::Player::getLabel() {
+	return m_label;
 }
 float view::Player::getStep() const {
 	return m_position - static_cast<std::size_t>(m_position);

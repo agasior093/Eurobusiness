@@ -36,22 +36,19 @@ namespace logic {
 			: Field(true), m_name(name), m_group(group), m_buildingArea(buildingArea), 
 			m_price(price), m_housePrice(housePrice), m_hotelPrice(4*housePrice), m_baseFee(baseFee)
 		{			
-			
+			updateMessage();
 		}
 		~Property() = default;
 
-		void updateMessage() {
-			this->m_mainMessage = "AAAAAA";
-		}
-
-		virtual std::string getMessage() override {
-			updateMessage();
-			return m_mainMessage;
-		}
-
-		virtual std::string getGameStatus() override {
-			return m_gameStatusMessage;
-		}
+		void updateMessage();
+				
 		
+		template <typename T>
+		std::string toStringWithPrecision(const T a_value, const int n = 1) {
+			std::stringstream stream;
+			stream << std::fixed << std::setprecision(n) << a_value;
+			std::string s = stream.str();
+			return s;
+		}
 	};
 }

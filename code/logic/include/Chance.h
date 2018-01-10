@@ -21,12 +21,6 @@ namespace logic {
 
 		ChanceType getType() { return m_type; }
 
-		virtual std::string getMessage() override {
-			return m_mainMessage;
-		}
-
-		virtual std::string getGameStatus() override {
-			return m_gameStatusMessage;
-		}
+		
 	};
 }

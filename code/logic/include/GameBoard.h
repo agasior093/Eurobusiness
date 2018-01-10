@@ -13,7 +13,7 @@
 
 namespace logic {
 	class GameBoard {
-		std::array < std::shared_ptr < logic::Field>, BOARD_SIZE > m_board;
+		std::array < std::unique_ptr < logic::Field>, BOARD_SIZE > m_board;
 	public:
 		GameBoard();
 		~GameBoard() = default;

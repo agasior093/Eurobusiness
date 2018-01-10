@@ -20,13 +20,13 @@ view::GameBoard::GameBoard() {
 	m_board[14] = std::make_shared<view::Field>(view::Property(45, 420));
 	m_board[15] = std::make_shared<view::Field>(view::Property(45, 360));
 	m_board[16] = std::make_shared<view::Field>(view::Property(45, 300));
-	m_board[17] = std::make_shared<view::Field>(view::Chance(45, 240, ChanceType::BLUE));
+	m_board[17] = std::make_shared<view::Field>(view::Chance(45, 240, ChanceType::RED));
 	m_board[18] = std::make_shared<view::Field>(view::Property(45, 180));
 	m_board[19] = std::make_shared<view::Field>(view::Property(45, 120));
 	m_board[20] = std::make_shared<view::Field>(view::Parking(45, 45));
 
 	m_board[21] = std::make_shared<view::Field>(view::Property(120 , 45));
-	m_board[22] = std::make_shared<view::Field>(view::Chance(180 , 45, ChanceType::RED));
+	m_board[22] = std::make_shared<view::Field>(view::Chance(180 , 45, ChanceType::BLUE));
 	m_board[23] = std::make_shared<view::Field>(view::Property(240 , 45));
 	m_board[24] = std::make_shared<view::Field>(view::Property(300 , 45));
 	m_board[25] = std::make_shared<view::Field>(view::Property(360 , 45));
@@ -38,10 +38,10 @@ view::GameBoard::GameBoard() {
 
 	m_board[31] = std::make_shared<view::Field>(view::Property(675 , 120));
 	m_board[32] = std::make_shared<view::Field>(view::Property(675 , 180));
-	m_board[33] = std::make_shared<view::Field>(view::Chance(675 , 240, ChanceType::BLUE));
+	m_board[33] = std::make_shared<view::Field>(view::Chance(675 , 240, ChanceType::RED));
 	m_board[34] = std::make_shared<view::Field>(view::Property(675 , 300));
 	m_board[35] = std::make_shared<view::Field>(view::Property(675 , 360));
-	m_board[36] = std::make_shared<view::Field>(view::Chance(675 , 420, ChanceType::RED));
+	m_board[36] = std::make_shared<view::Field>(view::Chance(675 , 420, ChanceType::BLUE));
 	m_board[37] = std::make_shared<view::Field>(view::Property(675 , 480));
 	m_board[38] = std::make_shared<view::Field>(view::Tax(675 , 540));
 	m_board[39] = std::make_shared<view::Field>(view::Property(675 , 600));

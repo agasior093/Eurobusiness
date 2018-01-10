@@ -13,11 +13,11 @@ namespace view {
 		Chance(float positionX, float positionY, ChanceType type)
 			: Field(positionX, positionY), m_type(type)
 		{
-			if (m_type == ChanceType::BLUE) {
-				m_texturePositionX = 400;
-			}
-			else {
+			if (m_type == ChanceType::RED) {
 				m_texturePositionX = 200;
+			}
+			if(m_type == ChanceType::BLUE) {
+				m_texturePositionX = 400;
 			}			
 		}
 		virtual ~Chance() = default;		

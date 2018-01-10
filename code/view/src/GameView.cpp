@@ -228,7 +228,7 @@ void view::GameView::createPlayers() {
 }
 
 void view::GameView::createMessageBoxes() {
-	m_fieldInfo.create(300, 300, 13, sf::Color::Black, "");
+	m_fieldInfo.create(275, 250, 12, sf::Color::Black, "");
 }
 
 view::Player& view::GameView::activePlayer() {

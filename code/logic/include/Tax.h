@@ -11,13 +11,6 @@ namespace logic {
 			
 		}
 		~Tax() = default;
-
-		virtual std::string getMessage() override {
-			return m_mainMessage;
-		}
-
-		virtual std::string getGameStatus() override {
-			return m_gameStatusMessage;
-		}
+	
 	};
 }

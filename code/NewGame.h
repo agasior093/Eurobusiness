@@ -6,7 +6,7 @@
 #include <iostream>
 
 class NewGame {
-	int m_numberOfPlayers;
+	unsigned m_numberOfPlayers;
 	std::vector<std::string> m_playerNames;
 public:
 	NewGame() {}

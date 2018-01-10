@@ -27,7 +27,7 @@ void NewGame::start() {
 				}
 			}			
 		} while (!isNameUnique);	
-		m_playerNames.push_back(name);
+		m_playerNames.emplace_back(name);
 	}
 	
 	view::GameView newGameView(m_playerNames);

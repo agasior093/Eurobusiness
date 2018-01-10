@@ -10,7 +10,7 @@ view::Player::Player(logic::Player& player) {
 }
 
 void view::Player::create(sf::Color color, 
-	int labelPositionX, int labelPositionY) {
+	float labelPositionX, float labelPositionY) {
 	
 	m_token.setFillColor(color);
 	m_token.setRadius(10);
@@ -79,7 +79,7 @@ float view::Player::getStep() const {
 	return m_position - static_cast<std::size_t>(m_position);
 }
 sf::Vector2f view::Player::getJumpOffSet() const {
-	sf::Vector2f jumpOffset(0, 25.f * (2.f * ((m_position - static_cast<std::size_t>(m_position)) - .5)) * (2.f * ((m_position - static_cast<std::size_t>(m_position)) - .5)));
+	sf::Vector2f jumpOffset(0, 25.f * (2.f * ((m_position - static_cast<std::size_t>(m_position)) - .5f)) * (2.f * ((m_position - static_cast<std::size_t>(m_position)) - .5f)));
 	return jumpOffset;
 }
 float view::Player::getPosition() const {

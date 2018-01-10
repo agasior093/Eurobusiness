@@ -20,7 +20,7 @@ class GameTestable {
 	logic::Game m_game;	
 public:
 	GameTestable()
-		: m_game(NUMBER_OF_TEST_PLAYERS, m_playerNames.getNames())
+		: m_game(m_playerNames.getNames())
 	{ }
 
 	logic::Game& get() {
@@ -72,8 +72,7 @@ TEST_F(GameTestSuite, shouldFinishAfterSecondRollAndMove) {
 	ASSERT_EQ(game.canMove(), true);
 
 	game.setInMotion(game.getTotalRollResult());
-
-	ASSERT_EQ(game.getActivePlayer().isMoving(), true);
+	
 	ASSERT_EQ(game.getActivePlayer().getPosition(), game.getTotalRollResult());
 }
 
@@ -145,43 +144,3 @@ TEST_F(GameTestSuite, shouldDecreasePlayerTurnsInJail) {
 	ASSERT_EQ(playerInJail->getTurnsLeftInJail(), 2);	
 }
 
-/*
-//player in jail ends trun, gets turns in jail decreased
-ASSERT_EQ(&game.getActivePlayer(), playerInJail);
-ASSERT_EQ(game.endTurn(), true);
-ASSERT_EQ(playerInJail->getTurnsLeftInJail(), 2);
-
-//second player is ending his round
-ASSERT_EQ(&game.getActivePlayer(), otherPlayer);
-
-do {
-game.reset();
-game.rollTheDice();
-game.checkForDoubles();
-} while (game.getDoublesInCurrentTurn() != 0);
-
-ASSERT_EQ(game.endTurn(), true);
-ASSERT_EQ(playerInJail->getTurnsLeftInJail(), 1);
-
-//player in jail ends trun, gets turns in jail decreased
-ASSERT_EQ(&game.getActivePlayer(), playerInJail);
-ASSERT_EQ(game.endTurn(), true);
-ASSERT_EQ(playerInJail->getTurnsLeftInJail(), 1);
-
-//second player is ending his round
-ASSERT_EQ(&game.getActivePlayer(), otherPlayer);
-
-do {
-game.reset();
-game.rollTheDice();
-game.checkForDoubles();
-} while (game.getDoublesInCurrentTurn() != 0);
-
-ASSERT_EQ(game.endTurn(), true);
-ASSERT_EQ(playerInJail->getTurnsLeftInJail(), 0);
-
-ASSERT_EQ(&game.getActivePlayer(), playerInJail);
-game.rollTheDice();
-game.setInMotion(game.getTotalRollResult());
-ASSERT_EQ(playerInJail->getPosition(), game.getTotalRollResult());
-*/

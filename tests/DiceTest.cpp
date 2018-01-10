@@ -18,7 +18,8 @@ public:
 
 TEST_F(DiceTestSuite, shouldGenerateValueFromOneToSix) {
 	auto dice = m_sut.get();	
-	int randomNumber = dice.roll();
+	dice.rollNewNumber();
+	auto randomNumber = dice.getCurrentNumber();
 	ASSERT_LE(randomNumber, 6);
 	ASSERT_GE(randomNumber, 1);	
 }

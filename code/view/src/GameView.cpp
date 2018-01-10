@@ -45,10 +45,10 @@ void view::GameView::handleInput() {
 
 void view::GameView::update(sf::Time dt) {
 	updateButtons();
-	updatePlayerLabels();
-	calculateTokenPosition();
+	updatePlayerLabels();	
 	if (activePlayer().isMoving() == true) {
-		activePlayer().move();
+		calculateTokenPosition();
+		activePlayer().move();		
 	}
 }
 
@@ -105,11 +105,10 @@ void view::GameView::loadResources() {
 
 	//current field background
 	this->m_data->resourceManager.loadTexture("Default field", DEFAULT_FIELD_BACKGROUND);
+	this->m_data->resourceManager.loadTexture("Field backgrounds", FIELD_BACKGROUNDS);
 
 	//active player field
-	this->m_data->resourceManager.loadTexture("Player label", PLAYER_LABEL);
-	this->m_data->resourceManager.loadTexture("Active player", ACTIVE_PLAYER);
-	this->m_data->resourceManager.loadTexture("Disactive player", NOT_ACTIVE_PLAYER);
+	this->m_data->resourceManager.loadTexture("Player label", PLAYER_LABEL);	
 }
 
 void view::GameView::createBackground() {
@@ -157,8 +156,8 @@ void view::GameView::createPlayers() {
 	m_playerTokenCopies.reserve(m_numberOfPlayers);
 
 	sf::Color color;
-	int labelPositionX = PLAYER_LABEL_POSITION_X;
-	int labelPositionY;
+	float labelPositionX = PLAYER_LABEL_POSITION_X;
+	float labelPositionY;
 	for (int i = 0; i < m_numberOfPlayers; ++i) {			
 		if (i == 0) {
 			color = sf::Color::Red;			
@@ -177,13 +176,13 @@ void view::GameView::createPlayers() {
 			labelPositionY = PLAYER_FOUR_LABEL_POSITION_Y;
 		}
 		
-		m_players.push_back(view::Player(m_game.getPlayer(i)));
+		m_players.emplace_back(view::Player(m_game.getPlayer(i)));
 		m_players[i].create(color, labelPositionX, labelPositionY);	
 
-		m_playerLabels.push_back(view::MessageBox());
+		m_playerLabels.emplace_back(view::MessageBox());
 		m_playerLabels[i].create(labelPositionX + 5, labelPositionY + 5, 15, sf::Color::Black, m_players[i].getPlayerInfo());
 
-		m_playerTokenCopies.push_back(m_players[i].getTokenCopy());
+		m_playerTokenCopies.emplace_back(m_players[i].getTokenCopy());
 		m_playerTokenCopies[i].setPosition(labelPositionX + 25, labelPositionY + 25);
 	}	
 }
@@ -229,7 +228,7 @@ void view::GameView::updateButtons() {
 }
 
 void view::GameView::updatePlayerLabels() {
-	for (auto i = 0; i < m_players.size(); ++i) {
+	for (size_t i = 0; i < m_players.size(); ++i) {
 		m_players[i].updateLabel();
 	}
 }

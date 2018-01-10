@@ -37,9 +37,7 @@ TEST_F(PlayerTestSuite, playerMembersShouldBeInitialisedWithInitialValues) {
 	ASSERT_EQ(player->getCash(), TEST_PLAYER_INITIAL_CASH);
 	ASSERT_EQ(player->getCurrentPayment(), TEST_PLAYER_INITIAL_CURRENT_PAYMENT);
 	ASSERT_EQ(player->getLoanHolder(), nullptr);
-	ASSERT_EQ(player->getPosition(), TEST_PLAYER_INITIAL_POSITION);
-	ASSERT_EQ(player->getTargetPosition(), TEST_PLAYER_INITIAL_TARGET_POSITION);
-	ASSERT_EQ(player->isMoving(), TEST_PLAYER_INITIAL_IN_MOVE);
+	ASSERT_EQ(player->getPosition(), TEST_PLAYER_INITIAL_POSITION);	
 	ASSERT_EQ(player->getTurnsLeftInJail(), TEST_PLAYER_INITIAL_TURNS_IN_JAIL);
 	ASSERT_EQ(player->getOutOfJailCards(), TEST_PLAYER_INITIAL_JAIL_CARDS);
 }
@@ -89,12 +87,11 @@ TEST_F(PlayerTestSuite, shouldChangePlayerPositionAndTargetPositon) {
 
 	int newPosition = 22;
 	int newTargetPosition = 33;
-	player->setPosition(newPosition);
-	player->setTargetPosition(newTargetPosition);
-	ASSERT_EQ(player->getPosition(), newPosition);
-	ASSERT_EQ(player->getTargetPosition(), newTargetPosition);
+	player->setPosition(newPosition);	
+	ASSERT_EQ(player->getPosition(), newPosition);	
 }
 
+/*
 TEST_F(PlayerTestSuite, shouldStartOrStopMoving) {
 	auto player = m_sut.get();
 	
@@ -103,7 +100,7 @@ TEST_F(PlayerTestSuite, shouldStartOrStopMoving) {
 	
 	player->stopMoving();
 	ASSERT_EQ(player->isMoving(), false);
-}
+}*/
 
 TEST_F(PlayerTestSuite, shouldSetTurnsInJailToThree) {
 	auto player = m_sut.get();

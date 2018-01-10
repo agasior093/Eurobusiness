@@ -21,7 +21,7 @@ namespace view {
 		Player(logic::Player&);
 		~Player() = default;
 		
-		void create(sf::Color, int, int);
+		void create(sf::Color, float, float);
 		void setTargetPosition();
 		void setPosition(int);
 		void move();		

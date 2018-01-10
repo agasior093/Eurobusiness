@@ -8,8 +8,8 @@ namespace view {
 		Start(float positionX, float positionY)
 			: Field(positionX, positionY)
 		{
-			m_picture.setTextureRect(sf::IntRect(0, 0, 200, 300));
+			m_texturePositionX = 0;
 		}
-		virtual ~Start() = default;
+		virtual ~Start() = default;		
 	};
 }

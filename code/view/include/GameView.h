@@ -15,6 +15,8 @@
 #include "../include/DiceView.h"
 #include "../include/PlayerView.h"
 #include "../include/GameBoardView.h"
+#include "../include/FieldView.h"
+#include "../code/logic/include/GameBoard.h"
 
 namespace view {
 	struct Data {
@@ -23,8 +25,7 @@ namespace view {
 		sf::RenderWindow window;
 		sf::Clock clock;
 	};	
-
-		
+			
 	class GameView {		
 		std::unique_ptr<Data> m_data;
 		void gameLoop();
@@ -51,6 +52,9 @@ namespace view {
 		sf::Sprite m_background;
 		sf::Sprite m_currentField;
 
+		MessageBox m_gameStatus;
+		MessageBox m_fieldInfo;
+
 		//left menu buttons
 		Button m_rollButton;	
 		Button m_propertyManagerButton;
@@ -60,8 +64,8 @@ namespace view {
 		Button m_buyButton;
 		Button m_jailCardButton;
 		Button m_jailRollButton;
-
-
+		Button m_revealButton;
+		Button m_collectButton;
 
 	public:
 		GameView(std::vector<std::string>&);
@@ -73,11 +77,13 @@ namespace view {
 		void createButtons();
 		void createDice();
 		void createPlayers();
+		void createMessageBoxes();
 
 		//on update
 		void calculateTokenPosition();
 		void updateButtons();
 		void updatePlayerLabels();
+		void updateCurrentField();
 
 		//on event 
 		void rollTheDice();

@@ -22,8 +22,10 @@ void view::GameView::gameLoop() {
 void view::GameView::initialise() {
 	loadResources();
 	createBackground();
+	createDice();
 	createButtons();
 	createPlayers();
+	createMessageBoxes();
 }
 
 void view::GameView::handleInput() {
@@ -45,10 +47,11 @@ void view::GameView::handleInput() {
 
 void view::GameView::update(sf::Time dt) {
 	updateButtons();
+	updateCurrentField();
 	updatePlayerLabels();	
 	if (activePlayer().isMoving() == true) {
 		calculateTokenPosition();
-		activePlayer().move();		
+		activePlayer().move();				
 	}
 }
 
@@ -60,6 +63,7 @@ void view::GameView::draw() {
 	
 	//drawing current field
 	this->m_data->window.draw(m_currentField);
+	this->m_data->window.draw(m_fieldInfo.get());
 
 	//drawing players
 	for (int i = 0; i < m_numberOfPlayers; ++i) {
@@ -78,7 +82,13 @@ void view::GameView::draw() {
 	this->m_data->window.draw(m_propertyManagerButton.getSprite());
 	this->m_data->window.draw(m_rollButton.getSprite());
 
+	this->m_data->window.draw(m_buyButton.getSprite());
 	this->m_data->window.draw(m_payButton.getSprite());
+	this->m_data->window.draw(m_jailRollButton.getSprite());
+	this->m_data->window.draw(m_jailCardButton.getSprite());
+	this->m_data->window.draw(m_revealButton.getSprite());
+	this->m_data->window.draw(m_collectButton.getSprite());
+
 
 	this->m_data->window.display();
 }
@@ -102,9 +112,12 @@ void view::GameView::loadResources() {
 	this->m_data->resourceManager.loadTexture("Disabled jail card", DISABLED_JAIL_CARD_BUTTON_FILE);
 	this->m_data->resourceManager.loadTexture("Jail roll", ROLL_THE_DICE_BUTTON_FILE);
 	this->m_data->resourceManager.loadTexture("Disabled jail roll", DISABLED_ROLL_THE_DICE_BUTTON_FILE);
+	this->m_data->resourceManager.loadTexture("Reveal", REVEAL_BUTTON_FILE);
+	this->m_data->resourceManager.loadTexture("Disabled reveal", DISABLED_REVEAL_BUTTON_FILE);
+	this->m_data->resourceManager.loadTexture("Collect", COLLECT_BUTTON_FILE);
+	this->m_data->resourceManager.loadTexture("Disabled collect", DISABLED_COLLECT_BUTTON_FILE);
 
-	//current field background
-	this->m_data->resourceManager.loadTexture("Default field", DEFAULT_FIELD_BACKGROUND);
+	//current field background	
 	this->m_data->resourceManager.loadTexture("Field backgrounds", FIELD_BACKGROUNDS);
 
 	//active player field
@@ -114,35 +127,62 @@ void view::GameView::loadResources() {
 void view::GameView::createBackground() {
 	this->m_background.setTexture(this->m_data->resourceManager.getTexture("Background"));
 
-	this->m_currentField.setTexture(this->m_data->resourceManager.getTexture("Default field"));
-	m_currentField.setPosition(260, 210);
-
-	createDice();
+	this->m_currentField.setTexture(this->m_data->resourceManager.getTexture("Field backgrounds"));
+	m_currentField.setTextureRect(sf::IntRect(0, 0, 200, 300));
+	m_currentField.setPosition(260, 210);	
 }
 
 void view::GameView::createButtons() {
 	//roll dice button
 	this->m_rollButton.setTextures(this->m_data->resourceManager.getTexture("Roll the dice"),
-		this->m_data->resourceManager.getTexture("Disabled roll the dice"));
-	this->m_rollButton.enable();
-	m_rollButton.getSprite().setPosition(120, 130);
+		this->m_data->resourceManager.getTexture("Disabled roll the dice"));	
+	m_rollButton.getSprite().setPosition(120, 540);
 
 	this->m_propertyManagerButton.setTextures(this->m_data->resourceManager.getTexture("Property manager"),
-		this->m_data->resourceManager.getTexture("Disabled property manager"));
+		this->m_data->resourceManager.getTexture("Disabled property manager"));	
 	this->m_propertyManagerButton.enable();
 	m_propertyManagerButton.getSprite().setPosition(300, 530);
 
 	//end turn button
 	this->m_endTurnButton.setTextures(this->m_data->resourceManager.getTexture("End turn"),
-		this->m_data->resourceManager.getTexture("Disabled end turn"));
-	this->m_endTurnButton.enable();
-	m_endTurnButton.getSprite().setPosition(120, 540);
+		this->m_data->resourceManager.getTexture("Disabled end turn"));	
+	m_endTurnButton.getSprite().setPosition(485, 540);
+	
+	//buy button
+	this->m_buyButton.setTextures(this->m_data->resourceManager.getTexture("Buy"),
+		this->m_data->resourceManager.getTexture("Disabled buy"));
+	this->m_buyButton.disable();
+	m_buyButton.getSprite().setPosition(485, 215);
 
 	//pay button
 	this->m_payButton.setTextures(this->m_data->resourceManager.getTexture("Pay"),
-		this->m_data->resourceManager.getTexture("Disabled pay"));
-	this->m_payButton.enable();
-	m_payButton.getSprite().setPosition(485, 210);
+		this->m_data->resourceManager.getTexture("Disabled pay"));	
+	this->m_payButton.disable();
+	m_payButton.getSprite().setPosition(485, 265);
+
+	//jail roll button
+	this->m_jailRollButton.setTextures(this->m_data->resourceManager.getTexture("Jail roll"),
+		this->m_data->resourceManager.getTexture("Disabled jail roll"));
+	this->m_jailRollButton.disable();
+	m_jailRollButton.getSprite().setPosition(485, 315);
+
+	//jail card button
+	this->m_jailCardButton.setTextures(this->m_data->resourceManager.getTexture("Jail card"),
+		this->m_data->resourceManager.getTexture("Disabled jail card"));
+	this->m_jailCardButton.disable();
+	m_jailCardButton.getSprite().setPosition(485, 365);
+
+	//reveal button
+	this->m_revealButton.setTextures(this->m_data->resourceManager.getTexture("Reveal"),
+		this->m_data->resourceManager.getTexture("Disabled reveal"));
+	this->m_revealButton.disable();
+	m_revealButton.getSprite().setPosition(485, 415);
+
+	//collect button
+	this->m_collectButton.setTextures(this->m_data->resourceManager.getTexture("Collect"),
+		this->m_data->resourceManager.getTexture("Disabled collect"));
+	this->m_collectButton.disable();
+	m_collectButton.getSprite().setPosition(485, 465);
 }
 
 void view::GameView::createDice() {
@@ -187,14 +227,18 @@ void view::GameView::createPlayers() {
 	}	
 }
 
+void view::GameView::createMessageBoxes() {
+	m_fieldInfo.create(300, 300, 13, sf::Color::Black, "");
+}
+
 view::Player& view::GameView::activePlayer() {
 	m_activePlayer = m_game.getActivePlayerID();
 	return m_players[m_activePlayer];
 }
 
 void view::GameView::calculateTokenPosition() {
-	m_tokenPreviousPosition = m_board.get()[static_cast<std::size_t>(activePlayer().getPosition())];
-	m_tokenNextPosition = m_board.get()[static_cast<std::size_t>(activePlayer().getPosition() + 1) % 40];
+	m_tokenPreviousPosition = m_board.getField(static_cast<std::size_t>(activePlayer().getPosition())).getPosition();
+	m_tokenNextPosition = m_board.getField(static_cast<std::size_t>(activePlayer().getPosition() + 1) % 40).getPosition();
 	activePlayer().getToken().setPosition(m_tokenPreviousPosition
 		+ (m_tokenNextPosition - m_tokenPreviousPosition)
 		* activePlayer().getStep() + activePlayer().getJumpOffSet());
@@ -231,4 +275,9 @@ void view::GameView::updatePlayerLabels() {
 	for (size_t i = 0; i < m_players.size(); ++i) {
 		m_players[i].updateLabel();
 	}
+}
+
+void view::GameView::updateCurrentField() {	
+	m_currentField.setTextureRect(sf::IntRect(m_board.getField(activePlayer().getPosition()).getTexturePosition(), 0, 200, 300));
+	m_fieldInfo.changeText(m_game.getBoard().getField(static_cast<int>(activePlayer().getPosition())).getMessage());	
 }

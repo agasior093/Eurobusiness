@@ -8,8 +8,8 @@ namespace view {
 		GoToJail(float positionX, float positionY)
 			: Field(positionX, positionY)
 		{
-			m_picture.setTextureRect(sf::IntRect(1000, 0, 200, 300));
+			m_texturePositionX = 1000;
 		}
-		virtual ~GoToJail() = default;
+		virtual ~GoToJail() = default;		
 	};
 }

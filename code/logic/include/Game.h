@@ -3,11 +3,13 @@
 #include <vector>
 #include "../include/Dice.h"
 #include "../include/Player.h"
+#include "../include/GameBoard.h"
 
 namespace logic {
-	class Game {		
-		logic::Dice m_diceOne, m_diceTwo;
-		
+	class Game {
+		logic::GameBoard m_gameBoard;
+		logic::Dice m_diceOne, m_diceTwo;	
+
 		//players
 		std::vector<logic::Player> m_players;
 		unsigned m_numberOfPlayers;
@@ -46,6 +48,7 @@ namespace logic {
 		int getDoublesInCurrentTurn() const;		
 		int getTotalRollResult() const;
 
+		logic::GameBoard& getBoard();
 		logic::Dice& getDiceOne();
 		logic::Dice& getDiceTwo();
 	};

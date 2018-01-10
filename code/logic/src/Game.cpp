@@ -125,6 +125,9 @@ void logic::Game::permissionToThrow(bool argument) {
 }
 
 //inline getters
+logic::GameBoard& logic::Game::getBoard() {
+	return m_gameBoard;
+}
 logic::Player& logic::Game::getActivePlayer() {
 	return m_players[m_activePlayer];
 }

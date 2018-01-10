@@ -53,3 +53,7 @@ constexpr auto BUY_BUTTON_FILE = "resources//buttons//buy_button.png";
 constexpr auto DISABLED_BUY_BUTTON_FILE = "resources//buttons//disabled_buy_button.png";
 constexpr auto PROPERTY_MANAGER_BUTTON_FILE = "resources//buttons//property_manager_button.png";
 constexpr auto DISABLED_PROPERTY_MANAGER_BUTTON_FILE = "resources//buttons//disabled_property_manager_button.png";
+constexpr auto REVEAL_BUTTON_FILE = "resources//buttons//reveal_button.png";
+constexpr auto DISABLED_REVEAL_BUTTON_FILE = "resources//buttons//disabled_reveal_button.png";
+constexpr auto COLLECT_BUTTON_FILE = "resources//buttons//collect_button.png";
+constexpr auto DISABLED_COLLECT_BUTTON_FILE = "resources//buttons//disabled_collect_button.png";

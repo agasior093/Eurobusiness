@@ -21,9 +21,7 @@ void view::Player::create(sf::Color color,
 
 	m_label.setSize(sf::Vector2f(PLAYER_LABEL_WIDTH, PLAYER_LABEL_HEIGHT));
 	m_label.setTexture(&m_texture);
-	m_label.setPosition(labelPositionX, labelPositionY);
-	//m_label.setTextureRect(sf::IntRect(0, 0, 140, 70));
-	
+	m_label.setPosition(labelPositionX, labelPositionY);	
 }
 
 void view::Player::setTargetPosition() {

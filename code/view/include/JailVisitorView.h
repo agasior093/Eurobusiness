@@ -8,8 +8,8 @@ namespace view {
 		JailVisitor(float positionX, float positionY)
 			: Field(positionX, positionY)
 		{
-			m_picture.setTextureRect(sf::IntRect(600, 0, 200, 300));
+			m_texturePositionX = 600;
 		}
-		virtual ~JailVisitor() = default;
+		virtual ~JailVisitor() = default;		
 	};
 }

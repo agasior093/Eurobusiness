@@ -8,9 +8,9 @@ namespace view {
 		Parking(float positionX, float positionY)
 			: Field(positionX, positionY)
 		{
-			m_picture.setTextureRect(sf::IntRect(800, 0, 200, 300));
+			m_texturePositionX = 400;
 		}
-		virtual ~Parking() = default;
+		virtual ~Parking() = default;		
 	};
 }
 

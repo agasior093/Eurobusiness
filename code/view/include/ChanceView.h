@@ -3,13 +3,23 @@
 #include "../include/FieldView.h"
 
 namespace view {
+	enum class ChanceType {
+		RED, BLUE
+	};
+
 	class Chance : public Field {
+		ChanceType m_type;
 	public:
-		Chance(float positionX, float positionY)
-			: Field(positionX, positionY)
+		Chance(float positionX, float positionY, ChanceType type)
+			: Field(positionX, positionY), m_type(type)
 		{
-			m_picture.setTextureRect(sf::IntRect(200, 0, 200, 300));
+			if (m_type == ChanceType::BLUE) {
+				m_texturePositionX = 400;
+			}
+			else {
+				m_texturePositionX = 200;
+			}			
 		}
-		virtual ~Chance() = default;
+		virtual ~Chance() = default;		
 	};
 }

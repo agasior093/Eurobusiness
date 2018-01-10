@@ -8,8 +8,8 @@ namespace view {
 		Tax(float positionX, float positionY)
 			: Field(positionX, positionY)
 		{
-			m_picture.setTextureRect(sf::IntRect(1200, 0, 200, 300));
+			m_texturePositionX = 1200;
 		}
-		virtual ~Tax() = default;
+		virtual ~Tax() = default;		
 	};
 }

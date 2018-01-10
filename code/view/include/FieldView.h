@@ -7,15 +7,22 @@
 namespace view {
 	class Field {
 	protected:
-		sf::Vector2f m_position;	
-		sf::Texture m_texture;
-		sf::Sprite m_picture;
+		sf::Vector2f m_position;			
+		int m_texturePositionX;
 	public:
-		Field() {}
-		Field(float, float);
+		Field(float positionX, float positionY)
+			: m_position({ positionX, positionY })
+		{			
+			
+		}
 		virtual ~Field() = default;
 
-		virtual sf::Vector2f getPosition() const;
-		virtual sf::Sprite& getPicture();		
+		sf::Vector2f getPosition() {
+			return m_position;
+		}
+
+		int getTexturePosition() {
+			return m_texturePositionX;
+		}
 	};
 }

@@ -8,8 +8,8 @@ namespace view {
 		Property(float positionX, float positionY)
 			: Field(positionX, positionY)
 		{
-			m_picture.setTextureRect(sf::IntRect(200, 0, 200, 300));
+			m_texturePositionX = 1200;
 		}
-		virtual ~Property() = default;
+		virtual ~Property() = default;	
 	};
 }

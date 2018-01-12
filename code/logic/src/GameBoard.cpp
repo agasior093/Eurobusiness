@@ -5,7 +5,7 @@ logic::GameBoard::GameBoard() {
 	m_board[1] = std::make_unique<logic::Property>("Warna", GroupName::Bulgaria, true, 120.f, 100.f, 25.f);
 	m_board[2] = std::make_unique<logic::Chance>(ChanceType::RED);
 	m_board[3] = std::make_unique<logic::Property>("Sofia", GroupName::Bulgaria, true, 140.f, 100.f, 35.f);
-	m_board[4] = std::make_unique<logic::Tax>();
+	m_board[4] = std::make_unique<logic::Tax>("Paid parking", 400);
 	m_board[5] = std::make_unique<logic::Property>("South station", GroupName::Railways, false, 400.f, 0.f, 100.f);
 	m_board[6] = std::make_unique<logic::Property>("Katowice", GroupName::Poland, true, 200.f, 100.f, 50.f);
 	m_board[7] = std::make_unique<logic::Chance>(ChanceType::BLUE);
@@ -42,7 +42,7 @@ logic::GameBoard::GameBoard() {
 	m_board[35] = std::make_unique<logic::Property>("East station", GroupName::Railways, true, 400.f, 0.f, 100.f);
 	m_board[36] = std::make_unique<logic::Chance>(ChanceType::BLUE);
 	m_board[37] = std::make_unique<logic::Property>("Munich", GroupName::Germany, true, 810.f, 400.f, 500.f);
-	m_board[38] = std::make_unique<logic::Tax>();
+	m_board[38] = std::make_unique<logic::Tax>("Income tax", 200);
 	m_board[39] = std::make_unique<logic::Property>("Berlin", GroupName::Germany, true, 850.f, 400.f, 550.f);
 }
 

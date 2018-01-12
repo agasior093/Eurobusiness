@@ -26,7 +26,7 @@ void logic::Game::startTurn() {
 	checkForDoubles();
 	if (m_canMove == true) {		
 		m_stateBeforeThrow = false;
-		setInMotion(30);
+		setInMotion(m_totalRollResult);
 	}	
 	//activate new position only after player changes old position or after end turn if he is in jail,
 	//because then he cant move, but position needs to be updated

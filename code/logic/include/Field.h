@@ -21,6 +21,7 @@ namespace logic {
 		virtual void activate(logic::Player&) {}
 		virtual void checkRollResult(int, int, logic::Player&) {}
 		virtual void useCard(logic::Player&) {}
+		virtual void pay(logic::Player&) {}
 		virtual void reset() {}
 	};
 }

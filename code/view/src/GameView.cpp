@@ -51,11 +51,15 @@ void view::GameView::handleInput() {
 		}
 
 		if (this->m_data->inputManager.isSpriteClicked(this->m_jailRollButton, evnt, this->m_data->window)) {
-			m_game.jailRoll();
-			//m_board.getField(30).roll();
+			m_game.jailRoll();			
 			m_diceOne.changeTexture(m_game.getDiceOne().getCurrentNumber());
 			m_diceTwo.changeTexture(m_game.getDiceTwo().getCurrentNumber());
 		}
+
+		if (this->m_data->inputManager.isSpriteClicked(this->m_payButton, evnt, this->m_data->window)) {
+			m_game.getBoard().getField(m_game.getActivePlayer().getPosition()).pay(m_game.getActivePlayer());
+		}
+
 
 		//test keys		
 		if (evnt.type == sf::Event::KeyPressed && evnt.key.code == sf::Keyboard::C) {
@@ -63,8 +67,7 @@ void view::GameView::handleInput() {
 		}
 
 		if (evnt.type == sf::Event::KeyPressed && evnt.key.code == sf::Keyboard::T) {
-			if (m_game.isStateBeforeThrow()) std::cout << "before";
-			else std::cout << "after";
+			std::cout << m_game.getActivePlayer().getCurrentPayment();
 			
 		}
 	}
@@ -354,7 +357,7 @@ void view::GameView::updateCurrentField() {
 			m_fieldInfo.changeText(m_game.getBoard().getField(static_cast<int>(activePlayer().getPosition())).getMessage());			
 		}
 		else {
-			m_currentField.setTextureRect(sf::IntRect(0, 0, 200, 300));
+			m_currentField.setTextureRect(sf::IntRect(1400, 0, 200, 300));
 			m_fieldInfo.changeText("");
 		}
 	}

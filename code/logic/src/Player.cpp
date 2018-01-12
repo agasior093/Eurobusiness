@@ -26,7 +26,7 @@ void logic::Player::createPayment(float amount, Player* player) {
 bool logic::Player::pay() {
 	if (m_cash >= m_currentPayment) {
 		m_cash -= m_currentPayment;
-		m_loanHolder->addCash(m_currentPayment);
+		if(m_loanHolder!=nullptr) m_loanHolder->addCash(m_currentPayment);
 		m_currentPayment = 0;
 		m_loanHolder = nullptr;
 		return true;

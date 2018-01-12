@@ -19,6 +19,8 @@ namespace logic {
 		virtual std::string getMessage() { return m_mainMessage; }
 		virtual std::string getGameStatus() { return m_gameStatusMessage; }
 		virtual void activate(logic::Player&) {}
+		virtual void checkRollResult(int, int) {}
+		virtual void reset() {}
 	};
 }
 

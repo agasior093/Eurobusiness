@@ -42,6 +42,7 @@ namespace logic {
 		void incrementPosition(int);
 		void setPosition(int);	
 
+		void sendToJail(bool);
 		void lockInJail();
 		void decrementTurnsInJail();
 

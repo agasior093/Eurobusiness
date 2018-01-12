@@ -52,6 +52,7 @@ void view::GameView::handleInput() {
 
 		if (this->m_data->inputManager.isSpriteClicked(this->m_jailRollButton, evnt, this->m_data->window)) {
 			m_game.jailRoll();
+			m_board.getField(30).roll();
 			m_diceOne.changeTexture(m_game.getDiceOne().getCurrentNumber());
 			m_diceTwo.changeTexture(m_game.getDiceTwo().getCurrentNumber());
 		}
@@ -298,12 +299,13 @@ void view::GameView::rollTheDice() {
 	}	
 }
 
-void view::GameView::endTurn() {
-	if (m_game.getActivePlayer().getTurnsLeftInJail() > 0) {
+void view::GameView::endTurn() {	
+	if (m_game.getActivePlayer().isSentToJail()) {
 		activePlayer().getToken().setPosition(45, 675);
 		activePlayer().setPosition(10);
 	}
-	m_game.endTurn();
+	m_board.getField(m_game.getActivePlayer().getPosition()).reset();
+	m_game.endTurn();	
 }
 
 void view::GameView::updateButtons() {	
@@ -330,15 +332,7 @@ void view::GameView::updateButtons() {
 	}
 	else {
 		m_collectButton.disable();
-	}
-	
-	/*
-	if (m_game.getActivePlayer().getTurnsLeftInJail() > 0 && m_game.getActivePlayer().getOutOfJailCards() > 0) {
-		m_jailCardButton.enable();
-	}
-	else {
-		m_jailCardButton.disable();
-	}*/
+	}	
 }
 
 void view::GameView::updatePlayerLabels() {

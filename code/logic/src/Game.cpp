@@ -96,6 +96,13 @@ bool logic::Game::canEndTurn() {
 
 bool logic::Game::endTurn() {
 	if(canEndTurn()) {
+		auto previousPosition = getActivePlayer().getPosition();
+		//send player to jail if needed
+		if (getActivePlayer().isSentToJail()) {
+			getActivePlayer().lockInJail();
+			getActivePlayer().sendToJail(false);
+		}
+		m_gameBoard.getField(previousPosition).reset();
 		//switch to next player
 		getActivePlayer().setAsActive(false);
 		m_activePlayer++;
@@ -131,16 +138,10 @@ void logic::Game::collectCash() {
 	m_passedStart = false;
 }
 
-bool logic::Game::jailRoll() {
+void logic::Game::jailRoll() {
 	m_diceOne.rollNewNumber();
 	m_diceTwo.rollNewNumber();
-	if (m_diceOne.getCurrentNumber() == m_diceTwo.getCurrentNumber()) {
-		return true;
-	}
-	else {
-		return false;
-	}
-		
+	m_gameBoard.getField(30).checkRollResult(m_diceOne.getCurrentNumber(), m_diceTwo.getCurrentNumber());		
 }
 
 //inline getters

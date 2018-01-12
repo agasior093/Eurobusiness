@@ -4,6 +4,7 @@
 
 namespace view {
 	class GoToJail : public Field {
+		int m_rollCounter = 0;
 	public:
 		GoToJail(float positionX, float positionY)
 			: Field(positionX, positionY)
@@ -12,6 +13,7 @@ namespace view {
 		}
 		virtual ~GoToJail() = default;		
 		virtual void activate(std::map<std::string, view::Button*>, logic::Player&) override;
-		virtual void roll(bool) override;
+		virtual void reset() override;
+		virtual void roll() override;
 	};
 }

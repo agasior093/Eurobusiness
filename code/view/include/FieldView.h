@@ -20,7 +20,8 @@ namespace view {
 		virtual ~Field() = default;
 
 		virtual void activate(std::map<std::string, view::Button*>, logic::Player&) {}
-		virtual void roll(bool) {}
+		virtual void reset() {}
+		virtual void roll() {}
 
 		sf::Vector2f getPosition() {
 			return m_position;

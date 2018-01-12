@@ -47,10 +47,13 @@ void logic::Player::setPosition(int newPosition) {
 	m_position = newPosition;
 }
 
+void logic::Player::sendToJail(bool argument) {
+	m_isSentToJail = argument;
+}
+
 void logic::Player::lockInJail() {	
 	m_turnsLeftInJail = JAIL_TIME;
-	m_position = 10;
-	//m_isSentToJail = true;
+	m_position = 10;	
 }
 
 void logic::Player::decrementTurnsInJail() {

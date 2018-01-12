@@ -41,7 +41,7 @@ namespace logic {
 		bool canEndTurn();
 		bool endTurn();		
 
-		bool jailRoll();
+		void jailRoll();
 		void collectCash();
 
 		//getters

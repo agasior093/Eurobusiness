@@ -25,9 +25,13 @@ void logic::Game::startTurn() {
 	rollTheDice();
 	checkForDoubles();
 	if (m_canMove == true) {		
+		m_stateBeforeThrow = false;
 		setInMotion(30);
 	}	
-
+	//activate new position only after player changes old position or after end turn if he is in jail,
+	//because then he cant move, but position needs to be updated
+	
+	activateNewPosition();
 	unsigned newPosition = getActivePlayer().getPosition();
 	if (newPosition < oldPosition && getActivePlayer().getTurnsLeftInJail() == 0) {
 		m_passedStart = true;			
@@ -66,16 +70,18 @@ std::string logic::Game::checkForDoubles() {
 		}
 
 		if (m_doublesInCurrentTurn == 2 && m_throwsInCurrentTurn == 2) {
-			message = "Doubles again! You are going to jail.\nYou can't do anything about it.";
+			message = "Doubles again! You are going to jail.\nYou can't do anything\nabout it.";
 			m_canThrow = false;
 			m_canMove = false;
-			getActivePlayer().lockInJail();
+			getActivePlayer().sendToJail(true);
 		}
 		return message;
 	}
 	
 void logic::Game::setInMotion(unsigned number) {	
 	getActivePlayer().incrementPosition(number);	
+}
+void logic::Game::activateNewPosition() {
 	m_gameBoard.getField(getActivePlayer().getPosition()).activate(getActivePlayer());
 }
 
@@ -101,8 +107,8 @@ bool logic::Game::endTurn() {
 		if (getActivePlayer().isSentToJail()) {
 			getActivePlayer().lockInJail();
 			getActivePlayer().sendToJail(false);
-		}
-		m_gameBoard.getField(previousPosition).reset();
+		}		
+		
 		//switch to next player
 		getActivePlayer().setAsActive(false);
 		m_activePlayer++;
@@ -113,14 +119,16 @@ bool logic::Game::endTurn() {
 
 		//reset game data
 		reset();
-		
+		m_gameBoard.getField(previousPosition).reset();
+
 		//if in jail
-		if (getActivePlayer().getTurnsLeftInJail() > 0) {			
+		if (getActivePlayer().getTurnsLeftInJail() > 0) {	
+			activateNewPosition();
 			m_canThrow = false;
 			m_canMove = false;
 			getActivePlayer().decrementTurnsInJail();
 		}		
-		
+		m_stateBeforeThrow = true;
 		return true;
 	}
 	else {
@@ -141,10 +149,13 @@ void logic::Game::collectCash() {
 void logic::Game::jailRoll() {
 	m_diceOne.rollNewNumber();
 	m_diceTwo.rollNewNumber();
-	m_gameBoard.getField(30).checkRollResult(m_diceOne.getCurrentNumber(), m_diceTwo.getCurrentNumber());		
+	m_gameBoard.getField(30).checkRollResult(m_diceOne.getCurrentNumber(), m_diceTwo.getCurrentNumber(), getActivePlayer());		
 }
 
 //inline getters
+bool logic::Game::isStateBeforeThrow() const {
+	return m_stateBeforeThrow;
+}
 logic::GameBoard& logic::Game::getBoard() {
 	return m_gameBoard;
 }

@@ -11,6 +11,7 @@ namespace logic {
 			
 		}
 		~JailVisitor() = default;
-	
+
+		virtual void activate(logic::Player&) override;
 	};
 }

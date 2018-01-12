@@ -31,6 +31,8 @@ namespace logic {
 		logic::Player& getPlayer(int);
 		unsigned getActivePlayerID();
 
+		bool m_stateBeforeThrow = true;
+
 		void reset(); 
 		void permissionToThrow(bool);
 
@@ -38,6 +40,7 @@ namespace logic {
 		void rollTheDice();
 		std::string checkForDoubles();
 		void setInMotion(unsigned);
+		void activateNewPosition();
 		bool canEndTurn();
 		bool endTurn();		
 
@@ -47,6 +50,7 @@ namespace logic {
 		//getters
 		bool canThrow() const;
 		bool canMove() const;
+		bool isStateBeforeThrow() const;
 		std::string passedStart() const;
 		int getThrowsInCurrentTurn() const;
 		int getDoublesInCurrentTurn() const;		

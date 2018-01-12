@@ -35,7 +35,7 @@ namespace view {
 		void update(sf::Time); //
 		void draw();
 
-		//game components
+		//game components		
 		int m_numberOfPlayers;
 		logic::Game m_game;
 		view::Dice m_diceOne, m_diceTwo;
@@ -48,6 +48,7 @@ namespace view {
 
 		sf::Vector2f m_tokenPreviousPosition;
 		sf::Vector2f m_tokenNextPosition;
+		int m_playerPreviousPosition;
 
 		//application components
 		sf::Sprite m_background;

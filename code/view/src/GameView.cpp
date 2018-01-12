@@ -34,11 +34,11 @@ void view::GameView::handleInput() {
 		}	
 
 		if (this->m_data->inputManager.isSpriteClicked(this->m_rollButton, evnt, this->m_data->window)) {
-			rollTheDice();
+			rollTheDice();			
 		}
 
 		if (this->m_data->inputManager.isSpriteClicked(this->m_endTurnButton, evnt, this->m_data->window)) {
-			endTurn();			
+			endTurn();				
 		}
 
 		if (this->m_data->inputManager.isSpriteClicked(this->m_collectButton, evnt, this->m_data->window)) {
@@ -47,12 +47,12 @@ void view::GameView::handleInput() {
 		}
 
 		if (this->m_data->inputManager.isSpriteClicked(this->m_jailCardButton, evnt, this->m_data->window)) {
-			m_game.getActivePlayer().useOutOfJailCard();
+			m_game.getBoard().getField(30).useCard(m_game.getActivePlayer());
 		}
 
 		if (this->m_data->inputManager.isSpriteClicked(this->m_jailRollButton, evnt, this->m_data->window)) {
 			m_game.jailRoll();
-			m_board.getField(30).roll();
+			//m_board.getField(30).roll();
 			m_diceOne.changeTexture(m_game.getDiceOne().getCurrentNumber());
 			m_diceTwo.changeTexture(m_game.getDiceTwo().getCurrentNumber());
 		}
@@ -63,15 +63,18 @@ void view::GameView::handleInput() {
 		}
 
 		if (evnt.type == sf::Event::KeyPressed && evnt.key.code == sf::Keyboard::T) {
-			std::cout << m_game.getActivePlayer().getTurnsLeftInJail();
+			if (m_game.isStateBeforeThrow()) std::cout << "before";
+			else std::cout << "after";
+			
 		}
 	}
 }
 
 void view::GameView::update(sf::Time dt) { 
 	updateButtons();
-	updatePlayerLabels();
-	updateCurrentField();		
+	updatePlayerLabels();	
+	updateCurrentField();
+	
 	if (activePlayer().isMoving() == true) {
 		calculateTokenPosition();
 		activePlayer().move();				
@@ -286,7 +289,9 @@ void view::GameView::calculateTokenPosition() {
 		* activePlayer().getStep() ); //+ activePlayer().getJumpOffSet()
 }
 
-void view::GameView::rollTheDice() {
+void view::GameView::rollTheDice() {	
+	m_playerPreviousPosition = static_cast<int>(activePlayer().getPosition());
+	std::cout << m_playerPreviousPosition;
 	m_game.startTurn();
 	m_diceOne.playSound();
 	m_diceOne.changeTexture(m_game.getDiceOne().getCurrentNumber());
@@ -300,12 +305,12 @@ void view::GameView::rollTheDice() {
 }
 
 void view::GameView::endTurn() {	
+	m_board.getField(m_game.getActivePlayer().getPosition()).reset(m_buttons);
 	if (m_game.getActivePlayer().isSentToJail()) {
 		activePlayer().getToken().setPosition(45, 675);
 		activePlayer().setPosition(10);
-	}
-	m_board.getField(m_game.getActivePlayer().getPosition()).reset();
-	m_game.endTurn();	
+	}	
+	m_game.endTurn();		
 }
 
 void view::GameView::updateButtons() {	
@@ -342,10 +347,26 @@ void view::GameView::updatePlayerLabels() {
 	}
 }
 
-void view::GameView::updateCurrentField() {	
-	m_currentField.setTextureRect(sf::IntRect(m_board.getField(activePlayer().getPosition()).getTexturePosition(), 0, 200, 300));
-	m_fieldInfo.changeText(m_game.getBoard().getField(static_cast<int>(activePlayer().getPosition())).getMessage());	
-	m_board.getField(static_cast<int>(activePlayer().getPosition())).activate(m_buttons, m_game.getActivePlayer());
+void view::GameView::updateCurrentField() {		
+	if (m_game.isStateBeforeThrow() == true) {
+		if (static_cast<int>(activePlayer().getPosition() == 10)) {
+			m_currentField.setTextureRect(sf::IntRect(m_board.getField(activePlayer().getPosition()).getTexturePosition(), 0, 200, 300));
+			m_fieldInfo.changeText(m_game.getBoard().getField(static_cast<int>(activePlayer().getPosition())).getMessage());			
+		}
+		else {
+			m_currentField.setTextureRect(sf::IntRect(0, 0, 200, 300));
+			m_fieldInfo.changeText("");
+		}
+	}
+	else {		
+			m_currentField.setTextureRect(sf::IntRect(m_board.getField(activePlayer().getPosition()).getTexturePosition(), 0, 200, 300));
+			m_fieldInfo.changeText(m_game.getBoard().getField(static_cast<int>(activePlayer().getPosition())).getMessage());
+			if (!activePlayer().isMoving()) {
+				m_board.getField(static_cast<int>(activePlayer().getPosition())).activate(m_buttons, m_game.getActivePlayer());
+			}
+				
+	}
+	
 }
 
 view::Player& view::GameView::activePlayer() {

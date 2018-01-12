@@ -39,7 +39,7 @@ bool logic::Player::pay() {
 void logic::Player::incrementPosition(int number) {
 	m_positionDifference = number;
 	m_position += number;
-	if ((m_position += 0.001f) > 40)
+	if ((m_position += 0.001f) > 39)
 		m_position -= 40;
 }
 
@@ -53,7 +53,7 @@ void logic::Player::sendToJail(bool argument) {
 
 void logic::Player::lockInJail() {	
 	m_turnsLeftInJail = JAIL_TIME;
-	m_position = 10;	
+	m_position = 10;		
 }
 
 void logic::Player::decrementTurnsInJail() {

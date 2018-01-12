@@ -17,7 +17,7 @@ namespace logic {
 		~GoToJail() = default;
 		virtual void activate(logic::Player&) override;
 		virtual void reset() override;
-		void checkRollResult(int, int) override;
-		void useCard();
+		virtual void checkRollResult(int, int, logic::Player&) override;
+		virtual void useCard(logic::Player&) override;
 	};
 }

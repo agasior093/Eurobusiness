@@ -13,7 +13,7 @@ namespace view {
 		}
 		virtual ~GoToJail() = default;		
 		virtual void activate(std::map<std::string, view::Button*>, logic::Player&) override;
-		virtual void reset() override;
+		virtual void reset(std::map<std::string, view::Button*> buttons) override;
 		virtual void roll() override;
 	};
 }

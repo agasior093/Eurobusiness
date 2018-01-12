@@ -353,7 +353,7 @@ void view::GameView::updatePlayerLabels() {
 void view::GameView::updateCurrentField() {		
 	if (m_game.isStateBeforeThrow() == true) {
 		if (static_cast<int>(activePlayer().getPosition() == 10)) {
-			m_currentField.setTextureRect(sf::IntRect(m_board.getField(activePlayer().getPosition()).getTexturePosition(), 0, 200, 300));
+			m_currentField.setTextureRect(sf::IntRect(m_board.getField(static_cast<int>(activePlayer().getPosition())).getTexturePosition(), 0, 200, 300));
 			m_fieldInfo.changeText(m_game.getBoard().getField(static_cast<int>(activePlayer().getPosition())).getMessage());			
 		}
 		else {
@@ -362,7 +362,7 @@ void view::GameView::updateCurrentField() {
 		}
 	}
 	else {		
-			m_currentField.setTextureRect(sf::IntRect(m_board.getField(activePlayer().getPosition()).getTexturePosition(), 0, 200, 300));
+			m_currentField.setTextureRect(sf::IntRect(m_board.getField(static_cast<int>(activePlayer().getPosition())).getTexturePosition(), 0, 200, 300));
 			m_fieldInfo.changeText(m_game.getBoard().getField(static_cast<int>(activePlayer().getPosition())).getMessage());
 			if (!activePlayer().isMoving()) {
 				m_board.getField(static_cast<int>(activePlayer().getPosition())).activate(m_buttons, m_game.getActivePlayer());

@@ -1,7 +1,7 @@
 #include "../include/Tax.h"
 
 void logic::Tax::activate(logic::Player& player) {
-	player.createPayment(m_charge, nullptr);
+	player.createPayment(static_cast<float>(m_charge), nullptr);
 }
 
 void logic::Tax::pay(logic::Player& player) {

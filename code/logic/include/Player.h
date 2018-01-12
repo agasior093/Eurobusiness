@@ -6,12 +6,15 @@
 #include <iomanip>
 #include <string>
 #include <memory>
+#include <vector>
+
 
 namespace logic {
 	class Player {
 		bool m_isActive = false;
 		std::string m_name;		
-		
+	
+
 		float m_cash = 3500;
 		float m_currentPayment = 0;
 		Player* m_loanHolder = nullptr;
@@ -28,7 +31,9 @@ namespace logic {
 		Player() {}
 		Player(std::string name)
 			: m_name(name)
-		{ }
+		{ 
+			
+		}
 		~Player() = default;
 
 		void setAsActive(bool);			

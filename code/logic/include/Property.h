@@ -5,43 +5,37 @@
 #include <iostream>
 
 namespace logic {
-	enum class GroupName {
-		Bulgaria, Poland, Spain, Italy, France, England, Russia, Germany, Railways, Industries
-	};
+	
 	
 	class Property : public Field {
+	protected:
 		std::string m_name;
-		GroupName m_group;
+		
+		float m_price;
 
 		bool m_buildingArea;
-		bool m_underMortgage = false;
+		bool m_underMortgage = false;		
 
-		float m_price;
-		float m_housePrice;
-		float m_hotelPrice;
-
-		float m_baseFee;
-
-		int m_numberOfHouses = 0;
-		int m_numberOfHotels = 0;
+		float m_baseFee;	
 		
 		logic::Player* m_owner = nullptr;
 
 		float m_charge;
 		float m_defaultCharge;
-
 	public:
-		Property(std::string name, GroupName group, bool buildingArea, 
-			float price, float housePrice, float baseFee)
-			: Field(true), m_name(name), m_group(group), m_buildingArea(buildingArea), 
-			m_price(price), m_housePrice(housePrice), m_hotelPrice(4*housePrice), m_baseFee(baseFee)
+		Property(std::string name, bool buildingArea, float price, float baseFee)
+			: Field(true), m_name(name), m_buildingArea(buildingArea), m_price(price), m_baseFee(baseFee)
 		{			
 			updateMessage();
 		}
 		~Property() = default;
 
-		void updateMessage();				
+		virtual void updateMessage() {}
 		
+		void setOwner(logic::Player&);
+		void setUnderMortgage();
+		void liftMortgage();
+
 		template <typename T>
 		std::string toStringWithPrecision(const T a_value, const int n = 1) {
 			std::stringstream stream;

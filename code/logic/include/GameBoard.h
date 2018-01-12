@@ -10,6 +10,8 @@
 #include "../include/Property.h"
 #include "../include/Start.h"
 #include "../include/Tax.h"
+#include "../include/City.h"
+#include "../include/Industry.h"
 
 namespace logic {
 	class GameBoard {

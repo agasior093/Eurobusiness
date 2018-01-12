@@ -9,7 +9,7 @@ namespace logic {
 		int m_defaultCharge;
 		std::string m_defaultMessage;
 	public:
-		Tax(std::string name, float charge)
+		Tax(std::string name, int charge)
 			: Field(false), m_name(name), m_charge(charge)
 		{
 			m_mainMessage = m_name + "\n\nYou are obligated to\npay " + std::to_string(m_charge) + "$.";

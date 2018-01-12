@@ -39,7 +39,7 @@ bool logic::Player::pay() {
 void logic::Player::incrementPosition(int number) {
 	m_positionDifference = number;
 	m_position += number;
-	if ((m_position += 0.001f) > 39)
+	if ((m_position += 1) > 39) //+= 0.001f
 		m_position -= 40;
 }
 

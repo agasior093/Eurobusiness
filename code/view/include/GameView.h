@@ -6,6 +6,7 @@
 #include <SFML\Graphics.hpp>
 #include <vector>
 #include <memory>
+#include <map>
 
 #include "ResourceManager.h"
 #include "InputManager.h"
@@ -31,7 +32,7 @@ namespace view {
 		void gameLoop();
 		void initialise();
 		void handleInput();
-		void update(sf::Time dt);
+		void update(sf::Time); //
 		void draw();
 
 		//game components
@@ -54,7 +55,8 @@ namespace view {
 
 		MessageBox m_gameStatus;
 		MessageBox m_fieldInfo;
-
+		
+		std::map<std::string, Button*> m_buttons;
 		//left menu buttons
 		Button m_rollButton;	
 		Button m_propertyManagerButton;
@@ -87,8 +89,10 @@ namespace view {
 
 		//on event 
 		void rollTheDice();
+		void endTurn();
 		
 		view::Player& activePlayer();
+		Button* getButton(std::string);
 
 		template <typename T>
 		std::string toStringWithPrecision(const T a_value, const int n = 1) {

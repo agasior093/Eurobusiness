@@ -3,8 +3,9 @@
 constexpr auto JAIL_TIME = 3;
 constexpr auto JAIL_POSITION = 10;
 constexpr auto BOARD_SIZE = 40;
-constexpr auto STARTING_POSITION_X = 675.0f;
-constexpr auto STARTING_POSITION_Y = 675.0f;
+constexpr auto PASSED_START_CASH = 400.0f;
+constexpr auto STARTING_POSITION_X = 675.f;
+constexpr auto STARTING_POSITION_Y = 675.f;
 
 constexpr auto APPLICATION_SCREEN_WIDTH = 720;
 constexpr auto APPLICATION_SCREEN_HEIGHT = 720;
@@ -14,13 +15,13 @@ constexpr auto MENU_STATE_BACKGROUND_FILE = "resources//board.png";
 constexpr auto CANDARA_FONT_FILE = "resources//Candara.ttf";
 
 //dice
-constexpr auto FIRST_DICE_POSITION_X = 300.0f;
-constexpr auto FIRST_DICE_POSITION_Y = 130.0f;
-constexpr auto SECOND_DICE_POSITION_X = 360.0f;
-constexpr auto SECOND_DICE_POSITION_Y = 105.0f;
+constexpr auto FIRST_DICE_POSITION_X = 300.f;
+constexpr auto FIRST_DICE_POSITION_Y = 130.f;
+constexpr auto SECOND_DICE_POSITION_X = 360.f;
+constexpr auto SECOND_DICE_POSITION_Y = 105.f;
 
-constexpr auto DICE_WIDTH = 55.0f;
-constexpr auto DICE_HEIGHT = 55.0f;
+constexpr auto DICE_WIDTH = 55.f;
+constexpr auto DICE_HEIGHT = 55.f;
 constexpr auto DICE_SOUND = "resources//diceSound.wav";
 constexpr auto DICE_TEXTURE = "resources//dice.png";
 
@@ -29,8 +30,8 @@ constexpr auto DEFAULT_FIELD_BACKGROUND = "resources//default_current_field.png"
 constexpr auto FIELD_BACKGROUNDS = "resources//field_backgrounds.png";
 
 //active/not active player
-constexpr auto PLAYER_LABEL_WIDTH = 140.0f;
-constexpr auto PLAYER_LABEL_HEIGHT = 70.0f;
+constexpr auto PLAYER_LABEL_WIDTH = 140.f;
+constexpr auto PLAYER_LABEL_HEIGHT = 70.f;
 constexpr auto PLAYER_LABEL = "resources//player_label.png";
 
 constexpr auto PLAYER_LABEL_POSITION_X = 110;

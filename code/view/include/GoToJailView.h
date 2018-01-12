@@ -11,5 +11,7 @@ namespace view {
 			m_texturePositionX = 1000;
 		}
 		virtual ~GoToJail() = default;		
+		virtual void activate(std::map<std::string, view::Button*>, logic::Player&) override;
+		virtual void roll(bool) override;
 	};
 }

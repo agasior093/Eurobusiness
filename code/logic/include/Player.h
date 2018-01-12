@@ -17,16 +17,16 @@ namespace logic {
 		Player* m_loanHolder = nullptr;
 
 		int m_position = 0;
-		int m_positionDifference = 0; //total result of last dice roll
-		int m_targetPosition = 0;
+		int m_positionDifference = 0; //total result of last dice roll		
 		bool m_isMoving = false;		
 
+		bool m_isSentToJail = false;
 		int m_turnsLeftInJail = 0;
 		int m_outOfJailCards = 0;
 
 	public:
 		Player() {}
-		Player(std::string name) 
+		Player(std::string name)
 			: m_name(name)
 		{ }
 		~Player() = default;
@@ -58,6 +58,7 @@ namespace logic {
 		int getPosition() const;
 		int getPositionDifference() const;
 
+		bool isSentToJail() const;
 		int getTurnsLeftInJail() const;
 		int getOutOfJailCards() const;
 

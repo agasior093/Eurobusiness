@@ -15,7 +15,7 @@
 
 namespace view {
 	class GameBoard {	
-		std::array < std::shared_ptr < view::Field>, BOARD_SIZE > m_board;
+		std::array < std::unique_ptr < view::Field>, BOARD_SIZE > m_board;
 	public:
 		GameBoard();
 		~GameBoard() = default;

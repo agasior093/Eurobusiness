@@ -3,6 +3,8 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include "DEFINITIONS.h"
+#include "Button.h"
+#include "../code/logic/include/Player.h"
 
 namespace view {
 	class Field {
@@ -16,6 +18,9 @@ namespace view {
 			
 		}
 		virtual ~Field() = default;
+
+		virtual void activate(std::map<std::string, view::Button*>, logic::Player&) {}
+		virtual void roll(bool) {}
 
 		sf::Vector2f getPosition() {
 			return m_position;

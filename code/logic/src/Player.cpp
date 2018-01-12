@@ -47,10 +47,10 @@ void logic::Player::setPosition(int newPosition) {
 	m_position = newPosition;
 }
 
-void logic::Player::lockInJail() {
-	
+void logic::Player::lockInJail() {	
 	m_turnsLeftInJail = JAIL_TIME;
 	m_position = 10;
+	//m_isSentToJail = true;
 }
 
 void logic::Player::decrementTurnsInJail() {
@@ -93,8 +93,12 @@ int logic::Player::getPosition() const {
 	return m_position;
 }
 
-int logic::Player::getPositionDifference() const {
+int logic::Player::getPositionDifference() const {	
 	return m_positionDifference;
+}
+
+bool logic::Player::isSentToJail() const {
+	return m_isSentToJail;
 }
 
 int logic::Player::getTurnsLeftInJail() const {

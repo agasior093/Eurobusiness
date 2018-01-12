@@ -8,7 +8,7 @@ namespace view {
 		Parking(float positionX, float positionY)
 			: Field(positionX, positionY)
 		{
-			m_texturePositionX = 400;
+			m_texturePositionX = 800;
 		}
 		virtual ~Parking() = default;		
 	};

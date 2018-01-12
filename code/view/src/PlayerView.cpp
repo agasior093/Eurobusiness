@@ -10,14 +10,14 @@ view::Player::Player(logic::Player& player) {
 }
 
 void view::Player::create(sf::Color color, 
-	float labelPositionX, float labelPositionY) {
+	float labelPositionX, float labelPositionY, float originX, float originY) { 
 	
 	m_token.setFillColor(color);
 	m_token.setRadius(10);
 	m_token.setPosition(STARTING_POSITION_X, STARTING_POSITION_Y);
 	m_token.setOutlineColor(sf::Color::Black);
 	m_token.setOutlineThickness(2);
-	m_token.setOrigin({ 20, 20 });
+	m_token.setOrigin({ originX, originY });
 
 	m_label.setSize(sf::Vector2f(PLAYER_LABEL_WIDTH, PLAYER_LABEL_HEIGHT));
 	m_label.setTexture(&m_texture);
@@ -29,14 +29,13 @@ void view::Player::setTargetPosition() {
 	m_isMoving = true;
 }
 
-void view::Player::setPosition(int positions) {
-	m_position += positions;
-	if ((m_position += .001f) > 40)
-		m_position -= 40;
+void view::Player::setPosition(float position) {
+	m_position = position;
+	m_targetPosition = position;	
 }
 
 void view::Player::move() {
-	if ((m_position += .001f) > 40) {
+	if ((m_position += .005f) > 40) {
 		m_position -= 40;
 		m_targetPosition -= 40;
 	}
@@ -61,7 +60,7 @@ std::string view::Player::getPlayerInfo() {
 	std::string info =
 		"         " + m_player->getName() + "\n" +
 		"Cash: " + toStringWithPrecision(m_player->getCash()) + "$\n" +
-		"Payment: " + toStringWithPrecision(m_player->getCurrentPayment()) + "$\n";
+		"Payment: " + toStringWithPrecision(m_player->getCurrentPayment()) + "$\n";	
 	return info;	
 }
 sf::CircleShape& view::Player::getToken() {

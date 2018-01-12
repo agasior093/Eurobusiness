@@ -1,7 +1,5 @@
 #include "../include/GameView.h"
 
-
-
 view::GameView::GameView(std::vector<std::string>& playerNames)
 	: m_game(playerNames), m_numberOfPlayers(playerNames.size())
 {	
@@ -25,7 +23,7 @@ void view::GameView::initialise() {
 	createDice();
 	createButtons();
 	createPlayers();
-	createMessageBoxes();
+	createMessageBoxes();	
 }
 
 void view::GameView::handleInput() {
@@ -40,15 +38,39 @@ void view::GameView::handleInput() {
 		}
 
 		if (this->m_data->inputManager.isSpriteClicked(this->m_endTurnButton, evnt, this->m_data->window)) {
-			m_game.endTurn();
+			endTurn();			
+		}
+
+		if (this->m_data->inputManager.isSpriteClicked(this->m_collectButton, evnt, this->m_data->window)) {
+			m_game.collectCash();
+			m_gameStatus.changeText("You recieved 400$.");			
+		}
+
+		if (this->m_data->inputManager.isSpriteClicked(this->m_jailCardButton, evnt, this->m_data->window)) {
+			m_game.getActivePlayer().useOutOfJailCard();
+		}
+
+		if (this->m_data->inputManager.isSpriteClicked(this->m_jailRollButton, evnt, this->m_data->window)) {
+			m_game.jailRoll();
+			m_diceOne.changeTexture(m_game.getDiceOne().getCurrentNumber());
+			m_diceTwo.changeTexture(m_game.getDiceTwo().getCurrentNumber());
+		}
+
+		//test keys		
+		if (evnt.type == sf::Event::KeyPressed && evnt.key.code == sf::Keyboard::C) {
+			m_game.getActivePlayer().addOutOfJailCard();			
+		}
+
+		if (evnt.type == sf::Event::KeyPressed && evnt.key.code == sf::Keyboard::T) {
+			std::cout << m_game.getActivePlayer().getTurnsLeftInJail();
 		}
 	}
 }
 
-void view::GameView::update(sf::Time dt) {
+void view::GameView::update(sf::Time dt) { 
 	updateButtons();
-	updateCurrentField();
-	updatePlayerLabels();	
+	updatePlayerLabels();
+	updateCurrentField();		
 	if (activePlayer().isMoving() == true) {
 		calculateTokenPosition();
 		activePlayer().move();				
@@ -61,9 +83,10 @@ void view::GameView::draw() {
 	//drawing background
 	this->m_data->window.draw(m_background);
 	
-	//drawing current field
+	//drawing background objects
 	this->m_data->window.draw(m_currentField);
 	this->m_data->window.draw(m_fieldInfo.get());
+	this->m_data->window.draw(m_gameStatus.get());
 
 	//drawing players
 	for (int i = 0; i < m_numberOfPlayers; ++i) {
@@ -92,6 +115,8 @@ void view::GameView::draw() {
 
 	this->m_data->window.display();
 }
+
+
 
 void view::GameView::loadResources() {
 	//background texture
@@ -133,6 +158,16 @@ void view::GameView::createBackground() {
 }
 
 void view::GameView::createButtons() {
+	m_buttons["Roll the dice"] = &m_rollButton;
+	m_buttons["Property manager"] = &m_propertyManagerButton;
+	m_buttons["End turn"] = &m_endTurnButton;
+	m_buttons["Buy"] = &m_buyButton;
+	m_buttons["Pay"] = &m_payButton;
+	m_buttons["Jail roll"] = &m_jailRollButton;
+	m_buttons["Jail card"] = &m_jailCardButton;
+	m_buttons["Reveal"] = &m_revealButton;
+	m_buttons["Collect"] = &m_collectButton;
+
 	//roll dice button
 	this->m_rollButton.setTextures(this->m_data->resourceManager.getTexture("Roll the dice"),
 		this->m_data->resourceManager.getTexture("Disabled roll the dice"));	
@@ -198,42 +233,48 @@ void view::GameView::createPlayers() {
 	sf::Color color;
 	float labelPositionX = PLAYER_LABEL_POSITION_X;
 	float labelPositionY;
+	float originX, originY;
 	for (int i = 0; i < m_numberOfPlayers; ++i) {			
 		if (i == 0) {
 			color = sf::Color::Red;			
 			labelPositionY = PLAYER_ONE_LABEL_POSITION_Y;
+			originX = 0;
+			originY = 0;
 		}
 		if (i == 1) {
 			color = sf::Color::Blue;			
 			labelPositionY = PLAYER_TWO_LABEL_POSITION_Y;
+			originX = 20;
+			originY = 0;
 		}
 		if (i == 2) {
 			color = sf::Color::Green;			
 			labelPositionY = PLAYER_THREE_LABEL_POSITION_Y;
+			originX = 0;
+			originY = 20;
 		}
 		if (i == 3) {
 			color = sf::Color::Yellow;			
 			labelPositionY = PLAYER_FOUR_LABEL_POSITION_Y;
+			originX = 20;
+			originY = 20;
 		}
 		
 		m_players.emplace_back(view::Player(m_game.getPlayer(i)));
-		m_players[i].create(color, labelPositionX, labelPositionY);	
+		m_players[i].create(color, labelPositionX, labelPositionY, originX, originY);			
 
 		m_playerLabels.emplace_back(view::MessageBox());
 		m_playerLabels[i].create(labelPositionX + 5, labelPositionY + 5, 15, sf::Color::Black, m_players[i].getPlayerInfo());
 
 		m_playerTokenCopies.emplace_back(m_players[i].getTokenCopy());
 		m_playerTokenCopies[i].setPosition(labelPositionX + 25, labelPositionY + 25);
+		m_playerTokenCopies[i].setOrigin(20, 20);
 	}	
 }
 
 void view::GameView::createMessageBoxes() {
 	m_fieldInfo.create(275, 250, 12, sf::Color::Black, "");
-}
-
-view::Player& view::GameView::activePlayer() {
-	m_activePlayer = m_game.getActivePlayerID();
-	return m_players[m_activePlayer];
+	m_gameStatus.create(100, 100, 17, sf::Color::Black, "");
 }
 
 void view::GameView::calculateTokenPosition() {
@@ -241,7 +282,7 @@ void view::GameView::calculateTokenPosition() {
 	m_tokenNextPosition = m_board.getField(static_cast<std::size_t>(activePlayer().getPosition() + 1) % 40).getPosition();
 	activePlayer().getToken().setPosition(m_tokenPreviousPosition
 		+ (m_tokenNextPosition - m_tokenPreviousPosition)
-		* activePlayer().getStep() + activePlayer().getJumpOffSet());
+		* activePlayer().getStep() ); //+ activePlayer().getJumpOffSet()
 }
 
 void view::GameView::rollTheDice() {
@@ -249,13 +290,24 @@ void view::GameView::rollTheDice() {
 	m_diceOne.playSound();
 	m_diceOne.changeTexture(m_game.getDiceOne().getCurrentNumber());
 	m_diceTwo.changeTexture(m_game.getDiceTwo().getCurrentNumber());
+	
+	m_gameStatus.changeText(m_game.checkForDoubles());
 
 	if (m_game.canMove()) {
 		activePlayer().setTargetPosition();
+	}	
+}
+
+void view::GameView::endTurn() {
+	if (m_game.getActivePlayer().getTurnsLeftInJail() > 0) {
+		activePlayer().getToken().setPosition(45, 675);
+		activePlayer().setPosition(10);
 	}
+	m_game.endTurn();
 }
 
 void view::GameView::updateButtons() {	
+	//roll 
 	if (m_game.canThrow()) {
 		m_rollButton.enable();
 	}
@@ -263,21 +315,50 @@ void view::GameView::updateButtons() {
 		m_rollButton.disable();
 	}	
 
+	//end turn
 	if (m_game.canEndTurn() && !activePlayer().isMoving()) {
 		m_endTurnButton.enable();
 	} 
 	else {
 		m_endTurnButton.disable();
 	}
+
+	//collect
+	if (m_game.passedStart() != "") {
+		m_gameStatus.changeText(m_game.passedStart());
+		m_collectButton.enable();
+	}
+	else {
+		m_collectButton.disable();
+	}
+	
+	/*
+	if (m_game.getActivePlayer().getTurnsLeftInJail() > 0 && m_game.getActivePlayer().getOutOfJailCards() > 0) {
+		m_jailCardButton.enable();
+	}
+	else {
+		m_jailCardButton.disable();
+	}*/
 }
 
 void view::GameView::updatePlayerLabels() {
 	for (size_t i = 0; i < m_players.size(); ++i) {
 		m_players[i].updateLabel();
+		m_playerLabels[i].changeText(m_players[i].getPlayerInfo());
 	}
 }
 
 void view::GameView::updateCurrentField() {	
 	m_currentField.setTextureRect(sf::IntRect(m_board.getField(activePlayer().getPosition()).getTexturePosition(), 0, 200, 300));
 	m_fieldInfo.changeText(m_game.getBoard().getField(static_cast<int>(activePlayer().getPosition())).getMessage());	
+	m_board.getField(static_cast<int>(activePlayer().getPosition())).activate(m_buttons, m_game.getActivePlayer());
+}
+
+view::Player& view::GameView::activePlayer() {
+	m_activePlayer = m_game.getActivePlayerID();
+	return m_players[m_activePlayer];
+}
+
+view::Button* view::GameView::getButton(std::string buttonName) {
+	return m_buttons.at(buttonName);
 }

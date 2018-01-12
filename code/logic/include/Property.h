@@ -40,8 +40,7 @@ namespace logic {
 		}
 		~Property() = default;
 
-		void updateMessage();
-				
+		void updateMessage();				
 		
 		template <typename T>
 		std::string toStringWithPrecision(const T a_value, const int n = 1) {

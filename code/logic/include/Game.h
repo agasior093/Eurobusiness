@@ -41,9 +41,13 @@ namespace logic {
 		bool canEndTurn();
 		bool endTurn();		
 
+		bool jailRoll();
+		void collectCash();
+
 		//getters
 		bool canThrow() const;
 		bool canMove() const;
+		std::string passedStart() const;
 		int getThrowsInCurrentTurn() const;
 		int getDoublesInCurrentTurn() const;		
 		int getTotalRollResult() const;

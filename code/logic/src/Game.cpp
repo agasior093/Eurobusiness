@@ -15,6 +15,7 @@ void logic::Game::reset() {
 	m_totalRollResult = 0;
 	m_canMove = false;
 	m_canThrow = true;
+	m_passedStart = false;
 }
 
 void logic::Game::startTurn() {
@@ -24,13 +25,16 @@ void logic::Game::startTurn() {
 	rollTheDice();
 	checkForDoubles();
 	if (m_canMove == true) {		
-		getActivePlayer().incrementPosition(m_totalRollResult);
+		setInMotion(30);
 	}	
 
 	unsigned newPosition = getActivePlayer().getPosition();
 	if (newPosition < oldPosition && getActivePlayer().getTurnsLeftInJail() == 0) {
-		m_passedStart = true;
-	}	
+		m_passedStart = true;			
+	}
+	else {
+		m_passedStart = false;		
+	}
 }
 
 void logic::Game::rollTheDice() {
@@ -62,7 +66,7 @@ std::string logic::Game::checkForDoubles() {
 		}
 
 		if (m_doublesInCurrentTurn == 2 && m_throwsInCurrentTurn == 2) {
-			message = "Doubles again! You are going to jail.";
+			message = "Doubles again! You are going to jail.\nYou can't do anything about it.";
 			m_canThrow = false;
 			m_canMove = false;
 			getActivePlayer().lockInJail();
@@ -71,7 +75,8 @@ std::string logic::Game::checkForDoubles() {
 	}
 	
 void logic::Game::setInMotion(unsigned number) {	
-	m_players[m_activePlayer].incrementPosition(number);
+	getActivePlayer().incrementPosition(number);	
+	m_gameBoard.getField(getActivePlayer().getPosition()).activate(getActivePlayer());
 }
 
 bool logic::Game::canEndTurn() {
@@ -90,28 +95,25 @@ bool logic::Game::canEndTurn() {
 }
 
 bool logic::Game::endTurn() {
-	//std::string message;
-
 	if(canEndTurn()) {
 		//switch to next player
-		m_players[m_activePlayer].setAsActive(false);
+		getActivePlayer().setAsActive(false);
 		m_activePlayer++;
 		if (m_activePlayer > m_numberOfPlayers - 1) {
 			m_activePlayer = 0;
 		}
-		m_players[m_activePlayer].setAsActive(true);
+		getActivePlayer().setAsActive(true);
 
 		//reset game data
 		reset();
-					
-		//if is in jail, decrement turns left in jail
-		if (getActivePlayer().getTurnsLeftInJail() > 0) {
+		
+		//if in jail
+		if (getActivePlayer().getTurnsLeftInJail() > 0) {			
+			m_canThrow = false;
+			m_canMove = false;
 			getActivePlayer().decrementTurnsInJail();
-		}
-
-		//set new message about active player
-		//message = getActivePlayer().getPlayerInfo();
-		//move that to View	
+		}		
+		
 		return true;
 	}
 	else {
@@ -122,6 +124,23 @@ bool logic::Game::endTurn() {
 
 void logic::Game::permissionToThrow(bool argument) {
 	m_canThrow = argument;
+}
+
+void logic::Game::collectCash() {
+	getActivePlayer().addCash(PASSED_START_CASH);	
+	m_passedStart = false;
+}
+
+bool logic::Game::jailRoll() {
+	m_diceOne.rollNewNumber();
+	m_diceTwo.rollNewNumber();
+	if (m_diceOne.getCurrentNumber() == m_diceTwo.getCurrentNumber()) {
+		return true;
+	}
+	else {
+		return false;
+	}
+		
 }
 
 //inline getters
@@ -142,6 +161,14 @@ bool logic::Game::canThrow() const {
 }
 bool logic::Game::canMove() const { 
 	return m_canMove; 
+}
+std::string logic::Game::passedStart() const { 	
+	if (m_passedStart == true) {		
+		return "Click 'Collect' to collect\ncash for passing the start.\n";
+	} 
+	else {
+		return "";
+	}
 }
 int logic::Game::getThrowsInCurrentTurn() const {
 	return m_throwsInCurrentTurn;

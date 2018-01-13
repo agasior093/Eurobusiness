@@ -32,16 +32,11 @@ namespace logic {
 
 		virtual void updateMessage() {}
 		
-		void setOwner(logic::Player&);
-		void setUnderMortgage();
-		void liftMortgage();
+		virtual void setOwner(logic::Player&) override;
+		virtual void setUnderMortgage() override;
+		virtual void liftMortgage() override;
 
-		template <typename T>
-		std::string toStringWithPrecision(const T a_value, const int n = 1) {
-			std::stringstream stream;
-			stream << std::fixed << std::setprecision(n) << a_value;
-			std::string s = stream.str();
-			return s;
-		}
+		virtual float getPrice() const override;
+		virtual logic::Player* getOwner() override;
 	};
 }

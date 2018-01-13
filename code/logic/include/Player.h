@@ -8,12 +8,13 @@
 #include <memory>
 #include <vector>
 
-
 namespace logic {
+	class Field;
+
 	class Player {
 		bool m_isActive = false;
 		std::string m_name;		
-	
+		std::vector<logic::Field*> m_properties;
 
 		float m_cash = 3500;
 		float m_currentPayment = 0;
@@ -38,6 +39,8 @@ namespace logic {
 
 		void setAsActive(bool);			
 
+		void addProperty(logic::Field*);
+
 		void addCash(float);
 		bool substractCash(float);
 
@@ -57,6 +60,7 @@ namespace logic {
 		//getters
 		std::string getName() const;		
 		
+		std::vector<logic::Field*>& getProperties();
 		float getCash() const;
 		float getCurrentPayment() const;
 		Player* getLoanHolder() const;

@@ -24,7 +24,7 @@ namespace logic {
 		int m_totalRollResult = 0;
 						
 	public:		
-		Game(std::vector<std::string>&);
+		Game(std::vector<std::string>&);		
 		~Game() = default;	
 
 		logic::Player& getActivePlayer();

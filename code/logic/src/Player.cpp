@@ -4,6 +4,10 @@ void logic::Player::setAsActive(bool argument) {
 	m_isActive = argument;
 }
 
+void logic::Player::addProperty(logic::Field* property) {
+	m_properties.emplace_back(property);
+}
+
 void logic::Player::addCash(float amount) {
 	m_cash += amount;
 }
@@ -74,6 +78,10 @@ void logic::Player::useOutOfJailCard() {
 //getters
 bool logic::Player::isActive() const {
 	return m_isActive;
+}
+
+std::vector<logic::Field*>& logic::Player::getProperties() {
+	return m_properties;
 }
 
 std::string logic::Player::getName() const {

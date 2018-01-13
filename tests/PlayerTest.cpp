@@ -17,11 +17,7 @@ public:
 	
 	logic::Player* get() {
 		return m_player.get();
-	}
-		/*  which function is better?
-	std::shared_ptr<logic::Player> get() {
-		return m_player;
-	}*/
+	}		
 };
 
 class PlayerTestSuite : public testing::Test {

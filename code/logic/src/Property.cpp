@@ -13,3 +13,11 @@ void logic::Property::liftMortgage() {
 	m_underMortgage = false;
 }
 
+float logic::Property::getPrice() const {
+	return m_price;
+}
+
+logic::Player* logic::Property::getOwner() {
+	return m_owner;
+}
+

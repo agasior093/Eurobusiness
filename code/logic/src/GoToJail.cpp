@@ -14,9 +14,11 @@ void logic::GoToJail::reset() {
 	m_usedCard = false;
 	m_rolledDoubles = false;
 	m_mainMessage = m_defaultMainMessage;	
+	//m_rollCounter = 0;
 }
 
 void logic::GoToJail::checkRollResult(int firstRoll, int secondRoll, logic::Player& player) {
+	//m_rollCounter++;
 	if (firstRoll == secondRoll) {
 		m_rolledDoubles = true;
 		m_mainMessage = "\n\n\n\n\n\n\n\n\n\n\n\n\nYou rolled doubles!\nTherefore, you avoided prison.";

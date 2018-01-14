@@ -4,6 +4,7 @@
 
 namespace logic {
 	class GoToJail : public Field {
+		//int m_rollCounter = 0;
 		bool m_rolledDoubles = false;
 		bool m_usedCard = false;
 		std::string m_defaultMainMessage;

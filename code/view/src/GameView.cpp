@@ -52,7 +52,8 @@ void view::GameView::handleInput() {
 		}
 
 		if (this->m_data->inputManager.isSpriteClicked(this->m_jailRollButton, evnt, this->m_data->window)) {
-			m_game.jailRoll();			
+			m_game.jailRoll();	
+			m_board.getField(30).roll();
 			m_diceOne.changeTexture(m_game.getDiceOne().getCurrentNumber());
 			m_diceTwo.changeTexture(m_game.getDiceTwo().getCurrentNumber());
 		}
@@ -342,7 +343,7 @@ void view::GameView::updateButtons() {
 
 	//collect
 	if (m_game.passedStart() != "") {
-		m_gameStatus.changeText(m_game.passedStart());
+		//m_gameStatus.changeText(m_game.passedStart());
 		m_collectButton.enable();
 	}
 	else {

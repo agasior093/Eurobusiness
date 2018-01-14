@@ -26,13 +26,13 @@ void logic::Game::startTurn() {
 	checkForDoubles();
 	if (m_canMove == true) {		
 		m_stateBeforeThrow = false;
-		setInMotion(30);
+		setInMotion(5);
 	}	
 	//activate new position only after player changes old position or after end turn if he is in jail,
 	//because then he cant move, but position needs to be updated
 	
-	activateNewPosition();
 	unsigned newPosition = getActivePlayer().getPosition();
+	if(oldPosition != newPosition) activateNewPosition();
 	if (newPosition < oldPosition && getActivePlayer().getTurnsLeftInJail() == 0) {
 		m_passedStart = true;			
 	}
@@ -152,11 +152,13 @@ void logic::Game::jailRoll() {
 	m_gameBoard.getField(30).checkRollResult(m_diceOne.getCurrentNumber(), m_diceTwo.getCurrentNumber(), getActivePlayer());		
 }
 
+
+
 //inline getters
 
-logic::PropertyManager& logic::Game::getPropertyManager() {
-return m_propertyManager;
-}
+//logic::PropertyManager& logic::Game::getPropertyManager() {
+//return m_propertyManager;
+//}
 
 bool logic::Game::isStateBeforeThrow() const {
 	return m_stateBeforeThrow;

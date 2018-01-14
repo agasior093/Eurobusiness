@@ -9,7 +9,7 @@ namespace logic {
 	class Game {
 		logic::GameBoard m_gameBoard;
 		logic::Dice m_diceOne, m_diceTwo;
-		logic::PropertyManager m_propertyManager;
+		//logic::PropertyManager m_propertyManager;
 
 		//players
 		std::vector<logic::Player> m_players;
@@ -54,7 +54,7 @@ namespace logic {
 		int getDoublesInCurrentTurn() const;		
 		int getTotalRollResult() const;
 
-		logic::PropertyManager& getPropertyManager();
+		//logic::PropertyManager& getPropertyManager();
 		logic::Field& getActiveField();
 		logic::Player& getActivePlayer();
 		logic::Player& getPlayer(int);

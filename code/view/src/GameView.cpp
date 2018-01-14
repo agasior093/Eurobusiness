@@ -24,6 +24,7 @@ void view::GameView::initialise() {
 	createButtons();
 	createPlayers();
 	createMessageBoxes();	
+	createSoundEffects();
 }
 
 void view::GameView::handleInput() {
@@ -43,7 +44,7 @@ void view::GameView::handleInput() {
 
 		if (this->m_data->inputManager.isSpriteClicked(this->m_collectButton, evnt, this->m_data->window)) {
 			m_game.collectCash();
-			m_gameStatus.changeText(m_gameStatus.get().getString() + "\nYou recieved 400$.");			
+			m_gameStatus.changeText(m_gameStatus.get().getString() + "\nYou recieved 400$.");
 		}
 
 
@@ -52,19 +53,22 @@ void view::GameView::handleInput() {
 		}
 
 		if (this->m_data->inputManager.isSpriteClicked(this->m_jailRollButton, evnt, this->m_data->window)) {
-			m_game.jailRoll();	
-			m_board.getField(30).roll();
-			m_diceOne.changeTexture(m_game.getDiceOne().getCurrentNumber());
-			m_diceTwo.changeTexture(m_game.getDiceTwo().getCurrentNumber());
+			if (&m_game.getActiveField() == &m_game.getBoard().getField(30)) {
+				jailRoll();
+			}
+			else {
+				industryRoll();
+			}			
 		}
 
 		if (this->m_data->inputManager.isSpriteClicked(this->m_buyButton, evnt, this->m_data->window)) {
-			//m_gameStatus.changeText(m_game.getPropertyManager().buyProperty(m_game.getActivePlayer(), &m_game.getActiveField()));
+			m_buySound.play();
 			m_game.getActiveField().buy(m_game.getActivePlayer());
-			//m_game.getActiveField().updateMessage();
+			m_board.getField(m_game.getActivePlayer().getPosition()).getOwnerSign().setFillColor(activePlayer().getToken().getFillColor());
 		}
 
 		if (this->m_data->inputManager.isSpriteClicked(this->m_payButton, evnt, this->m_data->window)) {
+			m_paySound.play();
 			m_game.getBoard().getField(m_game.getActivePlayer().getPosition()).pay(m_game.getActivePlayer());
 		}
 
@@ -75,7 +79,8 @@ void view::GameView::handleInput() {
 		}
 
 		if (evnt.type == sf::Event::KeyPressed && evnt.key.code == sf::Keyboard::T) {
-			m_gameStatus.changeText(m_game.getActiveField().getGameStatus());			
+			
+			
 		}
 	}
 }
@@ -89,6 +94,12 @@ void view::GameView::update(sf::Time dt) {
 		calculateTokenPosition();
 		activePlayer().move();				
 	}
+	else {
+		if (m_game.getActivePlayer().isSentToJail() && m_shouldPlaySound == true) {
+			m_jailSound.play();
+			m_shouldPlaySound = false;
+		}
+	}
 }
 
 void view::GameView::draw() {
@@ -101,6 +112,9 @@ void view::GameView::draw() {
 	this->m_data->window.draw(m_currentField);
 	this->m_data->window.draw(m_fieldInfo.get());
 	this->m_data->window.draw(m_gameStatus.get());
+	for (int i = 0; i < BOARD_SIZE; ++i) {
+		this->m_data->window.draw(m_board.getField(i).getOwnerSign());
+	}
 
 	//drawing players
 	for (int i = 0; i < m_numberOfPlayers; ++i) {
@@ -161,6 +175,11 @@ void view::GameView::loadResources() {
 
 	//active player field
 	this->m_data->resourceManager.loadTexture("Player label", PLAYER_LABEL);	
+
+	//sounds
+	this->m_data->resourceManager.loadSoundBuffer("Buy sound", BUY_SOUND);
+	this->m_data->resourceManager.loadSoundBuffer("Pay sound", PAY_SOUND);
+	this->m_data->resourceManager.loadSoundBuffer("Jail sound", JAIL_SOUND);
 }
 
 void view::GameView::createBackground() {
@@ -253,25 +272,25 @@ void view::GameView::createPlayers() {
 			color = sf::Color::Red;			
 			labelPositionY = PLAYER_ONE_LABEL_POSITION_Y;
 			originX = 0;
-			originY = 0;
+			originY = 20;
 		}
 		if (i == 1) {
 			color = sf::Color::Blue;			
 			labelPositionY = PLAYER_TWO_LABEL_POSITION_Y;
 			originX = 20;
-			originY = 0;
+			originY = 20;
 		}
 		if (i == 2) {
 			color = sf::Color::Green;			
 			labelPositionY = PLAYER_THREE_LABEL_POSITION_Y;
 			originX = 0;
-			originY = 20;
+			originY = 40;
 		}
 		if (i == 3) {
 			color = sf::Color::Yellow;			
 			labelPositionY = PLAYER_FOUR_LABEL_POSITION_Y;
 			originX = 20;
-			originY = 20;
+			originY = 40;
 		}
 		
 		m_players.emplace_back(view::Player(m_game.getPlayer(i)));
@@ -291,17 +310,22 @@ void view::GameView::createMessageBoxes() {
 	m_gameStatus.create(100, 110, 19, sf::Color::Black, "");
 }
 
+void view::GameView::createSoundEffects() {
+	m_buySound.setBuffer(this->m_data->resourceManager.getSoundBuffer("Buy sound"));
+	m_paySound.setBuffer(this->m_data->resourceManager.getSoundBuffer("Pay sound"));
+	m_jailSound.setBuffer(this->m_data->resourceManager.getSoundBuffer("Jail sound"));
+}
+
 void view::GameView::calculateTokenPosition() {
 	m_tokenPreviousPosition = m_board.getField(static_cast<std::size_t>(activePlayer().getPosition())).getPosition();
 	m_tokenNextPosition = m_board.getField(static_cast<std::size_t>(activePlayer().getPosition() + 1) % 40).getPosition();
 	activePlayer().getToken().setPosition(m_tokenPreviousPosition
 		+ (m_tokenNextPosition - m_tokenPreviousPosition)
-		* activePlayer().getStep() ); //+ activePlayer().getJumpOffSet()
+		* activePlayer().getStep() + activePlayer().getJumpOffSet()); //
 }
 
 void view::GameView::rollTheDice() {	
-	m_playerPreviousPosition = static_cast<int>(activePlayer().getPosition());
-	std::cout << m_playerPreviousPosition;
+	m_playerPreviousPosition = static_cast<int>(activePlayer().getPosition());	
 	m_game.startTurn();
 	m_diceOne.playSound();
 	m_diceOne.changeTexture(m_game.getDiceOne().getCurrentNumber());
@@ -322,9 +346,26 @@ void view::GameView::endTurn() {
 	}	
 	m_game.endTurn();	
 	m_gameStatus.changeText("");
+	m_shouldPlaySound = true;
 }
 
-void view::GameView::updateButtons() {	
+void view::GameView::jailRoll() {
+	m_game.jailRoll();
+	m_board.getField(30).roll();
+	m_diceOne.playSound();
+	m_diceOne.changeTexture(m_game.getDiceOne().getCurrentNumber());
+	m_diceTwo.changeTexture(m_game.getDiceTwo().getCurrentNumber());
+}
+
+void view::GameView::industryRoll() {
+	m_game.getDiceOne().rollNewNumber();
+	m_diceOne.playSound();
+	m_diceOne.changeTexture(m_game.getDiceOne().getCurrentNumber());
+	m_game.getActiveField().checkRollResult(m_game.getDiceOne().getCurrentNumber(), NULL, m_game.getActivePlayer());
+	m_board.getField(m_game.getActivePlayer().getPosition()).roll();
+}
+
+void view::GameView::updateButtons() {		
 	//roll 
 	if (m_game.canThrow()) {
 		m_rollButton.enable();

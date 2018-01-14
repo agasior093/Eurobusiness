@@ -1,10 +1,10 @@
 #include "../include/Property.h"
-#include <iostream>
+
 
 void logic::Property::activate(logic::Player& player) {
-	if (m_hasPayed == false && (this->getOwner() != nullptr)) {
-		std::cout << "created charge " << m_baseFee << "\n";
-		m_charge = calculateCharge(NULL);
+	if (m_hasPayed == false && ((this->getOwner() != nullptr) 
+		&& (this->getOwner()->getName() != player.getName()) )) {
+		calculateCharge();
 		player.createPayment(m_charge, this->getOwner());
 		m_gameStatusMessage = "You are staying in " + this->getName() + ",which belongs\nto player " +
 			this->getOwner()->getName() + ". You owe him " + toStringWithPrecision(m_charge) + "$.";
@@ -41,9 +41,8 @@ void logic::Property::reset() {
 	m_gameStatusMessage = "";
 }
 
-float logic::Property::calculateCharge(int number) {
-	float charge = m_baseFee;
-	return charge;
+void logic::Property::calculateCharge() {
+	m_charge = m_baseFee;	
 }
 
 void logic::Property::setOwner(logic::Player& player) {

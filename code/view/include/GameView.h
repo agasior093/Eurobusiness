@@ -70,6 +70,11 @@ namespace view {
 		Button m_revealButton;
 		Button m_collectButton;
 
+		sf::Sound m_buySound;
+		sf::Sound m_paySound;
+		sf::Sound m_jailSound;
+		bool m_shouldPlaySound = true;
+
 	public:
 		GameView(std::vector<std::string>&);
 		~GameView() = default;				
@@ -81,6 +86,7 @@ namespace view {
 		void createDice();
 		void createPlayers();
 		void createMessageBoxes();
+		void createSoundEffects();
 
 		//on update
 		void calculateTokenPosition();
@@ -91,6 +97,8 @@ namespace view {
 		//on event 
 		void rollTheDice();
 		void endTurn();
+		void jailRoll();
+		void industryRoll();
 		
 		view::Player& activePlayer();
 		Button* getButton(std::string);

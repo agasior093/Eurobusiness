@@ -38,7 +38,7 @@ namespace logic {
 		virtual void buy(logic::Player&) override;
 		virtual void reset() override;
 
-		virtual float calculateCharge(int);
+		virtual void calculateCharge();
 
 		virtual void setOwner(logic::Player&) override;
 		virtual void setUnderMortgage() override;

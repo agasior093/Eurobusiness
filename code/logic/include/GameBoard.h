@@ -12,6 +12,7 @@
 #include "../include/Tax.h"
 #include "../include/City.h"
 #include "../include/Industry.h"
+#include "../include/Railways.h"
 
 namespace logic {
 	class GameBoard {

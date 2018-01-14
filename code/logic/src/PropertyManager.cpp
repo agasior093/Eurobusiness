@@ -1,5 +1,5 @@
 #include "../include/PropertyManager.h"
-#include <iostream>
+
 
 std::string logic::PropertyManager::buyProperty(logic::Player& player, logic::Field* property) {
 	if (property->getOwner() == nullptr && (property->getPrice() <= player.getCash())) {

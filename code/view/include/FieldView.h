@@ -8,10 +8,11 @@
 #include "../code/logic/include/Field.h"
 
 namespace view {
-	class Field {
+	class Field {		
 	protected:
 		sf::Vector2f m_position;			
 		int m_texturePositionX;
+		sf::RectangleShape m_ownerSign;
 	public:
 		Field(float positionX, float positionY)
 			: m_position({ positionX, positionY })
@@ -31,5 +32,7 @@ namespace view {
 		int getTexturePosition() {
 			return m_texturePositionX;
 		}
+
+		virtual sf::RectangleShape& getOwnerSign() { return m_ownerSign; }
 	};
 }

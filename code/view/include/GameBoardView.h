@@ -11,6 +11,7 @@
 #include "../include/ParkingView.h"
 #include "../include/JailVisitorView.h"
 #include "../include/GoToJailView.h"
+#include "../include/IndustryView.h"
 
 
 namespace view {

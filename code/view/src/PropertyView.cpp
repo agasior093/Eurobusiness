@@ -17,5 +17,6 @@ void view::Property::activate(std::map < std::string, view::Button*> buttons, lo
 }
 
 void view::Property::reset(std::map<std::string, view::Button*> buttons) {
-
+	buttons["Pay"]->disable();
+	buttons["Buy"]->disable();
 }

@@ -2,13 +2,14 @@
 
 #include <vector>
 #include "../include/Dice.h"
-#include "../include/Player.h"
 #include "../include/GameBoard.h"
+#include "../include/PropertyManager.h"
 
 namespace logic {
 	class Game {
 		logic::GameBoard m_gameBoard;
-		logic::Dice m_diceOne, m_diceTwo;	
+		logic::Dice m_diceOne, m_diceTwo;
+		logic::PropertyManager m_propertyManager;
 
 		//players
 		std::vector<logic::Player> m_players;
@@ -20,16 +21,13 @@ namespace logic {
 		bool m_canMove = false;
 		bool m_passedStart = false;
 		int m_throwsInCurrentTurn = 0;
-		int m_doublesInCurrentTurn = 0;		
+		int m_doublesInCurrentTurn = 0;
 		int m_totalRollResult = 0;
-						
-	public:		
-		Game(std::vector<std::string>&);		
-		~Game() = default;	
 
-		logic::Player& getActivePlayer();
-		logic::Player& getPlayer(int);
-		unsigned getActivePlayerID();
+	public:
+		Game(std::vector<std::string>&);
+		Game(const Game& src) { }
+		~Game() = default;	
 
 		bool m_stateBeforeThrow = true;
 
@@ -56,6 +54,11 @@ namespace logic {
 		int getDoublesInCurrentTurn() const;		
 		int getTotalRollResult() const;
 
+		logic::PropertyManager& getPropertyManager();
+		logic::Field& getActiveField();
+		logic::Player& getActivePlayer();
+		logic::Player& getPlayer(int);
+		unsigned getActivePlayerID();
 		logic::GameBoard& getBoard();
 		logic::Dice& getDiceOne();
 		logic::Dice& getDiceTwo();

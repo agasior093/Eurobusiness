@@ -11,7 +11,7 @@ namespace view {
 			m_texturePositionX = 1600;
 		}
 		virtual ~Tax() = default;		
-		virtual void activate(std::map<std::string, view::Button*>, logic::Player&) override;
+		virtual void activate(std::map<std::string, view::Button*>, logic::Player&, logic::Field*) override;
 		virtual void reset(std::map<std::string, view::Button*> buttons) override;
 	};
 }

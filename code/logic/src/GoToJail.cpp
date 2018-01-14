@@ -3,10 +3,10 @@
 
 void logic::GoToJail::activate(logic::Player& player) {
 	if (m_rolledDoubles == true || m_usedCard == true) {
-		player.sendToJail(false);
+		player.sendToJail(false);		
 	}
 	else {		
-		player.sendToJail(true);
+		player.sendToJail(true);		
 	}
 }
 

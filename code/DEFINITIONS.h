@@ -15,9 +15,9 @@ constexpr auto MENU_STATE_BACKGROUND_FILE = "resources//board.png";
 constexpr auto CANDARA_FONT_FILE = "resources//Candara.ttf";
 
 //dice
-constexpr auto FIRST_DICE_POSITION_X = 300.f;
+constexpr auto FIRST_DICE_POSITION_X = 480.f;
 constexpr auto FIRST_DICE_POSITION_Y = 130.f;
-constexpr auto SECOND_DICE_POSITION_X = 360.f;
+constexpr auto SECOND_DICE_POSITION_X = 540.f;
 constexpr auto SECOND_DICE_POSITION_Y = 105.f;
 
 constexpr auto DICE_WIDTH = 55.f;

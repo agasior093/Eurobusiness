@@ -1,4 +1,5 @@
 #include "../include/Player.h"
+#include <iostream>
 
 void logic::Player::setAsActive(bool argument) {
 	m_isActive = argument;
@@ -43,8 +44,9 @@ bool logic::Player::pay() {
 void logic::Player::incrementPosition(int number) {
 	m_positionDifference = number;
 	m_position += number;
-	if ((m_position += 1) > 39) //+= 0.001f
+	if ((m_position += 0.001f) > 39) {
 		m_position -= 40;
+	}
 }
 
 void logic::Player::setPosition(int newPosition) {

@@ -1,6 +1,6 @@
 #include "../include/GoToJailView.h"
 
-void view::GoToJail::activate(std::map<std::string, view::Button*> buttons, logic::Player& player) {
+void view::GoToJail::activate(std::map<std::string, view::Button*> buttons, logic::Player& player, logic::Field* field) {
 	if (m_rollCounter == 0) {
 		buttons.at("Jail roll")->enable();
 	}

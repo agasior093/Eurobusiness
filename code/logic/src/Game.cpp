@@ -26,7 +26,7 @@ void logic::Game::startTurn() {
 	checkForDoubles();
 	if (m_canMove == true) {		
 		m_stateBeforeThrow = false;
-		setInMotion(12);
+		setInMotion(30);
 	}	
 	//activate new position only after player changes old position or after end turn if he is in jail,
 	//because then he cant move, but position needs to be updated
@@ -70,7 +70,7 @@ std::string logic::Game::checkForDoubles() {
 		}
 
 		if (m_doublesInCurrentTurn == 2 && m_throwsInCurrentTurn == 2) {
-			message = "Doubles again! You are going to jail.\nYou can't do anything\nabout it.";
+			message = "Doubles again! You are going to jail.\nThere is nothing you can do to avoid prison.";
 			m_canThrow = false;
 			m_canMove = false;
 			getActivePlayer().sendToJail(true);
@@ -153,11 +153,19 @@ void logic::Game::jailRoll() {
 }
 
 //inline getters
+
+logic::PropertyManager& logic::Game::getPropertyManager() {
+return m_propertyManager;
+}
+
 bool logic::Game::isStateBeforeThrow() const {
 	return m_stateBeforeThrow;
 }
 logic::GameBoard& logic::Game::getBoard() {
 	return m_gameBoard;
+}
+logic::Field& logic::Game::getActiveField() {
+	return m_gameBoard.getField(getActivePlayer().getPosition());
 }
 logic::Player& logic::Game::getActivePlayer() {
 	return m_players[m_activePlayer];

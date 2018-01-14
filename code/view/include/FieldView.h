@@ -5,6 +5,7 @@
 #include "DEFINITIONS.h"
 #include "Button.h"
 #include "../code/logic/include/Player.h"
+#include "../code/logic/include/Field.h"
 
 namespace view {
 	class Field {
@@ -19,7 +20,7 @@ namespace view {
 		}
 		virtual ~Field() = default;
 
-		virtual void activate(std::map<std::string, view::Button*>, logic::Player&) {}
+		virtual void activate(std::map<std::string, view::Button*>, logic::Player&, logic::Field*) {}
 		virtual void reset(std::map<std::string, view::Button*> buttons) {}
 		virtual void roll() {}
 

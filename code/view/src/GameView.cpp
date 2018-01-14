@@ -43,8 +43,9 @@ void view::GameView::handleInput() {
 
 		if (this->m_data->inputManager.isSpriteClicked(this->m_collectButton, evnt, this->m_data->window)) {
 			m_game.collectCash();
-			m_gameStatus.changeText("You recieved 400$.");			
+			m_gameStatus.changeText(m_gameStatus.get().getString() + "\nYou recieved 400$.");			
 		}
+
 
 		if (this->m_data->inputManager.isSpriteClicked(this->m_jailCardButton, evnt, this->m_data->window)) {
 			m_game.getBoard().getField(30).useCard(m_game.getActivePlayer());
@@ -54,6 +55,12 @@ void view::GameView::handleInput() {
 			m_game.jailRoll();			
 			m_diceOne.changeTexture(m_game.getDiceOne().getCurrentNumber());
 			m_diceTwo.changeTexture(m_game.getDiceTwo().getCurrentNumber());
+		}
+
+		if (this->m_data->inputManager.isSpriteClicked(this->m_buyButton, evnt, this->m_data->window)) {
+			//m_gameStatus.changeText(m_game.getPropertyManager().buyProperty(m_game.getActivePlayer(), &m_game.getActiveField()));
+			m_game.getActiveField().buy(m_game.getActivePlayer());
+			//m_game.getActiveField().updateMessage();
 		}
 
 		if (this->m_data->inputManager.isSpriteClicked(this->m_payButton, evnt, this->m_data->window)) {
@@ -67,8 +74,7 @@ void view::GameView::handleInput() {
 		}
 
 		if (evnt.type == sf::Event::KeyPressed && evnt.key.code == sf::Keyboard::T) {
-			std::cout << m_game.getActivePlayer().getCurrentPayment();
-			
+			m_gameStatus.changeText(m_game.getActiveField().getGameStatus());			
 		}
 	}
 }
@@ -281,7 +287,7 @@ void view::GameView::createPlayers() {
 
 void view::GameView::createMessageBoxes() {
 	m_fieldInfo.create(275, 250, 12, sf::Color::Black, "");
-	m_gameStatus.create(100, 100, 17, sf::Color::Black, "");
+	m_gameStatus.create(100, 110, 19, sf::Color::Black, "");
 }
 
 void view::GameView::calculateTokenPosition() {
@@ -313,7 +319,8 @@ void view::GameView::endTurn() {
 		activePlayer().getToken().setPosition(45, 675);
 		activePlayer().setPosition(10);
 	}	
-	m_game.endTurn();		
+	m_game.endTurn();	
+	m_gameStatus.changeText("");
 }
 
 void view::GameView::updateButtons() {	
@@ -365,9 +372,9 @@ void view::GameView::updateCurrentField() {
 			m_currentField.setTextureRect(sf::IntRect(m_board.getField(static_cast<int>(activePlayer().getPosition())).getTexturePosition(), 0, 200, 300));
 			m_fieldInfo.changeText(m_game.getBoard().getField(static_cast<int>(activePlayer().getPosition())).getMessage());
 			if (!activePlayer().isMoving()) {
-				m_board.getField(static_cast<int>(activePlayer().getPosition())).activate(m_buttons, m_game.getActivePlayer());
-			}
-				
+				m_board.getField(static_cast<int>(activePlayer().getPosition())).activate(m_buttons, m_game.getActivePlayer(), &m_game.getActiveField());
+				m_gameStatus.changeText(m_game.getActiveField().getGameStatus());
+			}				
 	}
 	
 }

@@ -20,13 +20,15 @@ namespace logic {
 		virtual std::string getGameStatus() { return m_gameStatusMessage; }
 
 		virtual void activate(logic::Player&) {}
+		virtual void updateMessage() {}
 		virtual void reset() {}
 
 		virtual void checkRollResult(int, int, logic::Player&) {}
 		virtual void useCard(logic::Player&) {}		
 
 		virtual void calculateCharge() {}
-		virtual void pay(logic::Player&) {}		
+		virtual void pay(logic::Player&) {}
+		virtual void buy(logic::Player&) {}
 		
 		virtual void setOwner(logic::Player&) {}
 		virtual void setUnderMortgage() {}
@@ -36,6 +38,7 @@ namespace logic {
 		virtual void buyHotel() {}
 		virtual void sellHotel() {}
 
+		virtual std::string getName() const { return ""; };
 		virtual float getPrice() const { return 0; }
 		virtual logic::Player* getOwner() { return nullptr; }
 

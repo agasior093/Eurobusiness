@@ -1,14 +1,17 @@
 #include "../include/PropertyManager.h"
+#include <iostream>
 
-bool logic::PropertyManager::buyProperty(logic::Player& player, logic::Field* property) {
+std::string logic::PropertyManager::buyProperty(logic::Player& player, logic::Field* property) {
 	if (property->getOwner() == nullptr && (property->getPrice() <= player.getCash())) {
 		property->setOwner(player);
 		player.addProperty(property);
 		player.substractCash(property->getPrice());
-		return true;
+		
+		return "You bought " + property->getName() + " for " + toStringWithPrecision(property->getPrice()) + "$";
 	}
 	else {
-		return false;
+		
+		return "You can't afford that.";
 	}
 }
 

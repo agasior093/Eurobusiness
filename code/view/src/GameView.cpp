@@ -2,14 +2,14 @@
 
 view::GameView::GameView(std::vector<std::string>& playerNames)
 	: m_game(playerNames), m_numberOfPlayers(playerNames.size())
-{	
+{
 	m_data = std::make_unique<Data>();
 	m_data->window.create(sf::VideoMode(APPLICATION_SCREEN_WIDTH, APPLICATION_SCREEN_HEIGHT), APPLICATION_TITLE, sf::Style::Close | sf::Style::Titlebar);
 	gameLoop();
 }
 
 void view::GameView::gameLoop() {
-	initialise(); 
+	initialise();
 	while (m_data->window.isOpen()) {
 		handleInput();
 		update(m_data->clock.restart());
@@ -23,7 +23,7 @@ void view::GameView::initialise() {
 	createDice();
 	createButtons();
 	createPlayers();
-	createMessageBoxes();	
+	createMessageBoxes();
 	createSoundEffects();
 }
 
@@ -32,14 +32,14 @@ void view::GameView::handleInput() {
 	while (m_data->window.pollEvent(evnt)) {
 		if (evnt.type == sf::Event::Closed) {
 			m_data->window.close();
-		}	
+		}
 
 		if (this->m_data->inputManager.isSpriteClicked(this->m_rollButton, evnt, this->m_data->window)) {
-			rollTheDice();			
+			rollTheDice();
 		}
 
 		if (this->m_data->inputManager.isSpriteClicked(this->m_endTurnButton, evnt, this->m_data->window)) {
-			endTurn();				
+			endTurn();
 		}
 
 		if (this->m_data->inputManager.isSpriteClicked(this->m_collectButton, evnt, this->m_data->window)) {
@@ -58,7 +58,7 @@ void view::GameView::handleInput() {
 			}
 			else {
 				industryRoll();
-			}			
+			}
 		}
 
 		if (this->m_data->inputManager.isSpriteClicked(this->m_buyButton, evnt, this->m_data->window)) {
@@ -72,6 +72,9 @@ void view::GameView::handleInput() {
 			m_game.getBoard().getField(m_game.getActivePlayer().getPosition()).pay(m_game.getActivePlayer());
 		}
 
+		if (this->m_data->inputManager.isSpriteClicked(this->m_propertyManagerButton, evnt, this->m_data->window)) {
+			view::PropertyManager propertyManager(m_game.getActivePlayer());
+		}
 
 		//test keys		
 		if (evnt.type == sf::Event::KeyPressed && evnt.key.code == sf::Keyboard::C) {

@@ -16,3 +16,7 @@ void logic::Railways::updateMessage() {
 		ownerInfo;
 }
 
+std::string logic::Railways::getPropertyInfo() {
+	return m_name + "\n";
+}
+

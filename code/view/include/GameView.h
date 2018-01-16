@@ -18,12 +18,13 @@
 #include "../include/GameBoardView.h"
 #include "../include/FieldView.h"
 #include "../code/logic/include/GameBoard.h"
+#include "../include/PropertyManagerView.h"
 
 namespace view {
 	struct Data {
 		ResourceManager resourceManager;
 		InputManager inputManager;
-		sf::RenderWindow window;
+		sf::RenderWindow window;		
 		sf::Clock clock;
 	};	
 			

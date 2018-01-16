@@ -2,9 +2,24 @@
 
 #include "../include/Field.h"
 #include "../include/Player.h"
-#include <iostream>
+#include <vector>
 
 namespace logic {
+
+	struct PropertyGroup {
+	private:
+		std::vector<logic::Field&> m_propertiesInGroup;
+	public:
+		PropertyGroup() {
+			m_propertiesInGroup.reserve(4);
+		}
+		void addPropertyToGroup(logic::Field& property) {
+			m_propertiesInGroup.push_back(property);
+		}
+		std::vector<logic::Field&>& getPropertiesInGroup() {
+			return m_propertiesInGroup;
+		}
+	};
 	
 	
 	class Property : public Field {

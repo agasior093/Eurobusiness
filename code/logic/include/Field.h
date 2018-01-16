@@ -18,6 +18,7 @@ namespace logic {
 		virtual ~Field() = default;
 		virtual std::string getMessage() { return m_mainMessage; }
 		virtual std::string getGameStatus() { return m_gameStatusMessage; }
+		virtual std::string getPropertyInfo() { return ""; }
 
 		virtual void activate(logic::Player&) {}
 		virtual void updateMessage() {}

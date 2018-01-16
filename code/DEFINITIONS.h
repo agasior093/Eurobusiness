@@ -11,6 +11,10 @@ constexpr auto APPLICATION_SCREEN_WIDTH = 720;
 constexpr auto APPLICATION_SCREEN_HEIGHT = 720;
 constexpr auto APPLICATION_TITLE = "Eurobusiness";
 
+constexpr auto PROPERTY_MANAGER_SCREEN_WIDTH = 480;
+constexpr auto PROPERTY_MANAGER_SCREEN_HEIGHT = 480;
+constexpr auto PROPERTY_MANAGER_TITLE = "Property manager";
+
 constexpr auto MENU_STATE_BACKGROUND_FILE = "resources//board.png";
 constexpr auto CANDARA_FONT_FILE = "resources//Candara.ttf";
 
@@ -63,3 +67,22 @@ constexpr auto DISABLED_COLLECT_BUTTON_FILE = "resources//buttons//disabled_coll
 constexpr auto BUY_SOUND = "resources//buySound.wav";
 constexpr auto PAY_SOUND = "resources//paySound.wav";
 constexpr auto JAIL_SOUND = "resources//jailSound.wav";
+
+
+//PROPERTY MANAGER
+
+//buttons
+constexpr auto MORTGAGE_PROPERTY_BUTTON_FILE = "resources//manager//mortgage_property.png";
+constexpr auto LIFT_MORTGAGE_BUTTON_FILE = "resources//manager//lift_mortgage.png";
+constexpr auto BUY_HOUSE_BUTTON_FILE = "resources//manager//buy_house.png";
+constexpr auto SELL_HOUSE_BUTTON_FILE = "resources//manager//sell_house.png";
+constexpr auto BUY_HOTEL_BUTTON_FILE = "resources//manager//buy_hotel.png";
+constexpr auto SELL_HOTEL_BUTTON_FILE = "resources//manager//sell_hotel.png";
+constexpr auto NEXT_BUTTON_FILE = "resources//manager//next.png";
+constexpr auto PREVIOUS_BUTTON_FILE = "resources//manager//previous.png";
+constexpr auto BACK_BUTTON_FILE = "resources//manager//back.png";
+
+//background
+constexpr auto PROPERTY_MANAGER_BACKGROUND_FILE = "resources//manager//background.png";
+constexpr auto PROPERTY_MANAGER_FIELD_BACKGROUND_FILE = "resources//manager//field_background.png";
+constexpr auto PROPERTY_MANAGER_PLAYER_LABEL_FILE = "resources//manager//player_label.png";

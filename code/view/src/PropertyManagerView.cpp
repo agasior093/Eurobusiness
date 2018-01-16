@@ -1,5 +1,4 @@
 #include "../include/PropertyManagerView.h"
-#include <iostream>
 
 view::PropertyManager::PropertyManager(logic::Player* player, logic::PropertyManager& propertyManager) 
 {
@@ -9,8 +8,6 @@ view::PropertyManager::PropertyManager(logic::Player* player, logic::PropertyMan
 	m_data->window.create(sf::VideoMode(PROPERTY_MANAGER_SCREEN_WIDTH, PROPERTY_MANAGER_SCREEN_HEIGHT), PROPERTY_MANAGER_TITLE, sf::Style::Close | sf::Style::Titlebar);
 	gameLoop();	
 }
-
-
 
 void view::PropertyManager::gameLoop() {
 	initialise();
@@ -42,50 +39,31 @@ void view::PropertyManager::handleInput(){
 			showPreviousProperty();
 		}
 		if (this->m_data->inputManager.isSpriteClicked(this->m_buyHouseButton, evnt, this->m_data->window)) {
-			m_propertyManager->buyHouse();
-			m_fieldInfo.changeText(m_propertyManager->getActivePlayer().getProperties()[m_propertyManager->getActivePropertyId()]->getPropertyInfo());
-			m_playerInfo.changeText(m_propertyManager->getActivePlayer().getName() + "\nCash: " + toStringWithPrecision(m_propertyManager->getActivePlayer().getCash()) + "$");
-			m_message.changeText("You bought house for " + toStringWithPrecision(m_propertyManager->getActiveProperty()->getHousePrice()) + "$.");
+			buyHouse();
 		}
 
 		if (this->m_data->inputManager.isSpriteClicked(this->m_sellHouseButton, evnt, this->m_data->window)) {
-			m_propertyManager->sellHouse();
-			m_fieldInfo.changeText(m_propertyManager->getActivePlayer().getProperties()[m_propertyManager->getActivePropertyId()]->getPropertyInfo());
-			m_playerInfo.changeText(m_propertyManager->getActivePlayer().getName() + "\nCash: " + toStringWithPrecision(m_propertyManager->getActivePlayer().getCash()) + "$");
-			m_message.changeText("You sold house for " + toStringWithPrecision(m_propertyManager->getActiveProperty()->getHousePrice()) + "$.");
+			sellHouse();
 		}
 
 		if (this->m_data->inputManager.isSpriteClicked(this->m_buyHotelButton, evnt, this->m_data->window)) {
-			m_propertyManager->buyHotel();
-			m_fieldInfo.changeText(m_propertyManager->getActivePlayer().getProperties()[m_propertyManager->getActivePropertyId()]->getPropertyInfo());
-			m_playerInfo.changeText(m_propertyManager->getActivePlayer().getName() + "\nCash: " + toStringWithPrecision(m_propertyManager->getActivePlayer().getCash()) + "$");
-			m_message.changeText("You bought hotel for " + toStringWithPrecision(m_propertyManager->getActiveProperty()->getHotelPrice()) + "$.");
+			buyHotel();
 		}
 
 		if (this->m_data->inputManager.isSpriteClicked(this->m_sellHotelButton, evnt, this->m_data->window)) {
-			m_propertyManager->sellHotel();
-			m_fieldInfo.changeText(m_propertyManager->getActivePlayer().getProperties()[m_propertyManager->getActivePropertyId()]->getPropertyInfo());
-			m_playerInfo.changeText(m_propertyManager->getActivePlayer().getName() + "\nCash: " + toStringWithPrecision(m_propertyManager->getActivePlayer().getCash()) + "$");
-			m_message.changeText("You bought hotel for " + toStringWithPrecision(m_propertyManager->getActiveProperty()->getHotelPrice()) + "$.");
+			sellHotel();
 		}
 
 		if (this->m_data->inputManager.isSpriteClicked(this->m_mortgageButton, evnt, this->m_data->window)) {
-			m_propertyManager->mortgageProperty();
-			m_fieldInfo.changeText(m_propertyManager->getActivePlayer().getProperties()[m_propertyManager->getActivePropertyId()]->getPropertyInfo());
-			m_playerInfo.changeText(m_propertyManager->getActivePlayer().getName() + "\nCash: " + toStringWithPrecision(m_propertyManager->getActivePlayer().getCash()) + "$");
-			m_message.changeText("You set " + m_propertyManager->getActiveProperty()->getName() + " under mortgage and gained " 
-				+ toStringWithPrecision(m_propertyManager->getActiveProperty()->getPrice() / 2) + "$");
+			mortgageProperty();
 		}
 
 		if (this->m_data->inputManager.isSpriteClicked(this->m_liftMortgageButton, evnt, this->m_data->window)) {
-			m_propertyManager->liftMortgage();
-			m_fieldInfo.changeText(m_propertyManager->getActivePlayer().getProperties()[m_propertyManager->getActivePropertyId()]->getPropertyInfo());
-			m_playerInfo.changeText(m_propertyManager->getActivePlayer().getName() + "\nCash: " + toStringWithPrecision(m_propertyManager->getActivePlayer().getCash()) + "$");
-			m_message.changeText("You lifted mortgage from " + m_propertyManager->getActiveProperty()->getName() + " and payed "
-				+ toStringWithPrecision((m_propertyManager->getActiveProperty()->getPrice() / 2) + (m_propertyManager->getActiveProperty()->getPrice() * 0.1)) + "$");
+			liftMortgage();
 		}
 	}
 }
+
 void view::PropertyManager::update(sf::Time) {
 	updateButtons();
 	updateMessageBoxes();
@@ -208,7 +186,7 @@ void view::PropertyManager::createButtons() {
 
 void view::PropertyManager::createMessageBoxes() {	
 	m_playerInfo.create(265, 55, 17, sf::Color::Black, m_propertyManager->getActivePlayer().getName() + "\nCash: " + toStringWithPrecision(m_propertyManager->getActivePlayer().getCash()) + "$");
-	m_message.create(20, 15, 15, sf::Color::Black, "Manage your properties.");	
+	m_message.create(20, 10, 15, sf::Color::Black, "Manage your properties. You can buy only 4 buildings per round. ");	
 	if (m_propertyManager->getActivePlayer().getProperties().size() == 0) {
 		m_fieldInfo.create(225, 125, 15, sf::Color::Black, "");
 	}
@@ -273,9 +251,8 @@ void view::PropertyManager::updateButtons() {
 }
 
 void view::PropertyManager::updateMessageBoxes() {
-	m_propertyCounter.changeText("[" + std::to_string(m_propertyManager->getActivePropertyId() + 1) +
+	m_propertyCounter.changeText("[" + std::to_string(m_propertyManager->getActivePropertyID() + 1) +
 		"/" + std::to_string(m_propertyManager->getActivePlayer().getProperties().size()) + "]");
-
 }
 
 void view::PropertyManager::showNextProperty() {
@@ -286,4 +263,62 @@ void view::PropertyManager::showNextProperty() {
 void view::PropertyManager::showPreviousProperty() {
 	m_propertyManager->goToPreviousProperty();
 	m_fieldInfo.changeText(m_propertyManager->getActiveProperty()->getPropertyInfo());
+}
+
+void view::PropertyManager::mortgageProperty() {
+	m_propertyManager->mortgageProperty();
+	m_fieldInfo.changeText(m_propertyManager->getActivePlayer().getProperties()[m_propertyManager->getActivePropertyID()]->getPropertyInfo());
+	m_playerInfo.changeText(m_propertyManager->getActivePlayer().getName() + "\nCash: " + toStringWithPrecision(m_propertyManager->getActivePlayer().getCash()) + "$");
+	m_message.changeText("You set " + m_propertyManager->getActiveProperty()->getName() + " under mortgage and gained "
+		+ toStringWithPrecision(m_propertyManager->getActiveProperty()->getPrice() / 2) + "$");
+}
+
+void view::PropertyManager::liftMortgage() {
+	m_propertyManager->liftMortgage();
+	m_fieldInfo.changeText(m_propertyManager->getActivePlayer().getProperties()[m_propertyManager->getActivePropertyID()]->getPropertyInfo());
+	m_playerInfo.changeText(m_propertyManager->getActivePlayer().getName() + "\nCash: " + toStringWithPrecision(m_propertyManager->getActivePlayer().getCash()) + "$");
+	m_message.changeText("You lifted mortgage from " + m_propertyManager->getActiveProperty()->getName() + " and payed "
+		+ toStringWithPrecision((m_propertyManager->getActiveProperty()->getPrice() / 2) + (m_propertyManager->getActiveProperty()->getPrice() * 0.1)) + "$");
+}
+
+void view::PropertyManager::buyHouse() {
+	m_propertyManager->buyHouse();
+	m_fieldInfo.changeText(m_propertyManager->getActivePlayer().getProperties()[m_propertyManager->getActivePropertyID()]->getPropertyInfo());
+	m_playerInfo.changeText(m_propertyManager->getActivePlayer().getName() + "\nCash: " + toStringWithPrecision(m_propertyManager->getActivePlayer().getCash()) + "$");
+	if (m_propertyManager->getActivePlayer().getTransactionCounter() != 4) {
+		m_message.changeText("You bought house for " + toStringWithPrecision(m_propertyManager->getActiveProperty()->getHousePrice()) + "$.\n" +
+			"You can buy " + std::to_string(4 - m_propertyManager->getActivePlayer().getTransactionCounter()) + " more buildings in this turn.");
+	}
+	else {
+		m_message.changeText("You bought house for " + toStringWithPrecision(m_propertyManager->getActiveProperty()->getHousePrice()) + "$.\n" +
+			"You can't build anything else in this turn.");
+	}
+}
+
+void view::PropertyManager::sellHouse() {
+	m_propertyManager->sellHouse();
+	m_fieldInfo.changeText(m_propertyManager->getActivePlayer().getProperties()[m_propertyManager->getActivePropertyID()]->getPropertyInfo());
+	m_playerInfo.changeText(m_propertyManager->getActivePlayer().getName() + "\nCash: " + toStringWithPrecision(m_propertyManager->getActivePlayer().getCash()) + "$");
+	m_message.changeText("You sold house for " + toStringWithPrecision(m_propertyManager->getActiveProperty()->getHousePrice()) + "$.");
+}
+
+void view::PropertyManager::buyHotel() {
+	m_propertyManager->buyHotel();
+	m_fieldInfo.changeText(m_propertyManager->getActivePlayer().getProperties()[m_propertyManager->getActivePropertyID()]->getPropertyInfo());
+	m_playerInfo.changeText(m_propertyManager->getActivePlayer().getName() + "\nCash: " + toStringWithPrecision(m_propertyManager->getActivePlayer().getCash()) + "$");
+	if (m_propertyManager->getActivePlayer().getTransactionCounter() != 4) {
+		m_message.changeText("You bought hotel for " + toStringWithPrecision(m_propertyManager->getActiveProperty()->getHotelPrice()) + "$.\n" +
+			"You can buy " + std::to_string(4 - m_propertyManager->getActivePlayer().getTransactionCounter()) + " more buildings in this turn.");
+	}
+	else {
+		m_message.changeText("You bought house for " + toStringWithPrecision(m_propertyManager->getActiveProperty()->getHousePrice()) + "$.\n" +
+			"You can't build anything else in this turn.");
+	}
+}
+
+void view::PropertyManager::sellHotel() {
+	m_propertyManager->sellHotel();
+	m_fieldInfo.changeText(m_propertyManager->getActivePlayer().getProperties()[m_propertyManager->getActivePropertyID()]->getPropertyInfo());
+	m_playerInfo.changeText(m_propertyManager->getActivePlayer().getName() + "\nCash: " + toStringWithPrecision(m_propertyManager->getActivePlayer().getCash()) + "$");
+	m_message.changeText("You bought hotel for " + toStringWithPrecision(m_propertyManager->getActiveProperty()->getHotelPrice()) + "$.");
 }

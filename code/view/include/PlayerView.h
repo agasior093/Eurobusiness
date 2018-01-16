@@ -25,18 +25,16 @@ namespace view {
 		void setTargetPosition();
 		void setPosition(float);
 		void move();		
-
 		void updateLabel();
-
+		
 		sf::CircleShape& getToken();
 		sf::CircleShape getTokenCopy();
 		sf::RectangleShape& getLabel();
-
-		std::string getPlayerInfo();
-		bool isMoving() const;
-		float getStep() const;
 		sf::Vector2f getJumpOffSet() const;
+		std::string getPlayerInfo();		
+		float getStep() const;		
 		float getPosition() const;
+		bool isMoving() const;
 
 		template <typename T>
 		std::string toStringWithPrecision(const T a_value, const int n = 1) {

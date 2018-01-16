@@ -109,6 +109,7 @@ bool logic::Game::endTurn() {
 			getActivePlayer().sendToJail(false);
 		}		
 		
+		getActivePlayer().resetTransactionCounter();
 		//switch to next player
 		getActivePlayer().setAsActive(false);
 		m_activePlayer++;

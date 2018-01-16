@@ -13,32 +13,15 @@ void logic::Player::addCash(float amount) {
 	m_cash += amount;
 }
 
-bool logic::Player::substractCash(float amount) {
+void logic::Player::substractCash(float amount) {
 	if (m_cash >= amount) {
 		m_cash -= amount;
-		return true;
-	} 
-	else {
-		return false;
-	}
+	}	
 }
 
 void logic::Player::createPayment(float amount, Player* player) {
 	m_currentPayment = amount;
 	m_loanHolder = player;
-}
-
-bool logic::Player::pay() {
-	if (m_cash >= m_currentPayment) {
-		m_cash -= m_currentPayment;
-		if(m_loanHolder!=nullptr) m_loanHolder->addCash(m_currentPayment);
-		m_currentPayment = 0;
-		m_loanHolder = nullptr;
-		return true;
-	}
-	else {
-		return false;
-	}
 }
 
 void logic::Player::incrementPosition(int number) {
@@ -77,9 +60,29 @@ void logic::Player::useOutOfJailCard() {
 	}
 }
 
-//getters
-bool logic::Player::isActive() const {
-	return m_isActive;
+void logic::Player::increaseTransactionCounter() {
+	m_transactionCounter++;
+}
+
+void logic::Player::resetTransactionCounter() {
+	m_transactionCounter = 0;
+}
+
+bool logic::Player::pay() {
+	if (m_cash >= m_currentPayment) {
+		m_cash -= m_currentPayment;
+		if (m_loanHolder != nullptr) m_loanHolder->addCash(m_currentPayment);
+		m_currentPayment = 0;
+		m_loanHolder = nullptr;
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+logic::Player* logic::Player::getLoanHolder() const {
+	return m_loanHolder;
 }
 
 std::vector<logic::Field*>& logic::Player::getProperties() {
@@ -98,8 +101,8 @@ float logic::Player::getCurrentPayment() const {
 	return m_currentPayment;
 }
 
-logic::Player* logic::Player::getLoanHolder() const {
-	return m_loanHolder;
+int logic::Player::getTransactionCounter() const {
+	return m_transactionCounter;
 }
 
 int logic::Player::getPosition() const {
@@ -110,10 +113,6 @@ int logic::Player::getPositionDifference() const {
 	return m_positionDifference;
 }
 
-bool logic::Player::isSentToJail() const {
-	return m_isSentToJail;
-}
-
 int logic::Player::getTurnsLeftInJail() const {
 	return m_turnsLeftInJail;
 }
@@ -122,3 +121,10 @@ int logic::Player::getOutOfJailCards() const {
 	return m_outOfJailCards;
 }
 
+bool logic::Player::isActive() const {
+	return m_isActive;
+}
+
+bool logic::Player::isSentToJail() const {
+	return m_isSentToJail;
+}

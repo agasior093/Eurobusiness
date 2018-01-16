@@ -1,5 +1,4 @@
 #include "../include/JailVisitor.h"
-#include <iostream>
 
 void logic::JailVisitor::activate(logic::Player& player) {
 	if (player.getTurnsLeftInJail() == 0) {

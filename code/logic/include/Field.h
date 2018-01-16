@@ -20,21 +20,15 @@ namespace logic {
 
 		}
 		virtual ~Field() = default;
-		virtual std::string getMessage() { return m_mainMessage; }
-		virtual std::string getGameStatus() { return m_gameStatusMessage; }
-		virtual std::string getPropertyInfo() { return ""; }
-
+				
 		virtual void activate(logic::Player&) {}
 		virtual void updateMessage() {}
 		virtual void reset() {}
-
 		virtual void checkRollResult(int, int, logic::Player&) {}
 		virtual void useCard(logic::Player&) {}		
-
 		virtual void calculateCharge() { }
 		virtual void pay(logic::Player&) {}
-		virtual void buy(logic::Player&) {}
-		
+		virtual void buy(logic::Player&) {}		
 		virtual void setOwner(logic::Player&) {}
 		virtual void setUnderMortgage() {}
 		virtual void liftMortgage() {}
@@ -42,17 +36,20 @@ namespace logic {
 		virtual void removeHouse() {}
 		virtual void addHotel() {}
 		virtual void removeHotel() {}
-
-		virtual std::string getName() const { return ""; };
-		virtual float getPrice() const { return 0; }
+		
+		virtual std::string getMessage() { return m_mainMessage; }
+		virtual std::string getGameStatus() { return m_gameStatusMessage; }
+		virtual std::string getPropertyInfo() { return ""; }
 		virtual logic::Player* getOwner() { return nullptr; }
 		virtual logic::GroupName getGroup() const { return GroupName::Bulgaria; }
+		virtual std::string getName() const { return ""; };
+		virtual float getPrice() const { return 0; }		
+		virtual float getHousePrice() const { return 0; }
+		virtual float getHotelPrice() const { return 0; }
+		virtual int getNumberOfHouses() const { return 0; }
+		virtual int getNumberOfHotels() const { return 0; }		
 		virtual bool isBuildingArea() const { return false; }
 		virtual bool isUnderMortgage() const { return false; }
-		virtual int getNumberOfHouses() const { return 0; }
-		virtual int getNumberOfHotels() const { return 0; }
-		virtual int getHousePrice() const { return 0; }
-		virtual int getHotelPrice() const { return 0; }
 
 		template <typename T>
 		std::string toStringWithPrecision(const T a_value, const int n = 1) {

@@ -10,7 +10,6 @@ namespace logic {
 		{
 			
 		}
-		~Start() = default;
-	
+		~Start() = default;	
 	};
 }

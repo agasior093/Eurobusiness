@@ -49,6 +49,12 @@ namespace view{
 
 		void showNextProperty();
 		void showPreviousProperty();
+		void mortgageProperty();
+		void liftMortgage();
+		void buyHouse();
+		void sellHouse();
+		void buyHotel();
+		void sellHotel();
 
 		template <typename T>
 		std::string toStringWithPrecision(const T a_value, const int n = 1) {

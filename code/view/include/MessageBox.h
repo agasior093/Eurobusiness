@@ -7,7 +7,6 @@ namespace view {
 		sf::Font m_font;
 		sf::Text m_messageBox;
 	public:
-		MessageBox() {}
 		void create(float, float, int, sf::Color, std::string);
 		void changeText(std::string text);
 		sf::Text& get();

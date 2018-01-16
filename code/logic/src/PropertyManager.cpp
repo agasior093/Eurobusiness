@@ -14,18 +14,20 @@ logic::Player& logic::PropertyManager::getActivePlayer() {
 	return *m_player;
 }
 
-int logic::PropertyManager::getActivePropertyId() const {
-	return m_activePropertyId;
+int logic::PropertyManager::getActivePropertyID() const {
+	return m_activePropertyID;
 }
 
 void logic::PropertyManager::buyHouse(){
 	m_activeProperty->addHouse();		
 	m_player->substractCash(m_activeProperty->getHousePrice());
+	m_player->increaseTransactionCounter();
 }
 
 void logic::PropertyManager::sellHouse(){
 	m_activeProperty->removeHouse();
-	m_player->addCash(m_activeProperty->getHousePrice());
+	m_player->addCash(m_activeProperty->getHousePrice());	
+	std::cout << m_player->getTransactionCounter();
 }
 
 void logic::PropertyManager::buyHotel(){
@@ -34,6 +36,7 @@ void logic::PropertyManager::buyHotel(){
 	}	
 	m_activeProperty->addHotel();
 	m_player->substractCash(m_activeProperty->getHotelPrice());
+	m_player->increaseTransactionCounter();
 }
 
 void logic::PropertyManager::sellHotel() {
@@ -48,13 +51,13 @@ void logic::PropertyManager::mortgageProperty(){
 
 void logic::PropertyManager::liftMortgage(){
 	m_activeProperty->liftMortgage();
-	m_player->substractCash((m_activeProperty->getPrice() / 2) + (m_activeProperty->getPrice() * 0.1));
+	m_player->substractCash((m_activeProperty->getPrice() / 2) + (m_activeProperty->getPrice() * 0.1f));
 }
 
 void logic::PropertyManager::setActiveProperty() {
-	m_activePropertyId = 0;
+	m_activePropertyID = 0;
 	if (m_player->getProperties().size() > 0) {
-		m_activeProperty = m_player->getProperties()[m_activePropertyId];
+		m_activeProperty = m_player->getProperties()[m_activePropertyID];
 	}
 	else {
 		m_activeProperty = nullptr;
@@ -62,20 +65,19 @@ void logic::PropertyManager::setActiveProperty() {
 }
 
 void logic::PropertyManager::goToNextProperty() {
-	m_activePropertyId++;
-	if (m_activePropertyId >= m_player->getProperties().size()) {
-		m_activePropertyId = 0;
+	m_activePropertyID++;
+	if (m_activePropertyID >= m_player->getProperties().size()) {
+		m_activePropertyID = 0;
 	}	
-	m_activeProperty = m_player->getProperties()[m_activePropertyId];
-	std::cout << m_activePropertyId;
+	m_activeProperty = m_player->getProperties()[m_activePropertyID];
 }
 
 void logic::PropertyManager::goToPreviousProperty() {
-	m_activePropertyId--;
-	if (m_activePropertyId < 0) {		
-		m_activePropertyId = m_player->getProperties().size() - 1;
+	m_activePropertyID--;
+	if (m_activePropertyID < 0) {
+		m_activePropertyID = m_player->getProperties().size() - 1;
 	}
-	m_activeProperty = m_player->getProperties()[m_activePropertyId];	
+	m_activeProperty = m_player->getProperties()[m_activePropertyID];
 }
 
 bool logic::PropertyManager::hasOneOwner() {
@@ -183,10 +185,6 @@ bool logic::PropertyManager::hasOneOwner() {
 	
 }
 
-logic::Field* logic::PropertyManager::getActiveProperty() {
-	return m_activeProperty;
-}
-
 bool logic::PropertyManager::shouldEnableMortgage() {
 	if (m_activeProperty != nullptr) {
 		if (!m_activeProperty->isUnderMortgage()
@@ -202,6 +200,7 @@ bool logic::PropertyManager::shouldEnableMortgage() {
 	}
 	
 }
+
 bool logic::PropertyManager::shouldEnableLiftMortgage() {
 	if (m_activeProperty != nullptr) {
 		if (m_activeProperty->isUnderMortgage() &&
@@ -217,9 +216,11 @@ bool logic::PropertyManager::shouldEnableLiftMortgage() {
 	}
 	
 }
+
 bool logic::PropertyManager::shouldEnableBuyHouse() {
 	if (m_activeProperty != nullptr) {
-		if (hasOneOwner() &&
+		if (m_player->getTransactionCounter() <= 4 &&
+			hasOneOwner() &&
 			m_activeProperty->getNumberOfHotels() == 0 &&
 			m_activeProperty->getNumberOfHouses() < 4 &&
 			m_player->getCash() >= m_activeProperty->getHousePrice()) {
@@ -245,13 +246,14 @@ bool logic::PropertyManager::shouldEnableSellHouse() {
 	}
 	else {
 		return false;
-	}
-	
+	}	
 }
 
 bool logic::PropertyManager::shouldEnableBuyHotel() {
 	if (m_activeProperty != nullptr) {
-		if (m_activeProperty->getNumberOfHouses() == 4 && m_activeProperty->getNumberOfHotels() == 0) {
+		if (m_player->getTransactionCounter() <= 4 && 
+			m_activeProperty->getNumberOfHouses() == 4 && 
+			m_activeProperty->getNumberOfHotels() == 0) {
 			return true;
 		}
 		else {
@@ -275,6 +277,9 @@ bool logic::PropertyManager::shouldEnableSellHotel() {
 	}
 	else {
 		return false;
-	}
-	
+	}	
+}
+
+logic::Field* logic::PropertyManager::getActiveProperty() {
+	return m_activeProperty;
 }

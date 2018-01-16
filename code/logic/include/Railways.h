@@ -12,5 +12,6 @@ namespace logic {
 		}
 		virtual void updateMessage() override;		
 		virtual std::string getPropertyInfo() override;
+		virtual void calculateCharge() override;
 	};
 }

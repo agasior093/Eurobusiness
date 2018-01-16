@@ -14,8 +14,9 @@ namespace view {
 	public:
 		Dice();
 		~Dice() = default;
-		sf::RectangleShape& get();		
+				
 		void changeTexture(int);
 		void playSound();
+		sf::RectangleShape& get();
 	};
 }

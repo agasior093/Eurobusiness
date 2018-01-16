@@ -19,8 +19,6 @@ namespace logic {
 		}
 		~Chance() = default;
 
-		ChanceType getType() { return m_type; }
-
-		
+		ChanceType getType() { return m_type; }		
 	};
 }

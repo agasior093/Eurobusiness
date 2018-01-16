@@ -3,12 +3,7 @@
 #include "Property.h"
 
 namespace logic {
-	
-
-	
-
-	class City : public Property {
-		//GroupName m_group;		
+	class City : public Property {				
 		float m_housePrice;
 		float m_hotelPrice;
 		int m_numberOfHouses = 0;
@@ -21,15 +16,17 @@ namespace logic {
 			updateMessage();
 		}
 
-		virtual void updateMessage() override;
-		virtual std::string getPropertyInfo() override;
+		virtual void updateMessage() override;	
+		virtual void calculateCharge() override;
 		virtual void addHouse() override;
 		virtual void removeHouse() override;
 		virtual void addHotel() override;
 		virtual void removeHotel() override;
+
+		virtual std::string getPropertyInfo() override;
 		virtual int getNumberOfHouses() const override;
 		virtual int getNumberOfHotels() const override;
-		virtual int getHousePrice() const override;
-		virtual int getHotelPrice() const override;
+		virtual float getHousePrice() const override;
+		virtual float getHotelPrice() const override;
 	};
 }

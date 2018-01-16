@@ -13,11 +13,11 @@ namespace view {
 		Button()
 			: m_enabled(true)
 		{ }
-
-		sf::Sprite& getSprite();
-		bool isEnabled() const;
+				
 		void setTextures(sf::Texture, sf::Texture);		
 		void enable();
 		void disable();
+		sf::Sprite& getSprite();
+		bool isEnabled() const;
 	};
 }

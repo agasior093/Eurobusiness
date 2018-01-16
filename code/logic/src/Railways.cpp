@@ -16,6 +16,10 @@ void logic::Railways::updateMessage() {
 		ownerInfo;
 }
 
+void logic::Railways::calculateCharge() {
+
+}
+
 std::string logic::Railways::getPropertyInfo() {
 	return m_name + "\n";
 }

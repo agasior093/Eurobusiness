@@ -9,23 +9,23 @@ namespace logic {
 		GameBoard* m_board;
 		Player* m_player;
 		Field* m_activeProperty;
-		int m_activePropertyId = 0;
+		int m_activePropertyID = 0;
 	public:		
 		PropertyManager(logic::GameBoard&);
 		
+		void setActivePlayer(logic::Player*);
+		void setActiveProperty();
+		void goToNextProperty();
+		void goToPreviousProperty();
+
 		void buyHouse();
 		void sellHouse();
 		void buyHotel();
 		void sellHotel();
 		void mortgageProperty();
-		void liftMortgage();
-
-		void setActivePlayer(logic::Player*);		
-		void setActiveProperty();
-		void goToNextProperty();
-		void goToPreviousProperty();
+		void liftMortgage();		
+	
 		bool hasOneOwner();
-
 		bool shouldEnableMortgage();
 		bool shouldEnableLiftMortgage();
 		bool shouldEnableBuyHouse();
@@ -35,7 +35,7 @@ namespace logic {
 
 		logic::Player& getActivePlayer();
 		logic::Field* getActiveProperty();
-		int getActivePropertyId() const;
+		int getActivePropertyID() const;
 
 		template <typename T>
 		std::string toStringWithPrecision(const T a_value, const int n = 1) {

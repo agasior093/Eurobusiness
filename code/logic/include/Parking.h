@@ -10,7 +10,6 @@ namespace logic {
 		{
 			
 		}
-		~Parking() = default;
-	
+		~Parking() = default;	
 	};
 }

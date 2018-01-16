@@ -7,10 +7,7 @@ namespace view {
 		bool m_hasRolled = false;
 	public:
 		Industry(float positionX, float positionY, float signPositionX, float signPositionY)
-			: Property(positionX, positionY, signPositionX, signPositionY) 
-		{
-
-		}
+			: Property(positionX, positionY, signPositionX, signPositionY) 	{ }
 
 		virtual void activate(std::map<std::string, view::Button*>, logic::Player&, logic::Field*) override;
 		virtual void roll() override;

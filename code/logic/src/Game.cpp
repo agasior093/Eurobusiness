@@ -2,7 +2,7 @@
 #include <iostream>
 
 logic::Game::Game(std::vector<std::string>& playerNames)
-	: m_numberOfPlayers(playerNames.size()) {
+	: m_propertyManager(m_gameBoard), m_numberOfPlayers(playerNames.size()) {
 	for (size_t i = 0; i < playerNames.size(); ++i) {
 		m_players.emplace_back(Player(playerNames[i]));
 	}
@@ -26,7 +26,7 @@ void logic::Game::startTurn() {
 	checkForDoubles();
 	if (m_canMove == true) {		
 		m_stateBeforeThrow = false;
-		setInMotion(5);
+		setInMotion(1);
 	}	
 	//activate new position only after player changes old position or after end turn if he is in jail,
 	//because then he cant move, but position needs to be updated
@@ -156,9 +156,9 @@ void logic::Game::jailRoll() {
 
 //inline getters
 
-//logic::PropertyManager& logic::Game::getPropertyManager() {
-//return m_propertyManager;
-//}
+logic::PropertyManager& logic::Game::getPropertyManager() { 
+	return m_propertyManager;
+}
 
 bool logic::Game::isStateBeforeThrow() const {
 	return m_stateBeforeThrow;

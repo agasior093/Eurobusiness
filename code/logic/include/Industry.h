@@ -6,8 +6,8 @@ namespace logic {
 	class Industry : public Property {		
 		int m_rollResult = 0;
 	public:
-		Industry(std::string name, float price)
-			: Property(name, false, price, 100) 
+		Industry(std::string name, GroupName group, float price)
+			: Property(name, group, false, price, 100) 
 		{
 			updateMessage();
 		}

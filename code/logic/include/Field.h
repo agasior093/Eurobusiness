@@ -4,6 +4,10 @@
 #include "Player.h"
 
 namespace logic {
+	enum class GroupName {
+		Bulgaria, Poland, Spain, Italy, France, England, Russia, Germany, Railways, Industries
+	};
+
 	class Field {
 	protected:
 		bool m_buyable;
@@ -35,13 +39,20 @@ namespace logic {
 		virtual void setUnderMortgage() {}
 		virtual void liftMortgage() {}
 		virtual void addHouse() {}
-		virtual void sellHouse() {}
-		virtual void buyHotel() {}
-		virtual void sellHotel() {}
+		virtual void removeHouse() {}
+		virtual void addHotel() {}
+		virtual void removeHotel() {}
 
 		virtual std::string getName() const { return ""; };
 		virtual float getPrice() const { return 0; }
 		virtual logic::Player* getOwner() { return nullptr; }
+		virtual logic::GroupName getGroup() const { return GroupName::Bulgaria; }
+		virtual bool isBuildingArea() const { return false; }
+		virtual bool isUnderMortgage() const { return false; }
+		virtual int getNumberOfHouses() const { return 0; }
+		virtual int getNumberOfHotels() const { return 0; }
+		virtual int getHousePrice() const { return 0; }
+		virtual int getHotelPrice() const { return 0; }
 
 		template <typename T>
 		std::string toStringWithPrecision(const T a_value, const int n = 1) {

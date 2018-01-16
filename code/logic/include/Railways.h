@@ -5,8 +5,8 @@
 namespace logic {
 	class Railways : public Property {
 	public:
-		Railways(std::string name, float price)
-			: Property(name, false, price, 100)
+		Railways(std::string name, GroupName group,float price)
+			: Property(name, group, false, price, 100)
 		{
 			updateMessage();
 		}

@@ -2,6 +2,7 @@
 #include <memory>
 #include <SFML\Graphics.hpp>
 #include "../code/logic/include/Player.h"
+#include "../code/logic/include/PropertyManager.h"
 #include "../include/GameView.h"
 
 namespace view{	
@@ -9,7 +10,7 @@ namespace view{
 
 	class PropertyManager {
 		std::unique_ptr<view::Data> m_data;
-		logic::Player* m_player;
+		logic::PropertyManager* m_propertyManager;		
 		void gameLoop();
 		void initialise();
 		void handleInput();
@@ -23,6 +24,7 @@ namespace view{
 		MessageBox m_message;
 		MessageBox m_playerInfo;
 		MessageBox m_fieldInfo;
+		MessageBox m_propertyCounter;
 
 		Button m_mortgageButton;
 		Button m_liftMortgageButton;
@@ -35,13 +37,15 @@ namespace view{
 		Button m_backButton;
 
 	public:
-		PropertyManager(logic::Player&);
-		~PropertyManager();
-
+		PropertyManager(logic::Player*, logic::PropertyManager&);
+		
 		void loadTextures();
 		void createBackground();
 		void createButtons();
 		void createMessageBoxes();
+
+		void updateButtons();
+		void updateMessageBoxes();
 
 		void showNextProperty();
 		void showPreviousProperty();

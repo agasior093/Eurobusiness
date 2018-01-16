@@ -4,24 +4,9 @@
 #include "../include/Player.h"
 #include <vector>
 
-namespace logic {
+namespace logic {	
+	
 
-	struct PropertyGroup {
-	private:
-		std::vector<logic::Field&> m_propertiesInGroup;
-	public:
-		PropertyGroup() {
-			m_propertiesInGroup.reserve(4);
-		}
-		void addPropertyToGroup(logic::Field& property) {
-			m_propertiesInGroup.push_back(property);
-		}
-		std::vector<logic::Field&>& getPropertiesInGroup() {
-			return m_propertiesInGroup;
-		}
-	};
-	
-	
 	class Property : public Field {
 	protected:
 		std::string m_name;
@@ -33,15 +18,16 @@ namespace logic {
 
 		float m_baseFee;	
 		
-		logic::Player* m_owner = nullptr;
+		logic::Player* m_owner = nullptr;		
+		logic::GroupName m_group;
 
 		float m_charge;
 		float m_defaultCharge;
 		bool m_hasPayed = false;
 	public:
-		Property(std::string name, bool buildingArea, float price, float baseFee)
-			: Field(true), m_name(name), m_buildingArea(buildingArea), m_price(price), m_baseFee(baseFee)
-		{			
+		Property(std::string name, GroupName group, bool buildingArea, float price, float baseFee)
+			: Field(true), m_name(name), m_buildingArea(buildingArea), m_price(price), m_baseFee(baseFee), m_group(group)
+		{						
 			updateMessage();
 		}
 		~Property() = default;
@@ -62,5 +48,8 @@ namespace logic {
 		virtual std::string getName() const override;
 		virtual float getPrice() const override;
 		virtual logic::Player* getOwner() override;
+		virtual logic::GroupName getGroup() const override;
+		virtual bool isBuildingArea() const override;
+		virtual bool isUnderMortgage() const override;
 	};
 }

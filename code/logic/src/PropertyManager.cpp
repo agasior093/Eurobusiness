@@ -1,40 +1,280 @@
 #include "../include/PropertyManager.h"
+#include <iostream>
 
+logic::PropertyManager::PropertyManager(logic::GameBoard& board) {
+	m_board = &board;		
+}
 
-std::string logic::PropertyManager::buyProperty(logic::Player& player, logic::Field* property) {
-	if (property->getOwner() == nullptr && (property->getPrice() <= player.getCash())) {
-		property->setOwner(player);
-		player.addProperty(property);
-		player.substractCash(property->getPrice());
-		
-		return "You bought " + property->getName() + " for " + toStringWithPrecision(property->getPrice()) + "$";
+void logic::PropertyManager::setActivePlayer(logic::Player* player) {
+	m_player = player;	
+	setActiveProperty();
+}
+
+logic::Player& logic::PropertyManager::getActivePlayer() {
+	return *m_player;
+}
+
+int logic::PropertyManager::getActivePropertyId() const {
+	return m_activePropertyId;
+}
+
+void logic::PropertyManager::buyHouse(){
+	m_activeProperty->addHouse();		
+	m_player->substractCash(m_activeProperty->getHousePrice());
+}
+
+void logic::PropertyManager::sellHouse(){
+	m_activeProperty->removeHouse();
+	m_player->addCash(m_activeProperty->getHousePrice());
+}
+
+void logic::PropertyManager::buyHotel(){
+	for (int i = 0; i < 4; i++) {
+		m_activeProperty->removeHouse();
+	}	
+	m_activeProperty->addHotel();
+	m_player->substractCash(m_activeProperty->getHotelPrice());
+}
+
+void logic::PropertyManager::sellHotel() {
+	m_activeProperty->removeHotel();
+	m_player->addCash(m_activeProperty->getHotelPrice());
+}
+
+void logic::PropertyManager::mortgageProperty(){
+	m_activeProperty->setUnderMortgage();
+	m_player->addCash(m_activeProperty->getPrice() / 2);
+}
+
+void logic::PropertyManager::liftMortgage(){
+	m_activeProperty->liftMortgage();
+	m_player->substractCash((m_activeProperty->getPrice() / 2) + (m_activeProperty->getPrice() * 0.1));
+}
+
+void logic::PropertyManager::setActiveProperty() {
+	m_activePropertyId = 0;
+	if (m_player->getProperties().size() > 0) {
+		m_activeProperty = m_player->getProperties()[m_activePropertyId];
 	}
 	else {
-		
-		return "You can't afford that.";
+		m_activeProperty = nullptr;
+	}	
+}
+
+void logic::PropertyManager::goToNextProperty() {
+	m_activePropertyId++;
+	if (m_activePropertyId >= m_player->getProperties().size()) {
+		m_activePropertyId = 0;
+	}	
+	m_activeProperty = m_player->getProperties()[m_activePropertyId];
+	std::cout << m_activePropertyId;
+}
+
+void logic::PropertyManager::goToPreviousProperty() {
+	m_activePropertyId--;
+	if (m_activePropertyId < 0) {		
+		m_activePropertyId = m_player->getProperties().size() - 1;
 	}
+	m_activeProperty = m_player->getProperties()[m_activePropertyId];	
 }
 
-bool logic::PropertyManager::buyHouse(logic::Player&, logic::Field*){
-	return true;
+bool logic::PropertyManager::hasOneOwner() {
+	if (m_activeProperty != nullptr) {		
+		auto group = m_activeProperty->getGroup();
+		switch (group) {
+		case GroupName::Bulgaria: {			
+			if (m_board->getField(1).getOwner() == m_board->getField(3).getOwner()
+				&& m_board->getField(1).getOwner() != nullptr) {
+				return true;
+			}
+			else {
+				return false;
+			}
+			break;
+		}
+
+		case GroupName::Poland: {			
+			if (m_board->getField(6).getOwner() == m_board->getField(8).getOwner()
+				&& m_board->getField(8).getOwner() == m_board->getField(9).getOwner()
+				&& m_board->getField(6).getOwner() != nullptr) {
+				return true;
+			}
+			else {
+				return false;
+			}
+			break;
+		}
+
+		case GroupName::Italy: {
+			if (m_board->getField(11).getOwner() == m_board->getField(13).getOwner()
+				&& m_board->getField(13).getOwner() == m_board->getField(14).getOwner()
+				&& m_board->getField(14).getOwner() != nullptr) {
+				return true;
+			}
+			else {
+				return false;
+			}
+			break;
+		}
+
+		case GroupName::Spain: {
+			if (m_board->getField(16).getOwner() == m_board->getField(18).getOwner()
+				&& m_board->getField(18).getOwner() == m_board->getField(19).getOwner()
+				&& m_board->getField(16).getOwner() != nullptr) {
+				return true;
+			}
+			else {
+				return false;
+			}
+			break;
+		}
+
+		case GroupName::France: {
+			if (m_board->getField(21).getOwner() == m_board->getField(23).getOwner()
+				&& m_board->getField(23).getOwner() == m_board->getField(24).getOwner()
+				&& m_board->getField(21).getOwner() != nullptr) {
+				return true;
+			}
+			else {
+				return false;
+			}
+			break;
+		}
+
+		case GroupName::England: {
+			if (m_board->getField(26).getOwner() == m_board->getField(27).getOwner()
+				&& m_board->getField(27).getOwner() == m_board->getField(29).getOwner()
+				&& m_board->getField(26).getOwner() != nullptr) {
+				return true;
+			}
+			else {
+				return false;
+			}
+			break;
+		}
+
+		case GroupName::Russia: {
+			if (m_board->getField(31).getOwner() == m_board->getField(32).getOwner()
+				&& m_board->getField(32).getOwner() == m_board->getField(34).getOwner()
+				&& m_board->getField(31).getOwner() != nullptr) {
+				return true;
+			}
+			else {
+				return false;
+			}
+			break;
+		}
+
+		case GroupName::Germany: {
+			if (m_board->getField(37).getOwner() == m_board->getField(39).getOwner()
+				&& m_board->getField(37).getOwner() != nullptr) {
+				return true;
+			}
+			else {
+				return false;
+			}
+			break;
+		}
+		}
+	}
+	else {
+		return false;
+	}
+	
 }
 
-bool logic::PropertyManager::sellHouse(logic::Player&, logic::Field*){
-	return true;
+logic::Field* logic::PropertyManager::getActiveProperty() {
+	return m_activeProperty;
 }
 
-bool logic::PropertyManager::buyHotel(logic::Player&, logic::Field*){
-	return true;
+bool logic::PropertyManager::shouldEnableMortgage() {
+	if (m_activeProperty != nullptr) {
+		if (!m_activeProperty->isUnderMortgage()
+			&& m_activeProperty->getNumberOfHouses() == 0 && m_activeProperty->getNumberOfHotels() == 0) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	else {
+		return false;
+	}
+	
+}
+bool logic::PropertyManager::shouldEnableLiftMortgage() {
+	if (m_activeProperty != nullptr) {
+		if (m_activeProperty->isUnderMortgage() &&
+			(m_player->getCash() >= (m_activeProperty->getPrice() / 2) + (m_activeProperty->getPrice() * 0.1))) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	else {
+		return false;
+	}
+	
+}
+bool logic::PropertyManager::shouldEnableBuyHouse() {
+	if (m_activeProperty != nullptr) {
+		if (hasOneOwner() &&
+			m_activeProperty->getNumberOfHotels() == 0 &&
+			m_activeProperty->getNumberOfHouses() < 4 &&
+			m_player->getCash() >= m_activeProperty->getHousePrice()) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	else {
+		return false;
+	}	
 }
 
-bool logic::PropertyManager::sellHotel(logic::Player&, logic::Field*) {
-	return true;
+bool logic::PropertyManager::shouldEnableSellHouse() {
+	if (m_activeProperty != nullptr) {
+		if (m_activeProperty->getNumberOfHouses() > 0) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	else {
+		return false;
+	}
+	
 }
 
-bool logic::PropertyManager::mortgageProperty(logic::Player&, logic::Field*){
-	return true;
+bool logic::PropertyManager::shouldEnableBuyHotel() {
+	if (m_activeProperty != nullptr) {
+		if (m_activeProperty->getNumberOfHouses() == 4 && m_activeProperty->getNumberOfHotels() == 0) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	else {
+		return false;
+	}
+	
 }
 
-bool logic::PropertyManager::liftMortgage(logic::Player&, logic::Field*){
-	return true;
+bool logic::PropertyManager::shouldEnableSellHotel() {
+	if (m_activeProperty != nullptr) {
+		if (m_activeProperty->getNumberOfHotels() == 1) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	else {
+		return false;
+	}
+	
 }

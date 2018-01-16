@@ -73,7 +73,7 @@ void view::GameView::handleInput() {
 		}
 
 		if (this->m_data->inputManager.isSpriteClicked(this->m_propertyManagerButton, evnt, this->m_data->window)) {
-			view::PropertyManager propertyManager(m_game.getActivePlayer());
+			view::PropertyManager propertyManager(&m_game.getActivePlayer(), m_game.getPropertyManager());
 		}
 
 		//test keys		
@@ -81,8 +81,11 @@ void view::GameView::handleInput() {
 			m_game.getActivePlayer().addOutOfJailCard();			
 		}
 
+		if (evnt.type == sf::Event::KeyPressed && evnt.key.code == sf::Keyboard::Q) {
+			m_game.getActivePlayer().addCash(1000);
+		}
+
 		if (evnt.type == sf::Event::KeyPressed && evnt.key.code == sf::Keyboard::T) {
-			
 			
 		}
 	}

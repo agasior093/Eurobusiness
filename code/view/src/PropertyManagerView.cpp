@@ -1,18 +1,16 @@
 #include "../include/PropertyManagerView.h"
 #include <iostream>
 
-view::PropertyManager::PropertyManager(logic::Player& player) 
+view::PropertyManager::PropertyManager(logic::Player* player, logic::PropertyManager& propertyManager) 
 {
 	m_data = std::make_unique<Data>();
-	m_player = &player;
+	m_propertyManager = &propertyManager;
+	m_propertyManager->setActivePlayer(player);
 	m_data->window.create(sf::VideoMode(PROPERTY_MANAGER_SCREEN_WIDTH, PROPERTY_MANAGER_SCREEN_HEIGHT), PROPERTY_MANAGER_TITLE, sf::Style::Close | sf::Style::Titlebar);
-	gameLoop();
-	
+	gameLoop();	
 }
 
-view::PropertyManager::~PropertyManager() {	
-	m_player = nullptr;
-}
+
 
 void view::PropertyManager::gameLoop() {
 	initialise();
@@ -37,11 +35,62 @@ void view::PropertyManager::handleInput(){
 			(this->m_data->inputManager.isSpriteClicked(this->m_backButton, evnt, this->m_data->window))) {
 			m_data->window.close();			
 		}
+		if (this->m_data->inputManager.isSpriteClicked(this->m_nextButton, evnt, this->m_data->window)) {
+			showNextProperty();
+		}
+		if (this->m_data->inputManager.isSpriteClicked(this->m_previousButton, evnt, this->m_data->window)) {
+			showPreviousProperty();
+		}
+		if (this->m_data->inputManager.isSpriteClicked(this->m_buyHouseButton, evnt, this->m_data->window)) {
+			m_propertyManager->buyHouse();
+			m_fieldInfo.changeText(m_propertyManager->getActivePlayer().getProperties()[m_propertyManager->getActivePropertyId()]->getPropertyInfo());
+			m_playerInfo.changeText(m_propertyManager->getActivePlayer().getName() + "\nCash: " + toStringWithPrecision(m_propertyManager->getActivePlayer().getCash()) + "$");
+			m_message.changeText("You bought house for " + toStringWithPrecision(m_propertyManager->getActiveProperty()->getHousePrice()) + "$.");
+		}
+
+		if (this->m_data->inputManager.isSpriteClicked(this->m_sellHouseButton, evnt, this->m_data->window)) {
+			m_propertyManager->sellHouse();
+			m_fieldInfo.changeText(m_propertyManager->getActivePlayer().getProperties()[m_propertyManager->getActivePropertyId()]->getPropertyInfo());
+			m_playerInfo.changeText(m_propertyManager->getActivePlayer().getName() + "\nCash: " + toStringWithPrecision(m_propertyManager->getActivePlayer().getCash()) + "$");
+			m_message.changeText("You sold house for " + toStringWithPrecision(m_propertyManager->getActiveProperty()->getHousePrice()) + "$.");
+		}
+
+		if (this->m_data->inputManager.isSpriteClicked(this->m_buyHotelButton, evnt, this->m_data->window)) {
+			m_propertyManager->buyHotel();
+			m_fieldInfo.changeText(m_propertyManager->getActivePlayer().getProperties()[m_propertyManager->getActivePropertyId()]->getPropertyInfo());
+			m_playerInfo.changeText(m_propertyManager->getActivePlayer().getName() + "\nCash: " + toStringWithPrecision(m_propertyManager->getActivePlayer().getCash()) + "$");
+			m_message.changeText("You bought hotel for " + toStringWithPrecision(m_propertyManager->getActiveProperty()->getHotelPrice()) + "$.");
+		}
+
+		if (this->m_data->inputManager.isSpriteClicked(this->m_sellHotelButton, evnt, this->m_data->window)) {
+			m_propertyManager->sellHotel();
+			m_fieldInfo.changeText(m_propertyManager->getActivePlayer().getProperties()[m_propertyManager->getActivePropertyId()]->getPropertyInfo());
+			m_playerInfo.changeText(m_propertyManager->getActivePlayer().getName() + "\nCash: " + toStringWithPrecision(m_propertyManager->getActivePlayer().getCash()) + "$");
+			m_message.changeText("You bought hotel for " + toStringWithPrecision(m_propertyManager->getActiveProperty()->getHotelPrice()) + "$.");
+		}
+
+		if (this->m_data->inputManager.isSpriteClicked(this->m_mortgageButton, evnt, this->m_data->window)) {
+			m_propertyManager->mortgageProperty();
+			m_fieldInfo.changeText(m_propertyManager->getActivePlayer().getProperties()[m_propertyManager->getActivePropertyId()]->getPropertyInfo());
+			m_playerInfo.changeText(m_propertyManager->getActivePlayer().getName() + "\nCash: " + toStringWithPrecision(m_propertyManager->getActivePlayer().getCash()) + "$");
+			m_message.changeText("You set " + m_propertyManager->getActiveProperty()->getName() + " under mortgage and gained " 
+				+ toStringWithPrecision(m_propertyManager->getActiveProperty()->getPrice() / 2) + "$");
+		}
+
+		if (this->m_data->inputManager.isSpriteClicked(this->m_liftMortgageButton, evnt, this->m_data->window)) {
+			m_propertyManager->liftMortgage();
+			m_fieldInfo.changeText(m_propertyManager->getActivePlayer().getProperties()[m_propertyManager->getActivePropertyId()]->getPropertyInfo());
+			m_playerInfo.changeText(m_propertyManager->getActivePlayer().getName() + "\nCash: " + toStringWithPrecision(m_propertyManager->getActivePlayer().getCash()) + "$");
+			m_message.changeText("You lifted mortgage from " + m_propertyManager->getActiveProperty()->getName() + " and payed "
+				+ toStringWithPrecision((m_propertyManager->getActiveProperty()->getPrice() / 2) + (m_propertyManager->getActiveProperty()->getPrice() * 0.1)) + "$");
+		}
 	}
 }
 void view::PropertyManager::update(sf::Time) {
-
+	updateButtons();
+	updateMessageBoxes();
 }
+
 void view::PropertyManager::draw() {
 	this->m_data->window.clear();
 
@@ -53,6 +102,7 @@ void view::PropertyManager::draw() {
 	this->m_data->window.draw(m_playerInfo.get());
 	this->m_data->window.draw(m_message.get());
 	this->m_data->window.draw(m_fieldInfo.get());
+	this->m_data->window.draw(m_propertyCounter.get());
 
 	this->m_data->window.draw(m_mortgageButton.getSprite());
 	this->m_data->window.draw(m_liftMortgageButton.getSprite());
@@ -81,6 +131,15 @@ void view::PropertyManager::loadTextures() {
 	this->m_data->resourceManager.loadTexture("Next", NEXT_BUTTON_FILE);
 	this->m_data->resourceManager.loadTexture("Previous", PREVIOUS_BUTTON_FILE);
 	this->m_data->resourceManager.loadTexture("Back", BACK_BUTTON_FILE);
+
+	this->m_data->resourceManager.loadTexture("Disabled mortgage property", DISABLED_MORTGAGE_PROPERTY_BUTTON_FILE);
+	this->m_data->resourceManager.loadTexture("Disabled lift mortgage", DISABLED_LIFT_MORTGAGE_BUTTON_FILE);
+	this->m_data->resourceManager.loadTexture("Disabled buy house", DISABLED_BUY_HOUSE_BUTTON_FILE);
+	this->m_data->resourceManager.loadTexture("Disabled sell house", DISABLED_SELL_HOUSE_BUTTON_FILE);
+	this->m_data->resourceManager.loadTexture("Disabled buy hotel", DISABLED_BUY_HOTEL_BUTTON_FILE);
+	this->m_data->resourceManager.loadTexture("Disabled sell hotel", DISABLED_SELL_HOTEL_BUTTON_FILE);
+	this->m_data->resourceManager.loadTexture("Disabled next", DISABLED_NEXT_BUTTON_FILE);
+	this->m_data->resourceManager.loadTexture("Disabled previous", DISABLED_PREVIOUS_BUTTON_FILE);	
 }
 
 void view::PropertyManager::createBackground() {
@@ -91,7 +150,7 @@ void view::PropertyManager::createBackground() {
 	m_playerLabel.setPosition(255, 50);
 	m_fieldBackground.setPosition(215, 120);
 
-	if (m_player->getProperties().size() > 0) {
+	if (m_propertyManager->getActivePlayer().getProperties().size() > 0) {
 		m_fieldBackground.setTextureRect(sf::IntRect(0, 0, 220, 300));
 	}
 	else {
@@ -102,34 +161,34 @@ void view::PropertyManager::createBackground() {
 
 void view::PropertyManager::createButtons() {
 	this->m_mortgageButton.setTextures(this->m_data->resourceManager.getTexture("Mortgage property"),
-		this->m_data->resourceManager.getTexture("Mortgage property"));
+		this->m_data->resourceManager.getTexture("Disabled mortgage property"));
 	m_mortgageButton.getSprite().setPosition(35, 50);
-	this->m_mortgageButton.enable();
+	this->m_mortgageButton.disable();
 
 	this->m_liftMortgageButton.setTextures(this->m_data->resourceManager.getTexture("Lift mortgage"),
-		this->m_data->resourceManager.getTexture("Lift mortgage"));
+		this->m_data->resourceManager.getTexture("Disabled lift mortgage"));
 	m_liftMortgageButton.getSprite().setPosition(35, 120);
-	this->m_liftMortgageButton.enable();
+	this->m_liftMortgageButton.disable();
 
 	this->m_buyHouseButton.setTextures(this->m_data->resourceManager.getTexture("Buy house"),
-		this->m_data->resourceManager.getTexture("Buy house"));
+		this->m_data->resourceManager.getTexture("Disabled buy house"));
 	m_buyHouseButton.getSprite().setPosition(35, 190);
-	this->m_buyHouseButton.enable();
+	this->m_buyHouseButton.disable();
 
 	this->m_sellHouseButton.setTextures(this->m_data->resourceManager.getTexture("Sell house"),
-		this->m_data->resourceManager.getTexture("Sell house"));
+		this->m_data->resourceManager.getTexture("Disabled sell house"));
 	m_sellHouseButton.getSprite().setPosition(35, 240);
-	this->m_sellHouseButton.enable();
+	this->m_sellHouseButton.disable();
 
 	this->m_buyHotelButton.setTextures(this->m_data->resourceManager.getTexture("Buy hotel"),
-		this->m_data->resourceManager.getTexture("Buy hotel"));
+		this->m_data->resourceManager.getTexture("Disabled buy hotel"));
 	m_buyHotelButton.getSprite().setPosition(35, 290);
-	this->m_buyHotelButton.enable();
+	this->m_buyHotelButton.disable();
 
 	this->m_sellHotelButton.setTextures(this->m_data->resourceManager.getTexture("Sell hotel"),
-		this->m_data->resourceManager.getTexture("Sell hotel"));
+		this->m_data->resourceManager.getTexture("Disabled sell hotel"));
 	m_sellHotelButton.getSprite().setPosition(35, 340);
-	this->m_sellHotelButton.enable();
+	this->m_sellHotelButton.disable();
 
 	this->m_backButton.setTextures(this->m_data->resourceManager.getTexture("Back"),
 		this->m_data->resourceManager.getTexture("Back"));
@@ -137,34 +196,94 @@ void view::PropertyManager::createButtons() {
 	this->m_backButton.enable();
 
 	this->m_previousButton.setTextures(this->m_data->resourceManager.getTexture("Previous"),
-		this->m_data->resourceManager.getTexture("Previous"));
+		this->m_data->resourceManager.getTexture("Disabled previous"));
 	m_previousButton.getSprite().setPosition(220, 430);
 	this->m_previousButton.enable();
 
 	this->m_nextButton.setTextures(this->m_data->resourceManager.getTexture("Next"),
-		this->m_data->resourceManager.getTexture("Next"));
+		this->m_data->resourceManager.getTexture("Disabled next"));
 	m_nextButton.getSprite().setPosition(330, 430);
 	this->m_nextButton.enable();
 }
 
-void view::PropertyManager::createMessageBoxes() {
-	std::string playerInfo = m_player->getName() + "\nCash: " + toStringWithPrecision(m_player->getCash()) + "$";
-	m_playerInfo.create(265, 55, 17, sf::Color::Black, playerInfo);
+void view::PropertyManager::createMessageBoxes() {	
+	m_playerInfo.create(265, 55, 17, sf::Color::Black, m_propertyManager->getActivePlayer().getName() + "\nCash: " + toStringWithPrecision(m_propertyManager->getActivePlayer().getCash()) + "$");
 	m_message.create(20, 15, 15, sf::Color::Black, "Manage your properties.");	
-	if (m_player->getProperties().size() == 0) {
+	if (m_propertyManager->getActivePlayer().getProperties().size() == 0) {
 		m_fieldInfo.create(225, 125, 15, sf::Color::Black, "");
 	}
 	else {
-		m_fieldInfo.create(225, 125, 15, sf::Color::Black, m_player->getProperties()[0]->getPropertyInfo());
+		m_fieldInfo.create(225, 125, 15, sf::Color::Black, m_propertyManager->getActivePlayer().getProperties()[0]->getPropertyInfo());
 	}
-	
+
+	m_propertyCounter.create(390, 125, 15, sf::Color::Black, "[0/0]");
+}
+
+void view::PropertyManager::updateButtons() {
+	if (m_propertyManager->getActivePlayer().getProperties().size() <= 1) {
+		m_nextButton.disable();
+		m_previousButton.disable();
+	}
+	else {
+		m_nextButton.enable();
+		m_previousButton.enable();
+	}
+
+	if (m_propertyManager->shouldEnableMortgage()) {
+		m_mortgageButton.enable();
+	}
+	else {
+		m_mortgageButton.disable();
+	}
+
+	if (m_propertyManager->shouldEnableLiftMortgage()) {
+		m_liftMortgageButton.enable();
+	}
+	else {
+		m_liftMortgageButton.disable();
+	}
+
+	if (m_propertyManager->shouldEnableBuyHouse()) {
+		m_buyHouseButton.enable();
+	}
+	else {
+		m_buyHouseButton.disable();
+	}
+
+	if (m_propertyManager->shouldEnableSellHouse()) {
+		m_sellHouseButton.enable();
+	}
+	else {
+		m_sellHouseButton.disable();
+	}
+
+	if (m_propertyManager->shouldEnableBuyHotel()) {
+		m_buyHotelButton.enable();
+	}
+	else {
+		m_buyHotelButton.disable();
+	}
+
+	if (m_propertyManager->shouldEnableSellHotel()) {
+		m_sellHotelButton.enable();
+	}
+	else {
+		m_sellHotelButton.disable();
+	}
+}
+
+void view::PropertyManager::updateMessageBoxes() {
+	m_propertyCounter.changeText("[" + std::to_string(m_propertyManager->getActivePropertyId() + 1) +
+		"/" + std::to_string(m_propertyManager->getActivePlayer().getProperties().size()) + "]");
 
 }
 
 void view::PropertyManager::showNextProperty() {
-
+	m_propertyManager->goToNextProperty();
+	m_fieldInfo.changeText(m_propertyManager->getActiveProperty()->getPropertyInfo());
 }
 
 void view::PropertyManager::showPreviousProperty() {
-
+	m_propertyManager->goToPreviousProperty();
+	m_fieldInfo.changeText(m_propertyManager->getActiveProperty()->getPropertyInfo());
 }

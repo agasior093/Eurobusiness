@@ -82,6 +82,16 @@ constexpr auto NEXT_BUTTON_FILE = "resources//manager//next.png";
 constexpr auto PREVIOUS_BUTTON_FILE = "resources//manager//previous.png";
 constexpr auto BACK_BUTTON_FILE = "resources//manager//back.png";
 
+constexpr auto DISABLED_MORTGAGE_PROPERTY_BUTTON_FILE = "resources//manager//disabled_mortgage_property.png";
+constexpr auto DISABLED_LIFT_MORTGAGE_BUTTON_FILE = "resources//manager//disabled_lift_mortgage.png";
+constexpr auto DISABLED_BUY_HOUSE_BUTTON_FILE = "resources//manager//disabled_buy_house.png";
+constexpr auto DISABLED_SELL_HOUSE_BUTTON_FILE = "resources//manager//disabled_sell_house.png";
+constexpr auto DISABLED_BUY_HOTEL_BUTTON_FILE = "resources//manager//disabled_buy_hotel.png";
+constexpr auto DISABLED_SELL_HOTEL_BUTTON_FILE = "resources//manager//disabled_sell_hotel.png";
+constexpr auto DISABLED_NEXT_BUTTON_FILE = "resources//manager//disabled_next.png";
+constexpr auto DISABLED_PREVIOUS_BUTTON_FILE = "resources//manager//disabled_previous.png";
+
+
 //background
 constexpr auto PROPERTY_MANAGER_BACKGROUND_FILE = "resources//manager//background.png";
 constexpr auto PROPERTY_MANAGER_FIELD_BACKGROUND_FILE = "resources//manager//field_background.png";

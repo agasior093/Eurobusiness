@@ -14,4 +14,5 @@ void logic::Tax::pay(logic::Player& player) {
 
 void logic::Tax::reset() {
 	m_charge = m_defaultCharge;
+	m_mainMessage = m_defaultMessage;
 }

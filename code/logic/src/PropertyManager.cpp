@@ -26,8 +26,7 @@ void logic::PropertyManager::buyHouse(){
 
 void logic::PropertyManager::sellHouse(){
 	m_activeProperty->removeHouse();
-	m_player->addCash(m_activeProperty->getHousePrice());	
-	std::cout << m_player->getTransactionCounter();
+	m_player->addCash(m_activeProperty->getHousePrice());		
 }
 
 void logic::PropertyManager::buyHotel(){
@@ -219,8 +218,9 @@ bool logic::PropertyManager::shouldEnableLiftMortgage() {
 
 bool logic::PropertyManager::shouldEnableBuyHouse() {
 	if (m_activeProperty != nullptr) {
-		if (m_player->getTransactionCounter() <= 4 &&
+		if (m_player->getTransactionCounter() < 4 &&
 			hasOneOwner() &&
+			m_activeProperty->isBuildingArea() &&
 			m_activeProperty->getNumberOfHotels() == 0 &&
 			m_activeProperty->getNumberOfHouses() < 4 &&
 			m_player->getCash() >= m_activeProperty->getHousePrice()) {
@@ -251,7 +251,8 @@ bool logic::PropertyManager::shouldEnableSellHouse() {
 
 bool logic::PropertyManager::shouldEnableBuyHotel() {
 	if (m_activeProperty != nullptr) {
-		if (m_player->getTransactionCounter() <= 4 && 
+		if (m_player->getTransactionCounter() < 4 && 
+			m_activeProperty->isBuildingArea() &&
 			m_activeProperty->getNumberOfHouses() == 4 && 
 			m_activeProperty->getNumberOfHotels() == 0) {
 			return true;

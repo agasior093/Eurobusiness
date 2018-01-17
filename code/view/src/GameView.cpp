@@ -25,6 +25,7 @@ void view::GameView::initialise() {
 	createPlayers();
 	createMessageBoxes();
 	createSoundEffects();
+	loadBuildingTextures();
 }
 
 void view::GameView::handleInput() {
@@ -35,7 +36,7 @@ void view::GameView::handleInput() {
 		}
 
 		if (this->m_data->inputManager.isSpriteClicked(this->m_rollButton, evnt, this->m_data->window)) {
-			rollTheDice();
+			rollTheDice(0);
 		}
 
 		if (this->m_data->inputManager.isSpriteClicked(this->m_endTurnButton, evnt, this->m_data->window)) {
@@ -73,20 +74,40 @@ void view::GameView::handleInput() {
 		}
 
 		if (this->m_data->inputManager.isSpriteClicked(this->m_propertyManagerButton, evnt, this->m_data->window)) {
-			view::PropertyManager propertyManager(&m_game.getActivePlayer(), m_game.getPropertyManager());
+			view::PropertyManager propertyManager(&m_game.getActivePlayer(), m_game.getPropertyManager(), this->getBoard());
 		}
 
 		//test keys		
-		if (evnt.type == sf::Event::KeyPressed && evnt.key.code == sf::Keyboard::C) {
+		if (evnt.type == sf::Event::KeyPressed && evnt.key.code == sf::Keyboard::Q) {
 			m_game.getActivePlayer().addOutOfJailCard();			
 		}
 
-		if (evnt.type == sf::Event::KeyPressed && evnt.key.code == sf::Keyboard::Q) {
+		if (evnt.type == sf::Event::KeyPressed && evnt.key.code == sf::Keyboard::W) {
 			m_game.getActivePlayer().addCash(1000);
 		}
 
-		if (evnt.type == sf::Event::KeyPressed && evnt.key.code == sf::Keyboard::T) {
-			
+		if (evnt.type == sf::Event::KeyPressed && evnt.key.code == sf::Keyboard::Z) {
+			rollTheDice(1);
+		}
+
+		if (evnt.type == sf::Event::KeyPressed && evnt.key.code == sf::Keyboard::X) {
+			rollTheDice(2);
+		}
+
+		if (evnt.type == sf::Event::KeyPressed && evnt.key.code == sf::Keyboard::C) {
+			rollTheDice(3);
+		}
+
+		if (evnt.type == sf::Event::KeyPressed && evnt.key.code == sf::Keyboard::V) {
+			rollTheDice(4);
+		}
+
+		if (evnt.type == sf::Event::KeyPressed && evnt.key.code == sf::Keyboard::B) {
+			rollTheDice(5);
+		}
+
+		if (evnt.type == sf::Event::KeyPressed && evnt.key.code == sf::Keyboard::N) {
+			rollTheDice(6);
 		}
 	}
 }
@@ -95,6 +116,7 @@ void view::GameView::update(sf::Time dt) {
 	updateButtons();
 	updatePlayerLabels();	
 	updateCurrentField();
+	
 	
 	if (activePlayer().isMoving() == true) {
 		calculateTokenPosition();
@@ -118,9 +140,11 @@ void view::GameView::draw() {
 	this->m_data->window.draw(m_currentField);
 	this->m_data->window.draw(m_fieldInfo.get());
 	this->m_data->window.draw(m_gameStatus.get());
-	for (int i = 0; i < BOARD_SIZE; ++i) {
-		this->m_data->window.draw(m_board.getField(i).getOwnerSign());
-	}
+	for (size_t i = 0; i < BOARD_SIZE; ++i) {
+		this->m_data->window.draw(m_board.getField(i).getOwnerSign());		
+		drawBuildings(i);
+	}	
+
 
 	//drawing players
 	for (int i = 0; i < m_numberOfPlayers; ++i) {
@@ -149,8 +173,6 @@ void view::GameView::draw() {
 
 	this->m_data->window.display();
 }
-
-
 
 void view::GameView::loadResources() {
 	//background texture
@@ -186,6 +208,9 @@ void view::GameView::loadResources() {
 	this->m_data->resourceManager.loadSoundBuffer("Buy sound", BUY_SOUND);
 	this->m_data->resourceManager.loadSoundBuffer("Pay sound", PAY_SOUND);
 	this->m_data->resourceManager.loadSoundBuffer("Jail sound", JAIL_SOUND);
+
+	this->m_data->resourceManager.loadTexture("House", HOUSE);
+	this->m_data->resourceManager.loadTexture("Hotel", HOTEL);
 }
 
 void view::GameView::createBackground() {
@@ -322,6 +347,37 @@ void view::GameView::createSoundEffects() {
 	m_jailSound.setBuffer(this->m_data->resourceManager.getSoundBuffer("Jail sound"));
 }
 
+void view::GameView::loadBuildingTextures() {
+	for (size_t i = 0; i < BOARD_SIZE; ++i) {
+		m_board.getField(i).loadBuildingTextures(this->m_data->resourceManager.getTexture("House"),
+			this->m_data->resourceManager.getTexture("Hotel"));
+	}
+}
+
+void view::GameView::drawBuildings(size_t i) {
+	if (m_game.getBoard().getField(i).getNumberOfHouses() == 1) {
+		this->m_data->window.draw(m_board.getField(i).getHouseOne());
+	}
+	if (m_game.getBoard().getField(i).getNumberOfHouses() == 2) {
+		this->m_data->window.draw(m_board.getField(i).getHouseOne());
+		this->m_data->window.draw(m_board.getField(i).getHouseTwo());
+	}
+	if (m_game.getBoard().getField(i).getNumberOfHouses() == 3) {
+		this->m_data->window.draw(m_board.getField(i).getHouseOne());
+		this->m_data->window.draw(m_board.getField(i).getHouseTwo());
+		this->m_data->window.draw(m_board.getField(i).getHouseThree());
+	}
+	if (m_game.getBoard().getField(i).getNumberOfHouses() == 4) {
+		this->m_data->window.draw(m_board.getField(i).getHouseOne());
+		this->m_data->window.draw(m_board.getField(i).getHouseTwo());
+		this->m_data->window.draw(m_board.getField(i).getHouseThree());
+		this->m_data->window.draw(m_board.getField(i).getHouseFour());
+	}
+	if (m_game.getBoard().getField(i).getNumberOfHotels() == 1) {
+	this->m_data->window.draw(m_board.getField(i).getHotel());
+	}
+}
+
 void view::GameView::calculateTokenPosition() {
 	m_tokenPreviousPosition = m_board.getField(static_cast<std::size_t>(activePlayer().getPosition())).getPosition();
 	m_tokenNextPosition = m_board.getField(static_cast<std::size_t>(activePlayer().getPosition() + 1) % 40).getPosition();
@@ -330,9 +386,9 @@ void view::GameView::calculateTokenPosition() {
 		* activePlayer().getStep() + activePlayer().getJumpOffSet()); //
 }
 
-void view::GameView::rollTheDice() {	
+void view::GameView::rollTheDice(int x) {	
 	m_playerPreviousPosition = static_cast<int>(activePlayer().getPosition());	
-	m_game.startTurn();
+	m_game.startTurn(x);
 	m_diceOne.playSound();
 	m_diceOne.changeTexture(m_game.getDiceOne().getCurrentNumber());
 	m_diceTwo.changeTexture(m_game.getDiceTwo().getCurrentNumber());
@@ -435,3 +491,8 @@ view::Player& view::GameView::activePlayer() {
 view::Button* view::GameView::getButton(std::string buttonName) {
 	return m_buttons.at(buttonName);
 }
+
+view::GameBoard& view::GameView::getBoard() {
+	return m_board;
+}
+

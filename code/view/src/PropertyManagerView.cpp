@@ -1,10 +1,12 @@
 #include "../include/PropertyManagerView.h"
 
-view::PropertyManager::PropertyManager(logic::Player* player, logic::PropertyManager& propertyManager) 
+view::PropertyManager::PropertyManager(logic::Player* player, logic::PropertyManager& propertyManager, 
+	view::GameBoard& board)
 {
 	m_data = std::make_unique<Data>();
 	m_propertyManager = &propertyManager;
 	m_propertyManager->setActivePlayer(player);
+	m_board = &board;
 	m_data->window.create(sf::VideoMode(PROPERTY_MANAGER_SCREEN_WIDTH, PROPERTY_MANAGER_SCREEN_HEIGHT), PROPERTY_MANAGER_TITLE, sf::Style::Close | sf::Style::Titlebar);
 	gameLoop();	
 }
@@ -322,3 +324,4 @@ void view::PropertyManager::sellHotel() {
 	m_playerInfo.changeText(m_propertyManager->getActivePlayer().getName() + "\nCash: " + toStringWithPrecision(m_propertyManager->getActivePlayer().getCash()) + "$");
 	m_message.changeText("You bought hotel for " + toStringWithPrecision(m_propertyManager->getActiveProperty()->getHotelPrice()) + "$.");
 }
+

@@ -10,7 +10,8 @@ namespace view{
 
 	class PropertyManager {
 		std::unique_ptr<view::Data> m_data;
-		logic::PropertyManager* m_propertyManager;		
+		logic::PropertyManager* m_propertyManager;	
+		view::GameBoard* m_board;
 		void gameLoop();
 		void initialise();
 		void handleInput();
@@ -37,7 +38,7 @@ namespace view{
 		Button m_backButton;
 
 	public:
-		PropertyManager(logic::Player*, logic::PropertyManager&);
+		PropertyManager(logic::Player*, logic::PropertyManager&, view::GameBoard&);
 		
 		void loadTextures();
 		void createBackground();

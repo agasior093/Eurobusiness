@@ -29,6 +29,10 @@ constexpr auto DICE_HEIGHT = 55.f;
 constexpr auto DICE_SOUND = "resources//diceSound.wav";
 constexpr auto DICE_TEXTURE = "resources//dice.png";
 
+//
+constexpr auto HOUSE = "resources//house.png";
+constexpr auto HOTEL = "resources//hotel.png";
+
 //current field background
 constexpr auto DEFAULT_FIELD_BACKGROUND = "resources//default_current_field.png";
 constexpr auto FIELD_BACKGROUNDS = "resources//field_backgrounds.png";

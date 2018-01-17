@@ -33,7 +33,7 @@ namespace view {
 		void gameLoop();
 		void initialise();
 		void handleInput();
-		void update(sf::Time); //
+		void update(sf::Time); 
 		void draw();
 
 		//game components		
@@ -42,8 +42,8 @@ namespace view {
 		view::Dice m_diceOne, m_diceTwo;
 		view::GameBoard m_board;
 		
-		std::vector<view::Player> m_players;
 		unsigned m_activePlayer = 0;
+		std::vector<view::Player> m_players;		
 		std::vector<view::MessageBox> m_playerLabels;
 		std::vector<sf::CircleShape> m_playerTokenCopies;
 
@@ -88,6 +88,8 @@ namespace view {
 		void createPlayers();
 		void createMessageBoxes();
 		void createSoundEffects();
+		void loadBuildingTextures();
+		void drawBuildings(size_t);
 
 		//on update
 		void calculateTokenPosition();
@@ -96,13 +98,14 @@ namespace view {
 		void updateCurrentField();
 
 		//on event 
-		void rollTheDice();
+		void rollTheDice(int);
 		void endTurn();
 		void jailRoll();
 		void industryRoll();
 		
 		view::Player& activePlayer();
 		Button* getButton(std::string);
+		view::GameBoard& getBoard();
 
 		template <typename T>
 		std::string toStringWithPrecision(const T a_value, const int n = 1) {

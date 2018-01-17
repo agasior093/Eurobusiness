@@ -18,7 +18,7 @@ void logic::Game::reset() {
 	m_passedStart = false;
 }
 
-void logic::Game::startTurn() {
+void logic::Game::startTurn(int x) {
 	
 	unsigned oldPosition = getActivePlayer().getPosition();
 
@@ -26,7 +26,7 @@ void logic::Game::startTurn() {
 	checkForDoubles();
 	if (m_canMove == true) {		
 		m_stateBeforeThrow = false;
-		setInMotion(1);
+		setInMotion(x);
 	}	
 	//activate new position only after player changes old position or after end turn if he is in jail,
 	//because then he cant move, but position needs to be updated

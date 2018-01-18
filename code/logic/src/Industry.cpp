@@ -17,13 +17,19 @@ void logic::Industry::updateMessage() {
 		ownerInfo;
 }
 
-void logic::Industry::calculateCharge() {
-	m_charge = m_rollResult * m_baseFee;
+std::string logic::Industry::getPropertyInfo() {
+	return  m_name + "\n\n\n" +
+		"Base charge is 100$ and its\nmultiplied by number rolled by\nplayer that stays here.\n" +
+		"If you own both industries,\nthis number is doubled\n\n\n\n\n";
 }
 
-void logic::Industry::activate(logic::Player& player) {
+void logic::Industry::calculateCharge() {	
+	m_charge = m_rollResult * m_baseFee * m_industriesOwnedByPlayer;
+}
+
+void logic::Industry::activate(logic::Player& player) {	
 	if (m_hasPayed == false && ((this->getOwner() != nullptr)
-		&& (this->getOwner()->getName() != player.getName()))) {
+		&& (this->getOwner()->getName() != player.getName()))) {		
 		m_gameStatusMessage = "You are staying in " + this->getName() +
 			",which belongs\nto player " + this->getOwner()->getName() +
 			". Roll the dice to see how\nmuch you owe him.";
@@ -39,9 +45,23 @@ void logic::Industry::activate(logic::Player& player) {
 
 void logic::Industry::checkRollResult(int firstRoll, int secondRoll, logic::Player& player) {
 	m_rollResult = firstRoll;	
+	checkIfPlayerOwnsBothIndustries();
 	activate(player);
 }
 
 void logic::Industry::reset() {
 	m_rollResult = 0;
+	m_industriesOwnedByPlayer = 0;
+}
+
+void logic::Industry::checkIfPlayerOwnsBothIndustries() {
+	if (m_owner->getProperties().size() > 0) {
+		for (size_t i = 0; i < m_owner->getProperties().size(); ++i) {
+			if (m_owner->getProperties()[i]->getName() == "Power plant" || m_owner->getProperties()[i]->getName() == "Water supply") {
+				
+				m_industriesOwnedByPlayer++;
+				std::cout << m_industriesOwnedByPlayer;
+			}
+		}
+	}	
 }

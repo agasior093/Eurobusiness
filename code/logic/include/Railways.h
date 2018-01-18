@@ -4,6 +4,7 @@
 
 namespace logic {
 	class Railways : public Property {
+		int m_railwaysOwnedByPlayer;
 	public:
 		Railways(std::string name, GroupName group,float price)
 			: Property(name, group, false, price, 100)
@@ -13,5 +14,6 @@ namespace logic {
 		virtual void updateMessage() override;		
 		virtual std::string getPropertyInfo() override;
 		virtual void calculateCharge() override;
+		void checkOwnedRailways();
 	};
 }

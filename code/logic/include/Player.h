@@ -7,6 +7,8 @@
 #include <string>
 #include <memory>
 #include <vector>
+#include <iostream>
+
 
 namespace logic {
 	class Field;
@@ -27,7 +29,10 @@ namespace logic {
 
 	public:		
 		Player(std::string name)
-			: m_name(name)	{ }
+			: m_name(name)	{ 
+			m_properties.reserve(30);
+			//??
+		}
 		~Player() = default;
 
 		void setAsActive(bool);		

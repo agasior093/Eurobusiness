@@ -1,5 +1,4 @@
 #include "../include/PropertyManager.h"
-#include <iostream>
 
 logic::PropertyManager::PropertyManager(logic::GameBoard& board) {
 	m_board = &board;		
@@ -106,7 +105,7 @@ bool logic::PropertyManager::hasOneOwner() {
 			break;
 		}
 
-		case GroupName::Italy: {
+		case GroupName::Spain: {
 			if (m_board->getField(11).getOwner() == m_board->getField(13).getOwner()
 				&& m_board->getField(13).getOwner() == m_board->getField(14).getOwner()
 				&& m_board->getField(14).getOwner() != nullptr) {
@@ -118,7 +117,7 @@ bool logic::PropertyManager::hasOneOwner() {
 			break;
 		}
 
-		case GroupName::Spain: {
+		case GroupName::Italy: {
 			if (m_board->getField(16).getOwner() == m_board->getField(18).getOwner()
 				&& m_board->getField(18).getOwner() == m_board->getField(19).getOwner()
 				&& m_board->getField(16).getOwner() != nullptr) {

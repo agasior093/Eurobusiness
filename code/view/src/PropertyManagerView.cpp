@@ -63,6 +63,11 @@ void view::PropertyManager::handleInput(){
 		if (this->m_data->inputManager.isSpriteClicked(this->m_liftMortgageButton, evnt, this->m_data->window)) {
 			liftMortgage();
 		}
+
+		if (evnt.type == sf::Event::KeyPressed && evnt.key.code == sf::Keyboard::W) {
+
+			std::cout << m_propertyManager->getActivePropertyID();
+		}
 	}
 }
 

@@ -35,6 +35,7 @@ namespace logic {
 		void reset(); 
 		void permissionToThrow(bool);
 
+		void startTurn();
 		void startTurn(int);
 		void rollTheDice();
 		std::string checkForDoubles();

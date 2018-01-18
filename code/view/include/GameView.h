@@ -98,6 +98,7 @@ namespace view {
 		void updateCurrentField();
 
 		//on event 
+		void rollTheDice();
 		void rollTheDice(int);
 		void endTurn();
 		void jailRoll();

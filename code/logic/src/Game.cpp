@@ -18,7 +18,7 @@ void logic::Game::reset() {
 	m_passedStart = false;
 }
 
-void logic::Game::startTurn(int x) {
+void logic::Game::startTurn() {
 	
 	unsigned oldPosition = getActivePlayer().getPosition();
 
@@ -26,7 +26,7 @@ void logic::Game::startTurn(int x) {
 	checkForDoubles();
 	if (m_canMove == true) {		
 		m_stateBeforeThrow = false;
-		setInMotion(x);
+		setInMotion(m_totalRollResult);
 	}	
 	//activate new position only after player changes old position or after end turn if he is in jail,
 	//because then he cant move, but position needs to be updated
@@ -38,6 +38,29 @@ void logic::Game::startTurn(int x) {
 	}
 	else {
 		m_passedStart = false;		
+	}
+}
+
+void logic::Game::startTurn(int x) {
+
+	unsigned oldPosition = getActivePlayer().getPosition();
+
+	rollTheDice();
+	checkForDoubles();
+	if (m_canMove == true) {
+		m_stateBeforeThrow = false;
+		setInMotion(x);
+	}
+	//activate new position only after player changes old position or after end turn if he is in jail,
+	//because then he cant move, but position needs to be updated
+
+	unsigned newPosition = getActivePlayer().getPosition();
+	if (oldPosition != newPosition) activateNewPosition();
+	if (newPosition < oldPosition && getActivePlayer().getTurnsLeftInJail() == 0) {
+		m_passedStart = true;
+	}
+	else {
+		m_passedStart = false;
 	}
 }
 

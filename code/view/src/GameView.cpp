@@ -36,7 +36,7 @@ void view::GameView::handleInput() {
 		}
 
 		if (this->m_data->inputManager.isSpriteClicked(this->m_rollButton, evnt, this->m_data->window)) {
-			rollTheDice(0);
+			rollTheDice();
 		}
 
 		if (this->m_data->inputManager.isSpriteClicked(this->m_endTurnButton, evnt, this->m_data->window)) {
@@ -83,7 +83,8 @@ void view::GameView::handleInput() {
 		}
 
 		if (evnt.type == sf::Event::KeyPressed && evnt.key.code == sf::Keyboard::W) {
-			m_game.getActivePlayer().addCash(1000);
+			
+			
 		}
 
 		if (evnt.type == sf::Event::KeyPressed && evnt.key.code == sf::Keyboard::Z) {
@@ -116,8 +117,7 @@ void view::GameView::update(sf::Time dt) {
 	updateButtons();
 	updatePlayerLabels();	
 	updateCurrentField();
-	
-	
+		
 	if (activePlayer().isMoving() == true) {
 		calculateTokenPosition();
 		activePlayer().move();				
@@ -386,9 +386,9 @@ void view::GameView::calculateTokenPosition() {
 		* activePlayer().getStep() + activePlayer().getJumpOffSet()); //
 }
 
-void view::GameView::rollTheDice(int x) {	
+void view::GameView::rollTheDice() {	
 	m_playerPreviousPosition = static_cast<int>(activePlayer().getPosition());	
-	m_game.startTurn(x);
+	m_game.startTurn();
 	m_diceOne.playSound();
 	m_diceOne.changeTexture(m_game.getDiceOne().getCurrentNumber());
 	m_diceTwo.changeTexture(m_game.getDiceTwo().getCurrentNumber());
@@ -398,6 +398,20 @@ void view::GameView::rollTheDice(int x) {
 	if (m_game.canMove()) {
 		activePlayer().setTargetPosition();
 	}	
+}
+
+void view::GameView::rollTheDice(int x) {
+	m_playerPreviousPosition = static_cast<int>(activePlayer().getPosition());
+	m_game.startTurn(x);
+	m_diceOne.playSound();
+	m_diceOne.changeTexture(m_game.getDiceOne().getCurrentNumber());
+	m_diceTwo.changeTexture(m_game.getDiceTwo().getCurrentNumber());
+
+	m_gameStatus.changeText(m_game.checkForDoubles());
+
+	if (m_game.canMove()) {
+		activePlayer().setTargetPosition();
+	}
 }
 
 void view::GameView::endTurn() {	

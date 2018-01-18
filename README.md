@@ -1,3 +1,3 @@
 # Eurobusiness game 
 
-![alt text](https://imgur.com/a/HGmO6)
+![alt text](https://ibb.co/jFbjZ6][img]https://thumb.ibb.co/jFbjZ6/screen.png)

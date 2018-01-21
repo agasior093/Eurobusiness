@@ -3,6 +3,7 @@
 constexpr auto JAIL_TIME = 3;
 constexpr auto JAIL_POSITION = 10;
 constexpr auto BOARD_SIZE = 40;
+constexpr auto CHANCE_DECK_SIZE = 15;
 constexpr auto PASSED_START_CASH = 400.0f;
 constexpr auto STARTING_POSITION_X = 675.f;
 constexpr auto STARTING_POSITION_Y = 675.f;

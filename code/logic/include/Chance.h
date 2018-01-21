@@ -1,6 +1,8 @@
 #pragma once
 
 #include "../include/Field.h"
+#include "../include/RedChanceDeck.h"
+#include "../include/BlueChanceDeck.h"
 #include <array>
 #include <algorithm>
 
@@ -10,7 +12,6 @@ namespace logic {
 	};
 	
 	class Chance : public Field {		
-		//std::array<void(logic::Chance::*)(), 15> m_redChances;
 		ChanceType m_type;
 		float m_charge;	
 				

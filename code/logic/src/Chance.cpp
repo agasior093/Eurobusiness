@@ -7,12 +7,17 @@ logic::Chance::Chance(ChanceType type)
 }
 
 void logic::Chance::activate(logic::Player& player) {
-	
+	if (m_type == ChanceType::RED) {
+		RedChanceDeck::getDeck().getTopCard()();
+	}
+
+	else {
+		BlueChanceDeck::getDeck().getTopCard()();
+	}
 }
 
 void logic::Chance::reveal() {	
-	//reveals card on top of deck
-	//(this->*m_redChances[m_redChances.size() - 1])();	
+	
 }
 
 

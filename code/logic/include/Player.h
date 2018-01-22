@@ -24,14 +24,17 @@ namespace logic {
 		int m_turnsLeftInJail = 0;
 		int m_outOfJailCards = 0;
 		int m_transactionCounter = 0;	
+		int m_numberOfHouses = 0;
+		int m_numberOfHotels = 0;
 		bool m_isActive = false;
 		bool m_isSentToJail = false;
+		bool m_isPositionChanged = false;
+		bool m_canCollectMoney = false;
 
 	public:		
 		Player(std::string name)
 			: m_name(name)	{ 
-			m_properties.reserve(30);
-			//??
+			m_properties.reserve(30);			
 		}
 		~Player() = default;
 
@@ -44,11 +47,17 @@ namespace logic {
 		void setPosition(int);	
 		void sendToJail(bool);
 		void lockInJail();
+		void changePosition(bool, int);
+		void allowToCollectMoney(bool);
 		void decrementTurnsInJail();
 		void addOutOfJailCard();
 		void useOutOfJailCard();			
 		void increaseTransactionCounter();
 		void resetTransactionCounter();
+		void addHouse();
+		void removeHouse();
+		void addHotel();
+		void removeHotel();
 		bool pay();
 		
 		std::string getName() const;	
@@ -61,7 +70,11 @@ namespace logic {
 		int getTurnsLeftInJail() const;
 		int getOutOfJailCards() const;
 		int getTransactionCounter() const;
+		int getNumberOfHouses() const;
+		int getNumberOfHotels() const;
 		bool isActive() const;
 		bool isSentToJail() const;
+		bool isPositionChanged() const;
+		bool canCollectMoney() const;
 	};
 }

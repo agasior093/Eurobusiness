@@ -32,6 +32,8 @@ namespace view {
 		virtual void activate(std::map<std::string, view::Button*>, logic::Player&, logic::Field*) {}
 		virtual void reset(std::map<std::string, view::Button*> buttons) {}
 		virtual void roll() {}
+		virtual void reveal() {}
+
 		virtual void loadBuildingTextures(sf::Texture, sf::Texture) {}
 		
 		virtual sf::RectangleShape& getOwnerSign() { return m_ownerSign; }

@@ -2,14 +2,15 @@
 #include "../include/ChanceDeck.h"
 
 namespace logic {
+
 	class BlueChanceDeck : public ChanceDeck {
 	public:
 		static BlueChanceDeck & getDeck();
 	private:
 		BlueChanceDeck();
-		BlueChanceDeck(const BlueChanceDeck&) {}
+		BlueChanceDeck(const BlueChanceDeck&) {}		
 
-		void blueCard1();
+		void blueCard1(logic::Player&, std::string&);
 		void blueCard2();
 		void blueCard3();
 		void blueCard4();

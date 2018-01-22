@@ -9,6 +9,7 @@ namespace view {
 
 	class Chance : public Field {
 		ChanceType m_type;
+		bool m_isRevealed = false;
 	public:
 		Chance(float positionX, float positionY, ChanceType type)
 			: Field(positionX, positionY), m_type(type)
@@ -21,5 +22,8 @@ namespace view {
 			}			
 		}
 		virtual ~Chance() = default;		
+		virtual void activate(std::map<std::string, view::Button*>, logic::Player&, logic::Field*) override;
+		virtual void reveal() override;
+		virtual void reset(std::map<std::string, view::Button*>) override;
 	};
 }

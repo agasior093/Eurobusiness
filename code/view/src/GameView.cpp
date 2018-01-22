@@ -77,6 +77,10 @@ void view::GameView::handleInput() {
 			view::PropertyManager propertyManager(&m_game.getActivePlayer(), m_game.getPropertyManager(), this->getBoard());
 		}
 
+		if (this->m_data->inputManager.isSpriteClicked(this->m_revealButton, evnt, this->m_data->window)) {
+			reveal();
+		}
+
 		//test keys		
 		if (evnt.type == sf::Event::KeyPressed && evnt.key.code == sf::Keyboard::Q) {
 			m_game.getActivePlayer().addOutOfJailCard();			
@@ -169,7 +173,7 @@ void view::GameView::draw() {
 	this->m_data->window.draw(m_jailCardButton.getSprite());
 	this->m_data->window.draw(m_revealButton.getSprite());
 	this->m_data->window.draw(m_collectButton.getSprite());
-
+	this->m_data->window.draw(m_moveButton.getSprite());
 
 	this->m_data->window.display();
 }
@@ -197,6 +201,8 @@ void view::GameView::loadResources() {
 	this->m_data->resourceManager.loadTexture("Disabled reveal", DISABLED_REVEAL_BUTTON_FILE);
 	this->m_data->resourceManager.loadTexture("Collect", COLLECT_BUTTON_FILE);
 	this->m_data->resourceManager.loadTexture("Disabled collect", DISABLED_COLLECT_BUTTON_FILE);
+	this->m_data->resourceManager.loadTexture("Move", MOVE_BUTTON_FILE);
+	this->m_data->resourceManager.loadTexture("Disabled move", DISABLED_MOVE_BUTTON_FILE);
 
 	//current field background	
 	this->m_data->resourceManager.loadTexture("Field backgrounds", FIELD_BACKGROUNDS);
@@ -231,11 +237,12 @@ void view::GameView::createButtons() {
 	m_buttons["Jail card"] = &m_jailCardButton;
 	m_buttons["Reveal"] = &m_revealButton;
 	m_buttons["Collect"] = &m_collectButton;
+	m_buttons["Move"] = &m_moveButton;
 
 	//roll dice button
 	this->m_rollButton.setTextures(this->m_data->resourceManager.getTexture("Roll the dice"),
 		this->m_data->resourceManager.getTexture("Disabled roll the dice"));	
-	m_rollButton.getSprite().setPosition(120, 540);
+	m_rollButton.getSprite().setPosition(120, 500);
 
 	this->m_propertyManagerButton.setTextures(this->m_data->resourceManager.getTexture("Property manager"),
 		this->m_data->resourceManager.getTexture("Disabled property manager"));	
@@ -245,43 +252,49 @@ void view::GameView::createButtons() {
 	//end turn button
 	this->m_endTurnButton.setTextures(this->m_data->resourceManager.getTexture("End turn"),
 		this->m_data->resourceManager.getTexture("Disabled end turn"));	
-	m_endTurnButton.getSprite().setPosition(485, 540);
+	m_endTurnButton.getSprite().setPosition(120, 560);
 	
 	//buy button
 	this->m_buyButton.setTextures(this->m_data->resourceManager.getTexture("Buy"),
 		this->m_data->resourceManager.getTexture("Disabled buy"));
 	this->m_buyButton.disable();
-	m_buyButton.getSprite().setPosition(485, 215);
+	m_buyButton.getSprite().setPosition(485, 200);
 
 	//pay button
 	this->m_payButton.setTextures(this->m_data->resourceManager.getTexture("Pay"),
 		this->m_data->resourceManager.getTexture("Disabled pay"));	
 	this->m_payButton.disable();
-	m_payButton.getSprite().setPosition(485, 265);
+	m_payButton.getSprite().setPosition(485, 250);
 
 	//jail roll button
 	this->m_jailRollButton.setTextures(this->m_data->resourceManager.getTexture("Jail roll"),
 		this->m_data->resourceManager.getTexture("Disabled jail roll"));
 	this->m_jailRollButton.disable();
-	m_jailRollButton.getSprite().setPosition(485, 315);
+	m_jailRollButton.getSprite().setPosition(485, 300);
 
 	//jail card button
 	this->m_jailCardButton.setTextures(this->m_data->resourceManager.getTexture("Jail card"),
 		this->m_data->resourceManager.getTexture("Disabled jail card"));
 	this->m_jailCardButton.disable();
-	m_jailCardButton.getSprite().setPosition(485, 365);
+	m_jailCardButton.getSprite().setPosition(485, 350);
 
 	//reveal button
 	this->m_revealButton.setTextures(this->m_data->resourceManager.getTexture("Reveal"),
 		this->m_data->resourceManager.getTexture("Disabled reveal"));
 	this->m_revealButton.disable();
-	m_revealButton.getSprite().setPosition(485, 415);
+	m_revealButton.getSprite().setPosition(485, 400);
 
 	//collect button
 	this->m_collectButton.setTextures(this->m_data->resourceManager.getTexture("Collect"),
 		this->m_data->resourceManager.getTexture("Disabled collect"));
 	this->m_collectButton.disable();
-	m_collectButton.getSprite().setPosition(485, 465);
+	m_collectButton.getSprite().setPosition(485, 450);
+
+	//move button
+	this->m_moveButton.setTextures(this->m_data->resourceManager.getTexture("Move"),
+		this->m_data->resourceManager.getTexture("Disabled move"));
+	this->m_moveButton.disable();
+	m_moveButton.getSprite().setPosition(485, 500);
 }
 
 void view::GameView::createDice() {
@@ -416,13 +429,27 @@ void view::GameView::rollTheDice(int x) {
 
 void view::GameView::endTurn() {	
 	m_board.getField(m_game.getActivePlayer().getPosition()).reset(m_buttons);
-	if (m_game.getActivePlayer().isSentToJail()) {
+	if (m_game.getActivePlayer().isSentToJail() == true) {
 		activePlayer().getToken().setPosition(45, 675);
 		activePlayer().setPosition(10);
 	}	
+
+	if (m_game.getActivePlayer().isPositionChanged() == true) {
+		auto positionX = m_board.getField(m_game.getActivePlayer().getPosition()).getPosition().x;
+		auto positionY = m_board.getField(m_game.getActivePlayer().getPosition()).getPosition().y;
+		activePlayer().getToken().setPosition(positionX, positionY);
+		activePlayer().setPosition(m_game.getActivePlayer().getPosition());
+	}
+
 	m_game.endTurn();	
 	m_gameStatus.changeText("");
 	m_shouldPlaySound = true;
+}
+
+void view::GameView::reveal() {
+	m_board.getField(m_game.getActivePlayer().getPosition()).reveal();
+	m_game.getActiveField().reveal(m_game.getActivePlayer());
+		
 }
 
 void view::GameView::jailRoll() {

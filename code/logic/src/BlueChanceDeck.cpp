@@ -6,25 +6,25 @@ logic::BlueChanceDeck& logic::BlueChanceDeck::getDeck() {
 }
 
 logic::BlueChanceDeck::BlueChanceDeck() {
-	m_deck[0] = [&]() { blueCard1(); };
-	m_deck[1] = [&]() { blueCard2(); };
-	m_deck[2] = [&]() { blueCard3(); };
-	m_deck[3] = [&]() { blueCard4(); };
-	m_deck[4] = [&]() { blueCard5(); };
-	m_deck[5] = [&]() { blueCard6(); };
-	m_deck[6] = [&]() { blueCard7(); };
-	m_deck[7] = [&]() { blueCard8(); };
-	m_deck[8] = [&]() { blueCard9(); };
-	m_deck[9] = [&]() { blueCard10(); };
-	m_deck[10] = [&]() { blueCard11(); };
-	m_deck[11] = [&]() { blueCard12(); };
-	m_deck[12] = [&]() { blueCard13(); };
-	m_deck[13] = [&]() { blueCard14(); };
-	m_deck[14] = [&]() { blueCard15(); };
+	m_deck[0] = [&](logic::Player& player, std::string& message) { blueCard1(player, message); };
+	m_deck[1] = [&](logic::Player& player, std::string& message) { blueCard1(player, message); };
+	m_deck[2] = [&](logic::Player& player, std::string& message) { blueCard1(player, message); };
+	m_deck[3] = [&](logic::Player& player, std::string& message) { blueCard1(player, message); };
+	m_deck[4] = [&](logic::Player& player, std::string& message) { blueCard1(player, message); };
+	m_deck[5] = [&](logic::Player& player, std::string& message) { blueCard1(player, message); };
+	m_deck[6] = [&](logic::Player& player, std::string& message) { blueCard1(player, message); };
+	m_deck[7] = [&](logic::Player& player, std::string& message) { blueCard1(player, message); };
+	m_deck[8] = [&](logic::Player& player, std::string& message) { blueCard1(player, message); };
+	m_deck[9] = [&](logic::Player& player, std::string& message) { blueCard1(player, message); };
+	m_deck[10] = [&](logic::Player& player, std::string& message) { blueCard1(player, message); };
+	m_deck[11] = [&](logic::Player& player, std::string& message) { blueCard1(player, message); };
+	m_deck[12] = [&](logic::Player& player, std::string& message) { blueCard1(player, message); };
+	m_deck[13] = [&](logic::Player& player, std::string& message) { blueCard1(player, message); };
+	m_deck[14] = [&](logic::Player& player, std::string& message) { blueCard1(player, message); };
 	shuffleDeck();
 }
 
-void logic::BlueChanceDeck::blueCard1() {
+void logic::BlueChanceDeck::blueCard1(logic::Player& player, std::string& message) {
 
 }
 

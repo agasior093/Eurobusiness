@@ -45,6 +45,17 @@ void logic::Player::lockInJail() {
 	m_position = 10;		
 }
 
+void logic::Player::changePosition(bool argument, int newPosition) {
+	m_isPositionChanged = argument;
+	if (m_isPositionChanged == true) {
+		m_position = newPosition;
+	}	
+}
+
+void logic::Player::allowToCollectMoney(bool argument) {
+	m_canCollectMoney = argument;
+}
+
 void logic::Player::decrementTurnsInJail() {
 	if(m_turnsLeftInJail > 0) m_turnsLeftInJail--;
 }
@@ -66,6 +77,22 @@ void logic::Player::increaseTransactionCounter() {
 
 void logic::Player::resetTransactionCounter() {
 	m_transactionCounter = 0;
+}
+
+void logic::Player::addHouse() {
+	m_numberOfHouses++;
+}
+
+void logic::Player::removeHouse() {
+	m_numberOfHouses--;
+}
+
+void logic::Player::addHotel() {
+	m_numberOfHotels++;
+}
+
+void logic::Player::removeHotel() {
+	m_numberOfHotels--;
 }
 
 bool logic::Player::pay() {
@@ -121,6 +148,14 @@ int logic::Player::getOutOfJailCards() const {
 	return m_outOfJailCards;
 }
 
+int logic::Player::getNumberOfHouses() const {
+	return m_numberOfHouses;
+}
+
+int logic::Player::getNumberOfHotels() const {
+	return m_numberOfHotels;
+}
+
 bool logic::Player::isActive() const {
 	return m_isActive;
 }
@@ -128,3 +163,12 @@ bool logic::Player::isActive() const {
 bool logic::Player::isSentToJail() const {
 	return m_isSentToJail;
 }
+
+bool logic::Player::isPositionChanged() const {
+	return m_isPositionChanged;
+}
+
+bool logic::Player::canCollectMoney() const {
+	return m_canCollectMoney;
+}
+

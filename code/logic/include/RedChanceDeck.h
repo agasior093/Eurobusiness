@@ -1,28 +1,29 @@
 #pragma once
 #include "../include/ChanceDeck.h"
 
-namespace logic {
-	class RedChanceDeck : public ChanceDeck {		
-	public:							
+namespace logic {	
+
+	class RedChanceDeck : public ChanceDeck {
+	public:
 		static RedChanceDeck & getDeck();
 	private:
 		RedChanceDeck();
-		RedChanceDeck(const RedChanceDeck&) {}
+		RedChanceDeck(const RedChanceDeck&) {}		
 		
-		void redCard1();
-		void redCard2();
-		void redCard3();
-		void redCard4();
-		void redCard5();
-		void redCard6();
-		void redCard7();
-		void redCard8();
-		void redCard9();
-		void redCard10();
-		void redCard11();
-		void redCard12();
-		void redCard13();
-		void redCard14();
-		void redCard15();			
+		void redCard1(logic::Player&, std::string&);
+		void redCard2(logic::Player&, std::string&);
+		void redCard3(logic::Player&, std::string&);
+		void redCard4(logic::Player&, std::string&);
+		void redCard5(logic::Player&, std::string&);
+		void redCard6(logic::Player&, std::string&);
+		void redCard7(logic::Player&, std::string&);
+		void redCard8(logic::Player&, std::string&);
+		void redCard9(logic::Player&, std::string&);
+		void redCard10(logic::Player&, std::string&);
+		void redCard11(logic::Player&, std::string&);
+		void redCard12(logic::Player&, std::string&);
+		void redCard13(logic::Player&, std::string&);
+		void redCard14(logic::Player&, std::string&);
+		void redCard15(logic::Player&, std::string&);
 	};
 }

@@ -70,6 +70,7 @@ namespace view {
 		Button m_jailRollButton;
 		Button m_revealButton;
 		Button m_collectButton;
+		Button m_moveButton;
 
 		sf::Sound m_buySound;
 		sf::Sound m_paySound;
@@ -101,6 +102,7 @@ namespace view {
 		void rollTheDice();
 		void rollTheDice(int);
 		void endTurn();
+		void reveal();
 		void jailRoll();
 		void industryRoll();
 		

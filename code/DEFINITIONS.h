@@ -67,6 +67,8 @@ constexpr auto REVEAL_BUTTON_FILE = "resources//buttons//reveal_button.png";
 constexpr auto DISABLED_REVEAL_BUTTON_FILE = "resources//buttons//disabled_reveal_button.png";
 constexpr auto COLLECT_BUTTON_FILE = "resources//buttons//collect_button.png";
 constexpr auto DISABLED_COLLECT_BUTTON_FILE = "resources//buttons//disabled_collect_button.png";
+constexpr auto MOVE_BUTTON_FILE = "resources//buttons//move_button.png";
+constexpr auto DISABLED_MOVE_BUTTON_FILE = "resources//buttons//disabled_move_button.png";
 
 //button sounds
 constexpr auto BUY_SOUND = "resources//buySound.wav";

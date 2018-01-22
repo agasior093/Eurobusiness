@@ -29,7 +29,7 @@ namespace logic {
 		virtual void calculateCharge() { }
 		virtual void pay(logic::Player&) {}
 		virtual void buy(logic::Player&) {}		
-		virtual void reveal() {}
+		virtual void reveal(logic::Player&) {}
 		virtual void moveForward(logic::Player&) {}
 		virtual void moveBackwards(logic::Player&) {}
 		virtual void setOwner(logic::Player&) {}

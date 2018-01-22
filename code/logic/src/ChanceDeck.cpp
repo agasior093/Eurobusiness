@@ -1,11 +1,13 @@
 #include "../include/ChanceDeck.h"
 
-void logic::ChanceDeck::shuffleDeck() {	
+void logic::ChanceDeck::shuffleDeck() {		
 	std::random_shuffle(std::begin(m_deck), std::end(m_deck));
 }
 
-std::function<void()> logic::ChanceDeck::getTopCard() {
-	return m_deck[m_deck.size() - 1];
+logic::function logic::ChanceDeck::getTopCard() {
+	auto topCard = m_deck[m_deck.size() - 1];
+	//moveTopCardToBottom();
+	return m_deck[0];
 }
 
 void logic::ChanceDeck::moveTopCardToBottom() {

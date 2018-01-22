@@ -4,15 +4,26 @@
 #include "DEFINITIONS.h"
 #include <iostream>
 
-namespace logic {
-	using deck = std::array<std::function<void()>, CHANCE_DECK_SIZE>;
+#include "../include/Player.h"
+
+namespace logic {	
+	using function = std::function<void(logic::Player&, std::string&) > ;
+	using deck = std::array<function, CHANCE_DECK_SIZE>;
 
 	class ChanceDeck {
 	public:
-		virtual std::function<void()> getTopCard();
+		virtual function getTopCard();
 		deck m_deck;
 	protected:
 		virtual void shuffleDeck();
 		virtual void moveTopCardToBottom();
+
+		template <typename T>
+		std::string toStringWithPrecision(const T a_value, const int n = 1) {
+			std::stringstream stream;
+			stream << std::fixed << std::setprecision(n) << a_value;
+			std::string s = stream.str();
+			return s;
+		}
 	};
 }
